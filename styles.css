@@ -155,30 +155,30 @@ a {
   background-size: cover;
   background-position: center;
   opacity: 0;
-  animation: hero-fade 15s ease-in-out infinite;
+  animation: hero-fade 24s ease-in-out infinite;
 }
 
 .hero-slide--1 {
-  background-image: url("images/Salamanca%20SBK%20S.jpg");
+  background-image: url("images/Salamanca%20SBK.PNG");
   animation-delay: 0s;
 }
 
 .hero-slide--2 {
   background-image: url("images/Salamanca%20SBK%20B.PNG");
-  animation-delay: 5s;
+  animation-delay: 8s;
 }
 
 .hero-slide--3 {
   background-image: url("images/Salamanca%20SBK%20K.PNG");
-  animation-delay: 10s;
+  animation-delay: 16s;
 }
 
 @keyframes hero-fade {
-  0%     { opacity: 0; }
-  6.67%  { opacity: 1; }
-  26.67% { opacity: 1; }
-  33.33% { opacity: 0; }
-  100%   { opacity: 0; }
+  0%      { opacity: 0; }
+  6.25%   { opacity: 1; }
+  33.33%  { opacity: 1; }
+  39.58%  { opacity: 0; }
+  100%    { opacity: 0; }
 }
 
 .hero-grid {
