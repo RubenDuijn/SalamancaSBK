@@ -134,15 +134,17 @@ a {
   overflow: hidden;
   padding: 4.5rem 0 3.5rem;
   background:
+    linear-gradient(135deg, rgba(16, 9, 10, 0.2), rgba(16, 9, 10, 0.38)),
     radial-gradient(circle at top left, rgba(242, 167, 76, 0.24), transparent 0, transparent 38%),
-    radial-gradient(circle at bottom right, rgba(255, 125, 104, 0.18), transparent 0, transparent 34%);
+    radial-gradient(circle at bottom right, rgba(255, 125, 104, 0.18), transparent 0, transparent 34%),
+    url("images/Salamanca%20SBK%20hero.jpg") center center / cover no-repeat;
 }
 
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(53, 22, 16, 0.66), rgba(18, 13, 17, 0.84));
+  background: linear-gradient(135deg, rgba(53, 22, 16, 0.74), rgba(18, 13, 17, 0.88));
   pointer-events: none;
 }
 
@@ -152,6 +154,11 @@ a {
   display: grid;
   gap: 1rem;
   align-items: center;
+}
+
+.hero-content {
+  display: grid;
+  gap: 1rem;
 }
 
 .eyebrow {
@@ -230,6 +237,21 @@ a {
 
 .hero-card {
   padding: 1.2rem;
+}
+
+.hero-media {
+  display: none;
+  margin: 0;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
 }
 
 .card-label {
@@ -330,21 +352,8 @@ a {
   scroll-snap-align: start;
 }
 
-.subsection-card {
+.class-strip-secondary {
   margin-top: 1rem;
-  padding: 1.15rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-}
-
-.subsection-card h3 {
-  margin: 0.5rem 0 0.35rem;
-}
-
-.subsection-card p {
-  margin: 0;
-  color: var(--muted);
 }
 
 .class-tag {
@@ -583,11 +592,23 @@ a {
 
   .hero {
     padding: 5.5rem 0 4rem;
+    background:
+      radial-gradient(circle at top left, rgba(242, 167, 76, 0.24), transparent 0, transparent 38%),
+      radial-gradient(circle at bottom right, rgba(255, 125, 104, 0.18), transparent 0, transparent 34%);
   }
 
   .hero-grid {
-    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.8fr);
     gap: 2rem;
+  }
+
+  .hero-content {
+    align-content: center;
+  }
+
+  .hero-media {
+    display: block;
+    align-self: stretch;
   }
 
   .class-strip {
