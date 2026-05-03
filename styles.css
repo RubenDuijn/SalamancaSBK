@@ -181,6 +181,33 @@ a {
   100%    { opacity: 0; }
 }
 
+@keyframes hero-pan-mobile {
+  0%   { background-position: 50% 6%; }
+  100% { background-position: 50% 92%; }
+}
+
+@media (max-width: 979px) {
+  .hero-slide {
+    animation-name: hero-fade, hero-pan-mobile;
+    animation-duration: 24s, 8s;
+    animation-timing-function: ease-in-out, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+    animation-fill-mode: both, both;
+  }
+
+  .hero-slide--1 {
+    animation-delay: 0s, 0s;
+  }
+
+  .hero-slide--2 {
+    animation-delay: 8s, 8s;
+  }
+
+  .hero-slide--3 {
+    animation-delay: 16s, 16s;
+  }
+}
+
 .hero-grid {
   position: relative;
   z-index: 2;
