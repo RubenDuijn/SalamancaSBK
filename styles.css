@@ -169,69 +169,42 @@ a {
   background-position: center;
   opacity: 0;
   transform: scale(1.08);
-  animation: hero-fade 24s ease-in-out infinite;
+  animation-name: hero-fade, hero-pan-horizontal;
+  animation-duration: 24s, 8s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-fill-mode: both, both;
 }
 
 .hero-slide--1 {
   background-image: url("images/Salamanca%20SBK.PNG");
-  animation-delay: 0s;
+  animation-delay: 0s, 0s;
 }
 
 .hero-slide--2 {
   background-image: url("images/Salamanca%20SBK%20B.PNG");
-  animation-delay: 8s;
+  animation-delay: 8s, 8s;
 }
 
 .hero-slide--3 {
   background-image: url("images/Salamanca%20SBK%20K.PNG");
-  animation-delay: 16s;
+  animation-delay: 16s, 16s;
 }
 
 @keyframes hero-fade {
-  0%      { opacity: 0; }
-  6.25%   { opacity: 1; }
-  33.33%  { opacity: 1; }
-  39.58%  { opacity: 0; }
-  100%    { opacity: 0; }
+  0%     { opacity: 0; }
+  10%    { opacity: 1; }
+  30%    { opacity: 1; }
+  40%    { opacity: 0; }
+  100%   { opacity: 0; }
 }
 
-@keyframes hero-pan-mobile {
+@keyframes hero-pan-horizontal {
   0% {
-    transform: translate(-4.5%, -2.5%) scale(1.12);
+    transform: translate(-4.2%, -0.45%) scale(1.11);
   }
   100% {
-    transform: translate(4.5%, 2.5%) scale(1.12);
-  }
-}
-
-@keyframes hero-pan-desktop {
-  0% {
-    transform: translate(-2.4%, -1.2%) scale(1.08);
-  }
-  100% {
-    transform: translate(2.4%, 1.2%) scale(1.08);
-  }
-}
-
-@media (max-width: 979px) {
-  .hero-slide {
-    animation-name: hero-fade, hero-pan-mobile;
-    animation-duration: 24s, 8s;
-    animation-timing-function: ease-in-out, ease-in-out;
-    animation-iteration-count: infinite, infinite;
-    animation-fill-mode: both, both;
-  }
-
-  .hero-slide--1 {
-    animation-delay: 0s, 0s;
-  }
-
-  .hero-slide--2 {
-    animation-delay: 8s, 8s;
-  }
-
-  .hero-slide--3 {
-    animation-delay: 16s, 16s;
+    transform: translate(4.2%, 0.45%) scale(1.11);
   }
 }
 
@@ -666,26 +639,6 @@ a {
 
   .hero {
     padding: 5.5rem 0 4rem;
-  }
-
-  .hero-slide {
-    animation-name: hero-fade, hero-pan-desktop;
-    animation-duration: 24s, 10s;
-    animation-timing-function: ease-in-out, ease-in-out;
-    animation-iteration-count: infinite, infinite;
-    animation-fill-mode: both, both;
-  }
-
-  .hero-slide--1 {
-    animation-delay: 0s, 0s;
-  }
-
-  .hero-slide--2 {
-    animation-delay: 8s, 8s;
-  }
-
-  .hero-slide--3 {
-    animation-delay: 16s, 16s;
   }
 
   .hero-grid {
