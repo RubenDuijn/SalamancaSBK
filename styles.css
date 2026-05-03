@@ -173,8 +173,8 @@ a {
   opacity: 0;
   transform: scale(1.08);
   animation-name: hero-fade, hero-pan-horizontal;
-  animation-duration: 30s, 10s;
-  animation-timing-function: linear, ease-in-out;
+  animation-duration: 30s, 30s;
+  animation-timing-function: ease-in-out, linear;
   animation-iteration-count: infinite, infinite;
   animation-fill-mode: both, both;
   will-change: opacity, transform;
@@ -206,6 +206,9 @@ a {
 @keyframes hero-pan-horizontal {
   0% {
     transform: translate(-3.2%, -0.22%) scale(1.095);
+  }
+  45% {
+    transform: translate(3.2%, 0.22%) scale(1.095);
   }
   100% {
     transform: translate(3.2%, 0.22%) scale(1.095);
