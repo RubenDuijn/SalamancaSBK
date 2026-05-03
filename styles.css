@@ -595,6 +595,11 @@ a {
   color: var(--muted);
 }
 
+.contact-action {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
 .whatsapp-float {
   position: fixed;
   right: 1rem;
@@ -625,6 +630,10 @@ a {
 @media (min-width: 760px) {
   .button {
     width: auto;
+  }
+
+  .contact-action {
+    width: 100%;
   }
 
   .hero-actions,
