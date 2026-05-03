@@ -133,24 +133,57 @@ a {
   position: relative;
   overflow: hidden;
   padding: 4.5rem 0 3.5rem;
-  background:
-    linear-gradient(135deg, rgba(16, 9, 10, 0.2), rgba(16, 9, 10, 0.38)),
-    radial-gradient(circle at top left, rgba(242, 167, 76, 0.24), transparent 0, transparent 38%),
-    radial-gradient(circle at bottom right, rgba(255, 125, 104, 0.18), transparent 0, transparent 34%),
-    url("images/Salamanca%20SBK%20hero.jpg") center center / cover no-repeat;
+  background: var(--bg);
 }
 
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(53, 22, 16, 0.74), rgba(18, 13, 17, 0.88));
+  z-index: 1;
+  background:
+    radial-gradient(circle at top left, rgba(242, 167, 76, 0.18), transparent 38%),
+    radial-gradient(circle at bottom right, rgba(255, 125, 104, 0.14), transparent 34%),
+    linear-gradient(135deg, rgba(53, 22, 16, 0.72), rgba(18, 13, 17, 0.86));
   pointer-events: none;
+}
+
+/* --- hero crossfade slideshow --- */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: hero-fade 15s ease-in-out infinite;
+}
+
+.hero-slide--1 {
+  background-image: url("images/Salamanca%20SBK%20S.jpg");
+  animation-delay: 0s;
+}
+
+.hero-slide--2 {
+  background-image: url("images/Salamanca%20SBK%20B.PNG");
+  animation-delay: 5s;
+}
+
+.hero-slide--3 {
+  background-image: url("images/Salamanca%20SBK%20K.PNG");
+  animation-delay: 10s;
+}
+
+@keyframes hero-fade {
+  0%     { opacity: 0; }
+  6.67%  { opacity: 1; }
+  26.67% { opacity: 1; }
+  33.33% { opacity: 0; }
+  100%   { opacity: 0; }
 }
 
 .hero-grid {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   gap: 1rem;
   align-items: center;
@@ -572,11 +605,6 @@ a {
 
   .hero {
     padding: 5.5rem 0 4rem;
-    background:
-      linear-gradient(135deg, rgba(16, 9, 10, 0.36), rgba(16, 9, 10, 0.58)),
-      radial-gradient(circle at top left, rgba(242, 167, 76, 0.24), transparent 0, transparent 38%),
-      radial-gradient(circle at bottom right, rgba(255, 125, 104, 0.18), transparent 0, transparent 34%),
-      url("images/Salamanca%20SBK%20hero%20dt.PNG") center center / cover no-repeat;
   }
 
   .hero-grid {

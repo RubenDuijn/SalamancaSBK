@@ -15,4 +15,4 @@ Salamanca SBK is a vibrant showcase dance brand centred on **Salsa, Bachata, Kiz
 ## Images and GitHub
 - New image files should be added to `images/`.
 - A new picture only appears on GitHub after `git add`, `git commit`, and `git push`.
-- Current hero images: `images/Salamanca SBK hero.jpg` (mobile) and `images/Salamanca SBK hero dt.PNG` (desktop).
+- Hero slideshow images: `images/Salamanca SBK S.jpg` (Salsa), `images/Salamanca SBK B.PNG` (Bachata), `images/Salamanca SBK K.PNG` (Kizomba). All three cross-fade in the hero background on every screen size.
