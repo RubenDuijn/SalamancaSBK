@@ -565,6 +565,11 @@ a {
   margin-top: 0.4rem;
 }
 
+.pair-role {
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
 .price {
   margin: 0.2rem 0 0.5rem;
   color: var(--accent-2);
