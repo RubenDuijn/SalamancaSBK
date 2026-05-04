@@ -659,7 +659,7 @@
     const dayTabsEl = document.getElementById('day-tabs');
     const scheduleListEl = document.getElementById('schedule-list');
 
-    let supabase = null;
+    let sbClient = null;
     let authUser = null;
     let profile = null;
     let classScheduleRows = [];
@@ -733,7 +733,7 @@
         return countCache.get(cacheKey);
       }
 
-      const { count, error } = await supabase
+      const { count, error } = await sbClient
         .from('attendance')
         .select('*', { count: 'exact', head: true })
         .eq('figure_id', figureIdValue)
@@ -790,7 +790,7 @@
         class_date: todaysDateISO(),
       };
 
-      const { data, error } = await supabase
+      const { data, error } = await sbClient
         .from('attendance')
         .insert(payload)
         .select('id, student_id, figure_id, figure_name, class_date, created_at')
@@ -1034,7 +1034,7 @@
     }
 
     async function loadData() {
-      const { data: profileData, error: profileError } = await supabase
+      const { data: profileData, error: profileError } = await sbClient
         .from('profiles')
         .select('id, full_name, level')
         .eq('id', authUser.id)
@@ -1046,7 +1046,7 @@
 
       profile = profileData;
 
-      const { data: scheduleData, error: scheduleError } = await supabase
+      const { data: scheduleData, error: scheduleError } = await sbClient
         .from('class_schedule')
         .select('id, day, time, dance_style, level_slug, current_figure_index, current_week');
 
@@ -1056,7 +1056,7 @@
 
       classScheduleRows = scheduleData || [];
 
-      const { data: attendData, error: attendError } = await supabase
+      const { data: attendData, error: attendError } = await sbClient
         .from('attendance')
         .select('id, student_id, figure_id, figure_name, class_date, created_at')
         .eq('student_id', authUser.id);
@@ -1076,9 +1076,9 @@
         return;
       }
 
-      supabase = window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
+      sbClient = window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
 
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      const { data: sessionData, error: sessionError } = await sbClient.auth.getSession();
       if (sessionError) {
         showError('Session check failed. Please sign in again.');
         window.location.href = 'index.html';
@@ -1094,7 +1094,7 @@
       authUser = session.user;
 
       signoutBtn.addEventListener('click', async () => {
-        await supabase.auth.signOut();
+        await sbClient.auth.signOut();
         window.location.href = 'index.html';
       });
 
