@@ -632,6 +632,20 @@ a {
   text-align: center;
 }
 
+.footer-links {
+  margin-top: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.1rem;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: var(--accent-2);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
 @media (min-width: 760px) {
   .button {
     width: auto;
