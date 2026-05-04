@@ -219,10 +219,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const SUPABASE_URL = 'YOUR_URL';
-    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+  
+     const RAW_SUPABASE_URL = 'https://txansvfngkjtbbdmvgtw.supabase.co';
+     const RAW_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4YW5zdmZuZ2tqdGJiZG12Z3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDM5MzIsImV4cCI6MjA5MzQ3OTkzMn0.X8eXfZDlORDKzAbr2fsulaRw4vi_4VG4vhV1sPujYCo';
 
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+     const SUPABASE_URL = (RAW_SUPABASE_URL || '').trim();
+     const SUPABASE_ANON_KEY = (RAW_SUPABASE_ANON_KEY || '').trim();
 
     const form = document.getElementById('login-form');
     const emailInput = document.getElementById('email');
@@ -230,6 +232,25 @@
     const submitBtn = document.getElementById('submit-btn');
     const forgotLink = document.getElementById('forgot-link');
     const messageEl = document.getElementById('message');
+
+    function isValidHttpUrl(value) {
+      try {
+        const url = new URL(value);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (err) {
+        return false;
+      }
+    }
+
+    let supabaseClient = null;
+    if (!isValidHttpUrl(SUPABASE_URL) || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === 'YOUR_ANON_KEY') {
+      setMessage('Supabase configuration is invalid. Please check SUPABASE_URL and SUPABASE_ANON_KEY.', 'error');
+      submitBtn.disabled = true;
+      forgotLink.style.pointerEvents = 'none';
+      forgotLink.style.opacity = '0.6';
+    } else {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
 
     function setMessage(text, type) {
       messageEl.textContent = text || '';
@@ -259,6 +280,11 @@
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       setMessage('');
+
+      if (!supabaseClient) {
+        setMessage('Login is temporarily unavailable due to configuration.', 'error');
+        return;
+      }
 
       const email = emailInput.value.trim();
       const password = passwordInput.value;
@@ -319,6 +345,11 @@
     forgotLink.addEventListener('click', async (event) => {
       event.preventDefault();
       setMessage('');
+
+      if (!supabaseClient) {
+        setMessage('Password reset is temporarily unavailable due to configuration.', 'error');
+        return;
+      }
 
       const email = emailInput.value.trim();
       if (!email) {
