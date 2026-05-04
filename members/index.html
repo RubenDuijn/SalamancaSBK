@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salamanca SBK Members Login</title>
+  <meta name="description" content="Salamanca SBK Members Area login" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-soft: #12121a;
+      --text: #f6f1f5;
+      --muted: #d7cbd3;
+      --line: rgba(255, 255, 255, 0.16);
+      --accent: #c4527a;
+      --accent-strong: #df658f;
+      --card: rgba(21, 18, 26, 0.78);
+      --danger: #ff8ba7;
+      --ok: #98e2b5;
+      --shadow: 0 26px 70px rgba(0, 0, 0, 0.46);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Outfit", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(196, 82, 122, 0.2), transparent 36%),
+        radial-gradient(circle at 85% 12%, rgba(196, 82, 122, 0.14), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(67, 23, 44, 0.55), transparent 55%),
+        var(--bg);
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      padding: 1.2rem;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      mix-blend-mode: soft-light;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.22) 0.5px, transparent 0.5px);
+      background-size: 3px 3px;
+    }
+
+    .login-shell {
+      width: min(460px, 100%);
+      padding: 1.9rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(145deg, rgba(196, 82, 122, 0.07), transparent 36%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .wordmark {
+      margin: 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: clamp(2rem, 7vw, 2.7rem);
+      line-height: 1;
+    }
+
+    .subtitle {
+      margin: 0.3rem 0 0;
+      color: var(--accent-strong);
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+
+    .intro {
+      margin: 1.05rem 0 1.35rem;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.45;
+    }
+
+    .field {
+      margin-bottom: 0.85rem;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.85rem;
+      color: #eadfe6;
+      letter-spacing: 0.02em;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(10, 10, 15, 0.65);
+      color: var(--text);
+      padding: 0.7rem 0.85rem;
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus {
+      border-color: rgba(223, 101, 143, 0.95);
+      box-shadow: 0 0 0 3px rgba(196, 82, 122, 0.24);
+    }
+
+    .submit-btn {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #210f17;
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.75;
+      cursor: wait;
+      transform: none;
+    }
+
+    .message {
+      margin-top: 0.8rem;
+      min-height: 1.15rem;
+      font-size: 0.9rem;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .message.error {
+      color: var(--danger);
+    }
+
+    .message.success {
+      color: var(--ok);
+    }
+
+    .helper {
+      margin-top: 0.8rem;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .forgot-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.88rem;
+      color: var(--accent-strong);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell" aria-labelledby="members-title">
+    <h1 class="wordmark" id="members-title">Salamanca SBK</h1>
+    <p class="subtitle">Members Area</p>
+    <p class="intro">Sign in to access your curriculum and class schedule</p>
+
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+
+      <button class="submit-btn" id="submit-btn" type="submit">Sign in</button>
+      <p id="message" class="message" role="alert" aria-live="polite"></p>
+
+      <p class="helper">No account yet? Your teacher will send you an invitation.</p>
+      <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'YOUR_URL';
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const submitBtn = document.getElementById('submit-btn');
+    const forgotLink = document.getElementById('forgot-link');
+    const messageEl = document.getElementById('message');
+
+    function setMessage(text, type) {
+      messageEl.textContent = text || '';
+      messageEl.classList.remove('error', 'success');
+      if (type) {
+        messageEl.classList.add(type);
+      }
+    }
+
+    function normalizeAuthError(error) {
+      if (!error) return 'Something went wrong. Please try again.';
+      const msg = (error.message || '').toLowerCase();
+
+      if (msg.includes('invalid login credentials')) {
+        return 'Incorrect email or password.';
+      }
+      if (msg.includes('email not confirmed')) {
+        return 'Your email is not confirmed yet. Please check your inbox.';
+      }
+      if (msg.includes('too many requests')) {
+        return 'Too many attempts. Please wait a moment and try again.';
+      }
+
+      return error.message || 'Something went wrong. Please try again.';
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setMessage('');
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        setMessage('Please enter both email and password.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in...';
+
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          setMessage(normalizeAuthError(error), 'error');
+          return;
+        }
+
+        const userId = data?.user?.id;
+        if (!userId) {
+          setMessage('Login succeeded but no user was returned.', 'error');
+          return;
+        }
+
+        const { data: profile, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('full_name, level')
+          .eq('id', userId)
+          .single();
+
+        if (profileError) {
+          setMessage('Signed in, but your profile could not be loaded.', 'error');
+          return;
+        }
+
+        sessionStorage.setItem(
+          'sbk_profile',
+          JSON.stringify({
+            name: profile.full_name,
+            level: profile.level,
+          })
+        );
+
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        setMessage('Unexpected error while signing in. Please try again.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign in';
+      }
+    });
+
+    forgotLink.addEventListener('click', async (event) => {
+      event.preventDefault();
+      setMessage('');
+
+      const email = emailInput.value.trim();
+      if (!email) {
+        setMessage('Enter your email above, then click Forgot password again.', 'error');
+        return;
+      }
+
+      forgotLink.style.pointerEvents = 'none';
+      forgotLink.style.opacity = '0.7';
+
+      try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/dashboard.html',
+        });
+
+        if (error) {
+          setMessage(normalizeAuthError(error), 'error');
+          return;
+        }
+
+        setMessage('Password reset email sent. Please check your inbox.', 'success');
+      } catch (err) {
+        setMessage('Could not send reset email right now. Please try again.', 'error');
+      } finally {
+        forgotLink.style.pointerEvents = '';
+        forgotLink.style.opacity = '';
+      }
+    });
+  </script>
+</body>
+</html>
