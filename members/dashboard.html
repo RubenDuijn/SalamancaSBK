@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salamanca SBK Members Dashboard</title>
+  <meta name="description" content="Salamanca SBK student dashboard" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-soft: #111119;
+      --card: rgba(21, 18, 26, 0.78);
+      --line: rgba(255, 255, 255, 0.13);
+      --text: #f6f1f5;
+      --muted: #d7cbd3;
+      --accent: #c4527a;
+      --accent-strong: #df658f;
+      --danger: #ff8ba7;
+      --ok: #98e2b5;
+      --radius: 18px;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: "Outfit", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 6%, rgba(196, 82, 122, 0.2), transparent 34%),
+        radial-gradient(circle at 88% 9%, rgba(196, 82, 122, 0.14), transparent 32%),
+        radial-gradient(circle at 50% 100%, rgba(67, 23, 44, 0.48), transparent 52%),
+        var(--bg);
+      padding: 1.1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.2;
+      mix-blend-mode: soft-light;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.22) 0.5px, transparent 0.5px);
+      background-size: 3px 3px;
+    }
+
+    .container {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(10, 10, 15, 0.75);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      margin-bottom: 1rem;
+    }
+
+    .brand {
+      margin: 0;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+    }
+
+    .student-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .student-name {
+      font-weight: 600;
+      color: #f7e8f0;
+      font-size: 0.95rem;
+    }
+
+    .level-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.28rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(223, 101, 143, 0.35);
+      background: rgba(196, 82, 122, 0.2);
+      color: #ffd2e3;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      min-height: 42px;
+      padding: 0.65rem 1rem;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #210f17;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: rgba(255, 139, 167, 0.16);
+      border: 1px solid rgba(255, 139, 167, 0.35);
+      color: #ffd8e4;
+    }
+
+    .section {
+      margin-top: 1rem;
+      padding: 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(145deg, rgba(196, 82, 122, 0.05), transparent 45%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .section h2 {
+      margin: 0 0 0.35rem;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2rem);
+      letter-spacing: 0.02em;
+    }
+
+    .section-sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .tabs {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+
+    .tab {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      padding: 0.35rem;
+    }
+
+    .tab.active {
+      border-color: rgba(223, 101, 143, 0.52);
+      background: rgba(196, 82, 122, 0.26);
+      color: #ffe2ee;
+    }
+
+    .tab.locked {
+      cursor: not-allowed;
+      background: rgba(255, 255, 255, 0.03);
+      color: #a6949f;
+    }
+
+    .level-panel {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+      background: rgba(10, 10, 15, 0.35);
+    }
+
+    .panel-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.9rem;
+    }
+
+    .panel-head h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
+    }
+
+    .panel-head p {
+      margin: 0.28rem 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .progress-widget {
+      min-width: 210px;
+      padding: 0.65rem 0.8rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .progress-top {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .arc {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(var(--accent-strong) 0deg, rgba(255, 255, 255, 0.13) 0deg);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .arc::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: #111019;
+    }
+
+    .arc-label {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: #ffe0ec;
+    }
+
+    .progress-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .figure-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .figure-head {
+      display: grid;
+      gap: 0.25rem;
+      padding: 0.8rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .figure-kicker {
+      margin: 0;
+      color: var(--accent-strong);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .figure-name {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .badge-week {
+      margin-top: 0.3rem;
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 0.18rem 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #210f17;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    }
+
+    .figure-body {
+      padding: 0.8rem;
+      display: grid;
+      gap: 0.62rem;
+    }
+
+    .figure-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .tips {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.35;
+    }
+
+    .tips li + li {
+      margin-top: 0.22rem;
+    }
+
+    .video-wrap {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      min-height: 170px;
+      position: relative;
+      background: #09090e;
+    }
+
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 170px;
+      border: 0;
+      display: block;
+    }
+
+    .video-locked {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(6, 6, 10, 0.86);
+      color: #dac5cf;
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+
+    .video-lock-icon {
+      font-size: 1.35rem;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .attend-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .count-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .attend-btn {
+      min-height: 36px;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .attend-btn.primary {
+      border: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #210f17;
+    }
+
+    .attend-btn:disabled {
+      opacity: 0.76;
+      cursor: not-allowed;
+    }
+
+    .locked-panel {
+      padding: 1.4rem;
+      border: 1px dashed rgba(255, 255, 255, 0.26);
+      border-radius: 12px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .locked-panel strong {
+      color: #f2d9e4;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .days-tabs {
+      margin-top: 0.95rem;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+
+    .schedule-list {
+      margin-top: 0.95rem;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .class-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+    }
+
+    .class-summary {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 0.85rem;
+      text-align: left;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0.7rem;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .class-time {
+      font-weight: 800;
+      color: #ffe1ec;
+      font-size: 0.92rem;
+    }
+
+    .class-meta {
+      display: grid;
+      gap: 0.12rem;
+    }
+
+    .class-style {
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .class-level {
+      font-size: 0.77rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .class-chevron {
+      font-size: 0.95rem;
+      color: var(--muted);
+      transition: transform 0.2s ease;
+    }
+
+    .class-body {
+      padding: 0 0.85rem 0.85rem;
+      border-top: 1px solid var(--line);
+      display: none;
+      gap: 0.6rem;
+      background: rgba(10, 10, 15, 0.35);
+    }
+
+    .class-card.open .class-body {
+      display: grid;
+    }
+
+    .class-card.open .class-chevron {
+      transform: rotate(180deg);
+    }
+
+    .class-body p {
+      margin: 0.55rem 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .error-banner {
+      margin-top: 0.9rem;
+      border: 1px solid rgba(255, 139, 167, 0.4);
+      background: rgba(255, 139, 167, 0.13);
+      color: #ffd3e0;
+      border-radius: 12px;
+      padding: 0.65rem 0.8rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .error-banner.show { display: block; }
+
+    @media (max-width: 1024px) {
+      .figure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 0.85rem; }
+      .topbar {
+        grid-template-columns: 1fr;
+        justify-items: start;
+      }
+      .student-wrap {
+        justify-content: flex-start;
+      }
+      .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .days-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .figure-grid { grid-template-columns: 1fr; }
+      .panel-head {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <h1 class="brand">Salamanca SBK</h1>
+      <div class="student-wrap">
+        <span id="student-name" class="student-name">Loading...</span>
+        <span id="student-level" class="level-pill">Level</span>
+      </div>
+      <button id="signout-btn" class="btn btn-danger" type="button">Sign out</button>
+    </header>
+
+    <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
+
+    <section class="section" id="curriculum-section">
+      <h2>Curriculum Journey</h2>
+      <p class="section-sub">Track your figures, see what is current this week, and mark attendance for your active level.</p>
+
+      <div id="level-tabs" class="tabs"></div>
+      <div id="level-panel" class="level-panel"></div>
+    </section>
+
+    <section class="section" id="schedule-section">
+      <h2>Class Schedule</h2>
+      <p class="section-sub">Weekly classes and current figure focus by day.</p>
+
+      <div id="day-tabs" class="days-tabs"></div>
+      <div id="schedule-list" class="schedule-list"></div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://txansvfngkjtbbdmvgtw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4YW5zdmZuZ2tqdGJiZG12Z3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDM5MzIsImV4cCI6MjA5MzQ3OTkzMn0.X8eXfZDlORDKzAbr2fsulaRw4vi_4VG4vhV1sPujYCo';
+
+    const LEVELS = [
+      { slug: 'beginner', label: 'Beginner', subtitle: 'Your foundation and flow start here.' },
+      { slug: 'intermediate_1', label: 'Int 1', subtitle: 'Connection and cleaner transitions.' },
+      { slug: 'intermediate_2', label: 'Int 2', subtitle: 'More precision, contrast, and timing.' },
+      { slug: 'intermediate_3', label: 'Int 3', subtitle: 'Complex combinations with confidence.' },
+      { slug: 'advanced_1', label: 'Adv 1', subtitle: 'Dynamic control and musical interpretation.' },
+      { slug: 'advanced_2', label: 'Adv 2', subtitle: 'Layered movement and partner sensitivity.' },
+      { slug: 'advanced_3', label: 'Adv 3', subtitle: 'Master level integration and improvisation.' },
+    ];
+
+    const LEVEL_INDEX = Object.fromEntries(LEVELS.map((l, i) => [l.slug, i]));
+    const PUBLIC_VIDEO_ID = 'J5qp261RRR4';
+
+    function levelTitle(slug) {
+      return LEVELS.find((l) => l.slug === slug)?.label || slug;
+    }
+
+    function buildFigures(levelSlug, names) {
+      return names.map((name, idx) => ({
+        index: idx + 1,
+        name,
+        description: `${name} builds control, timing, and cleaner communication between partners with practical social floor application.`,
+        tips: [
+          'Keep your frame calm and your steps grounded.',
+          'Lead/follow from body intention before using arms.',
+          'Prioritize rhythm and clarity over speed.'
+        ],
+        videoId: PUBLIC_VIDEO_ID,
+        levelSlug,
+      }));
+    }
+
+    const FIGURE_DATA = {
+      beginner: buildFigures('beginner', ['El Paso Raiz', 'La Guia Suave', 'El Giro Sencillo', 'La Ventana', 'El Abrazo Cerrado', 'La Pausa Dramatica']),
+      intermediate_1: buildFigures('intermediate_1', ['La Media Luna', 'El Desliz Lateral', 'La Corona', 'El Puente', 'La Ola', 'El Nudo']),
+      intermediate_2: buildFigures('intermediate_2', ['La Sombra', 'El Espejo', 'La Espiral', 'El Floreado', 'La Trampa', 'El Columpio']),
+      intermediate_3: buildFigures('intermediate_3', ['El Rompecabezas', 'La Cascada', 'El Corazon', 'La Marea', 'El Latigo', 'La Firma']),
+      advanced_1: buildFigures('advanced_1', ['La Tormenta', 'El Susurro', 'La Mariposa', 'El Pendulo Doble', 'La Cuerda', 'El Relampago']),
+      advanced_2: buildFigures('advanced_2', ['La Constelacion', 'El Silencio', 'La Telarana', 'El Desequilibrio', 'La Seduccion', 'El Torbellino']),
+      advanced_3: buildFigures('advanced_3', ['La Memoria', 'El Maestro', 'La Improvisacion', 'El Cuadro', 'La Herencia', 'El Circulo Completo']),
+    };
+
+    const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+    const errorBanner = document.getElementById('error-banner');
+    const studentNameEl = document.getElementById('student-name');
+    const studentLevelEl = document.getElementById('student-level');
+    const signoutBtn = document.getElementById('signout-btn');
+    const levelTabsEl = document.getElementById('level-tabs');
+    const levelPanelEl = document.getElementById('level-panel');
+    const dayTabsEl = document.getElementById('day-tabs');
+    const scheduleListEl = document.getElementById('schedule-list');
+
+    let supabase = null;
+    let authUser = null;
+    let profile = null;
+    let classScheduleRows = [];
+    let attendanceRows = [];
+    let selectedLevelSlug = 'beginner';
+    let selectedDay = 'Monday';
+    const countCache = new Map();
+
+    function showError(message) {
+      errorBanner.textContent = message;
+      errorBanner.classList.add('show');
+    }
+
+    function clearError() {
+      errorBanner.textContent = '';
+      errorBanner.classList.remove('show');
+    }
+
+    function validHttpUrl(value) {
+      try {
+        const url = new URL((value || '').trim());
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function canAccessLevel(targetSlug) {
+      return LEVEL_INDEX[targetSlug] <= LEVEL_INDEX[profile.level];
+    }
+
+    function videoUnlocked(levelSlug, figureIndex) {
+      if (levelSlug === 'beginner' && (figureIndex === 1 || figureIndex === 2)) {
+        return true;
+      }
+      return LEVEL_INDEX[profile.level] >= LEVEL_INDEX[levelSlug];
+    }
+
+    function lockMessageFor(levelSlug) {
+      return `Unlocks at ${levelTitle(levelSlug)}`;
+    }
+
+    function profileLevelDisplay(levelSlug) {
+      return levelTitle(levelSlug).replace('Intermediate', 'Int').replace('Advanced', 'Adv');
+    }
+
+    function figureId(levelSlug, index) {
+      return `${levelSlug}:${index}`;
+    }
+
+    function todaysDateISO() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function studentAttendingTodaySet() {
+      const today = todaysDateISO();
+      return new Set(
+        attendanceRows
+          .filter((r) => r.class_date === today)
+          .map((r) => r.figure_id)
+      );
+    }
+
+    async function getAttendanceCountForFigure(figureIdValue) {
+      const cacheKey = `${figureIdValue}::${todaysDateISO()}`;
+      if (countCache.has(cacheKey)) {
+        return countCache.get(cacheKey);
+      }
+
+      const { count, error } = await supabase
+        .from('attendance')
+        .select('*', { count: 'exact', head: true })
+        .eq('figure_id', figureIdValue)
+        .eq('class_date', todaysDateISO());
+
+      if (error) {
+        countCache.set(cacheKey, null);
+        return null;
+      }
+
+      countCache.set(cacheKey, count ?? 0);
+      return count ?? 0;
+    }
+
+    function arcDegrees(current) {
+      const clamped = Math.max(1, Math.min(6, current));
+      return Math.round((clamped / 6) * 360);
+    }
+
+    function currentFigureForLevel(levelSlug) {
+      const rows = classScheduleRows.filter((r) => r.level_slug === levelSlug);
+      if (rows.length === 0) return 1;
+      const maxVal = Math.max(...rows.map((r) => Number(r.current_figure_index) || 1));
+      return Math.max(1, Math.min(6, maxVal));
+    }
+
+    function renderLevelTabs() {
+      levelTabsEl.innerHTML = '';
+      LEVELS.forEach((level) => {
+        const button = document.createElement('button');
+        const locked = !canAccessLevel(level.slug);
+        button.type = 'button';
+        button.className = `tab${selectedLevelSlug === level.slug ? ' active' : ''}${locked ? ' locked' : ''}`;
+        button.textContent = locked ? `🔒 ${level.label}` : level.label;
+
+        if (!locked) {
+          button.addEventListener('click', () => {
+            selectedLevelSlug = level.slug;
+            renderCurriculum();
+          });
+        } else {
+          button.title = lockMessageFor(level.slug);
+        }
+
+        levelTabsEl.appendChild(button);
+      });
+    }
+
+    async function insertAttendanceRow(figureIdValue, figureName) {
+      const payload = {
+        student_id: authUser.id,
+        figure_id: figureIdValue,
+        figure_name: figureName,
+        class_date: todaysDateISO(),
+      };
+
+      const { data, error } = await supabase
+        .from('attendance')
+        .insert(payload)
+        .select('id, student_id, figure_id, figure_name, class_date, created_at')
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      attendanceRows.push(data);
+      const cacheKey = `${figureIdValue}::${todaysDateISO()}`;
+      if (countCache.has(cacheKey) && typeof countCache.get(cacheKey) === 'number') {
+        countCache.set(cacheKey, countCache.get(cacheKey) + 1);
+      }
+    }
+
+    async function buildAttendRow(container, figureIdValue, figureName, enabled) {
+      const wrap = document.createElement('div');
+      wrap.className = 'attend-row';
+
+      const countPill = document.createElement('span');
+      countPill.className = 'count-pill';
+      countPill.textContent = 'Attending today: ...';
+      wrap.appendChild(countPill);
+
+      const count = await getAttendanceCountForFigure(figureIdValue);
+      countPill.textContent = count === null
+        ? 'Attending today: unavailable'
+        : `Attending today: ${count}`;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `attend-btn${enabled ? ' primary' : ''}`;
+
+      const attendingSet = studentAttendingTodaySet();
+      const already = attendingSet.has(figureIdValue);
+
+      if (!enabled) {
+        btn.textContent = 'Review Only';
+        btn.disabled = true;
+      } else if (already) {
+        btn.textContent = '✓ Attending';
+        btn.disabled = true;
+      } else {
+        btn.textContent = 'Attend';
+        btn.disabled = false;
+        btn.addEventListener('click', async () => {
+          btn.disabled = true;
+          btn.textContent = 'Saving...';
+          clearError();
+          try {
+            await insertAttendanceRow(figureIdValue, figureName);
+            btn.textContent = '✓ Attending';
+            const updated = await getAttendanceCountForFigure(figureIdValue);
+            countPill.textContent = updated === null
+              ? 'Attending today: unavailable'
+              : `Attending today: ${updated}`;
+          } catch (err) {
+            btn.disabled = false;
+            btn.textContent = 'Attend';
+            showError(err.message || 'Could not register attendance.');
+          }
+        });
+      }
+
+      wrap.appendChild(btn);
+      container.appendChild(wrap);
+    }
+
+    async function renderLevelPanel() {
+      const levelMeta = LEVELS.find((l) => l.slug === selectedLevelSlug);
+      const unlocked = canAccessLevel(selectedLevelSlug);
+
+      if (!unlocked) {
+        levelPanelEl.innerHTML = `
+          <div class="locked-panel">
+            <strong>Locked Level</strong>
+            This level is not unlocked yet for your account.<br />
+            ${lockMessageFor(selectedLevelSlug)}
+          </div>
+        `;
+        return;
+      }
+
+      const currentFigure = currentFigureForLevel(selectedLevelSlug);
+      const recapEnd = Math.max(1, currentFigure - 1);
+      const deg = arcDegrees(currentFigure);
+
+      const wrapper = document.createElement('div');
+
+      const panelHead = document.createElement('div');
+      panelHead.className = 'panel-head';
+      panelHead.innerHTML = `
+        <div>
+          <h3>${levelMeta.label}</h3>
+          <p>${levelMeta.subtitle}</p>
+        </div>
+        <div class="progress-widget">
+          <div class="progress-top">
+            <div class="arc" style="background: conic-gradient(var(--accent-strong) ${deg}deg, rgba(255, 255, 255, 0.13) ${deg}deg);"></div>
+            <span class="arc-label">Figure ${currentFigure} / 6</span>
+          </div>
+          <p class="progress-note">This week: recap figures 1-${recapEnd}, new today: figure ${currentFigure}</p>
+        </div>
+      `;
+
+      wrapper.appendChild(panelHead);
+
+      const grid = document.createElement('div');
+      grid.className = 'figure-grid';
+
+      const figures = FIGURE_DATA[selectedLevelSlug] || [];
+      for (const figure of figures) {
+        const card = document.createElement('article');
+        card.className = 'figure-card';
+
+        const thisWeek = figure.index === currentFigure;
+        card.innerHTML = `
+          <div class="figure-head">
+            <p class="figure-kicker">Figure ${figure.index}</p>
+            <h4 class="figure-name">${figure.name}</h4>
+            ${thisWeek ? '<span class="badge-week">This week</span>' : ''}
+          </div>
+          <div class="figure-body">
+            <p>${figure.description}</p>
+            <ul class="tips">
+              ${figure.tips.map((t) => `<li>${t}</li>`).join('')}
+            </ul>
+            <div class="video-wrap"></div>
+          </div>
+        `;
+
+        const videoWrap = card.querySelector('.video-wrap');
+        const canSeeVideo = videoUnlocked(selectedLevelSlug, figure.index);
+
+        if (canSeeVideo) {
+          const iframe = document.createElement('iframe');
+          iframe.loading = 'lazy';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+          iframe.allowFullscreen = true;
+          iframe.src = `https://www.youtube.com/embed/${figure.videoId}`;
+          videoWrap.appendChild(iframe);
+        } else {
+          videoWrap.innerHTML = `
+            <div class="video-locked">
+              <div>
+                <span class="video-lock-icon">🔒</span>
+                Unlocks at ${levelTitle(selectedLevelSlug)}
+              </div>
+            </div>
+          `;
+        }
+
+        const attendEnabled = selectedLevelSlug === profile.level;
+        await buildAttendRow(
+          card.querySelector('.figure-body'),
+          figureId(selectedLevelSlug, figure.index),
+          figure.name,
+          attendEnabled
+        );
+
+        grid.appendChild(card);
+      }
+
+      wrapper.appendChild(grid);
+      levelPanelEl.innerHTML = '';
+      levelPanelEl.appendChild(wrapper);
+    }
+
+    async function renderCurriculum() {
+      renderLevelTabs();
+      await renderLevelPanel();
+    }
+
+    function renderDayTabs() {
+      dayTabsEl.innerHTML = '';
+      DAY_ORDER.forEach((day) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `tab${selectedDay === day ? ' active' : ''}`;
+        btn.textContent = day;
+        btn.addEventListener('click', () => {
+          selectedDay = day;
+          renderDayTabs();
+          renderSchedule();
+        });
+        dayTabsEl.appendChild(btn);
+      });
+    }
+
+    function figureNameFromSchedule(levelSlug, index) {
+      const list = FIGURE_DATA[levelSlug] || [];
+      return list.find((f) => f.index === Number(index))?.name || `Figure ${index}`;
+    }
+
+    async function renderSchedule() {
+      scheduleListEl.innerHTML = '';
+      const rows = classScheduleRows
+        .filter((r) => r.day === selectedDay)
+        .sort((a, b) => String(a.time).localeCompare(String(b.time)));
+
+      if (rows.length === 0) {
+        scheduleListEl.innerHTML = '<p class="section-sub">No classes scheduled for this day yet.</p>';
+        return;
+      }
+
+      for (const row of rows) {
+        const card = document.createElement('article');
+        card.className = 'class-card';
+
+        const figIdx = Math.max(1, Math.min(6, Number(row.current_figure_index) || 1));
+        const figId = figureId(row.level_slug, figIdx);
+        const figName = figureNameFromSchedule(row.level_slug, figIdx);
+
+        card.innerHTML = `
+          <button type="button" class="class-summary">
+            <span class="class-time">${row.time}</span>
+            <span class="class-meta">
+              <span class="class-style">${row.dance_style}</span>
+              <span class="class-level">${levelTitle(row.level_slug)}</span>
+            </span>
+            <span class="class-chevron">⌄</span>
+          </button>
+          <div class="class-body">
+            <p>Current figure this week: <strong>${figName}</strong> (Figure ${figIdx})</p>
+          </div>
+        `;
+
+        const summaryBtn = card.querySelector('.class-summary');
+        summaryBtn.addEventListener('click', () => {
+          card.classList.toggle('open');
+        });
+
+        const body = card.querySelector('.class-body');
+        const attendEnabled = row.level_slug === profile.level;
+        await buildAttendRow(body, figId, figName, attendEnabled);
+
+        scheduleListEl.appendChild(card);
+      }
+    }
+
+    async function loadData() {
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('id, full_name, level')
+        .eq('id', authUser.id)
+        .single();
+
+      if (profileError || !profileData) {
+        throw new Error('Could not load your profile.');
+      }
+
+      profile = profileData;
+
+      const { data: scheduleData, error: scheduleError } = await supabase
+        .from('class_schedule')
+        .select('id, day, time, dance_style, level_slug, current_figure_index, current_week');
+
+      if (scheduleError) {
+        throw new Error('Could not load class schedule.');
+      }
+
+      classScheduleRows = scheduleData || [];
+
+      const { data: attendData, error: attendError } = await supabase
+        .from('attendance')
+        .select('id, student_id, figure_id, figure_name, class_date, created_at')
+        .eq('student_id', authUser.id);
+
+      if (attendError) {
+        throw new Error('Could not load attendance records.');
+      }
+
+      attendanceRows = attendData || [];
+    }
+
+    async function boot() {
+      clearError();
+
+      if (!validHttpUrl(SUPABASE_URL) || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === 'YOUR_ANON_KEY') {
+        showError('Supabase is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY in dashboard.html.');
+        return;
+      }
+
+      supabase = window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
+
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        showError('Session check failed. Please sign in again.');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const session = sessionData?.session;
+      if (!session) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      authUser = session.user;
+
+      signoutBtn.addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = 'index.html';
+      });
+
+      try {
+        await loadData();
+
+        studentNameEl.textContent = profile.full_name;
+        studentLevelEl.textContent = profileLevelDisplay(profile.level);
+
+        sessionStorage.setItem(
+          'sbk_profile',
+          JSON.stringify({
+            name: profile.full_name,
+            level: profile.level,
+          })
+        );
+
+        selectedLevelSlug = profile.level;
+        renderDayTabs();
+        await renderCurriculum();
+        await renderSchedule();
+      } catch (err) {
+        showError(err.message || 'Could not initialize dashboard.');
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>
