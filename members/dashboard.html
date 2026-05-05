@@ -41,11 +41,18 @@
       padding: 0;
       position: relative;
       overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .container {
       width: min(1180px, calc(100% - 1.4rem));
       margin: 0 auto;
+    }
+
+    .dashboard-main {
+      flex: 1;
+      width: 100%;
     }
 
     .topbar {
@@ -69,11 +76,32 @@
     }
 
     .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.68rem;
+      min-width: 0;
+      margin: 0;
+    }
+
+    .brand-mark {
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #ff7d68);
+      color: #25170c;
+      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(242, 167, 76, 0.24);
+      flex: 0 0 auto;
+    }
+
+    .brand-name {
       margin: 0;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      line-height: 1;
-      letter-spacing: 0.02em;
+      font-size: clamp(1.26rem, 2.8vw, 1.72rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
       font-weight: 700;
     }
 
@@ -85,16 +113,16 @@
     }
 
     .dash-nav a {
-      min-height: 36px;
-      padding: 0.2rem 0.25rem;
+      min-height: 34px;
+      padding: 0.2rem 0.15rem;
       border-radius: 0;
       border: 0;
       text-decoration: none;
       color: var(--muted);
-      font-size: 0.76rem;
-      font-weight: 700;
+      font-size: 0.77rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
       background: transparent;
       transition: all 0.2s ease;
     }
@@ -175,14 +203,14 @@
 
     .section {
       margin-top: 1rem;
-      padding: 1.1rem;
+      padding: 1.15rem;
       border: 0;
       border-radius: var(--radius);
       background:
-        linear-gradient(145deg, rgba(242, 167, 76, 0.07), transparent 45%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
+        linear-gradient(145deg, rgba(242, 167, 76, 0.06), transparent 45%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.016)),
         var(--card);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
     }
 
     .section h2 {
@@ -253,7 +281,7 @@
       border: 0;
       border-radius: 14px;
       padding: 1rem;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.01));
     }
 
     .panel-head {
@@ -281,7 +309,7 @@
       padding: 0.65rem 0.8rem;
       border: 0;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.022);
       display: grid;
       gap: 0.35rem;
     }
@@ -335,14 +363,24 @@
     .figure-card {
       border: 0;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       overflow: hidden;
       position: relative;
     }
 
     .figure-card.is-current {
-      background: linear-gradient(160deg, rgba(242, 167, 76, 0.18), rgba(255, 255, 255, 0.03) 46%, rgba(255, 125, 104, 0.14));
-      box-shadow: 0 14px 28px rgba(242, 167, 76, 0.16);
+      background: linear-gradient(160deg, rgba(242, 167, 76, 0.22), rgba(255, 255, 255, 0.045) 46%, rgba(255, 125, 104, 0.2));
+      box-shadow: 0 16px 34px rgba(242, 167, 76, 0.24);
+    }
+
+    .figure-card.is-current::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--accent), #ff7d68);
     }
 
     .figure-head {
@@ -383,6 +421,7 @@
       text-transform: uppercase;
       color: #2b190b;
       background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      box-shadow: 0 10px 20px rgba(242, 167, 76, 0.3);
     }
 
     .figure-body {
@@ -534,7 +573,7 @@
     .class-card {
       border: 0;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       overflow: hidden;
     }
 
@@ -576,9 +615,10 @@
     }
 
     .class-chevron {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--muted);
-      font-weight: 800;
+      font-weight: 600;
+      line-height: 1;
     }
 
     .class-body {
@@ -586,7 +626,23 @@
       border-top: 0;
       display: none;
       gap: 0.6rem;
-      background: rgba(10, 10, 15, 0.35);
+      background: rgba(10, 10, 15, 0.24);
+    }
+
+    .dashboard-footer {
+      margin-top: 1.55rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 8, 12, 0.35);
+    }
+
+    .dashboard-footer .container {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.9rem;
+      color: var(--muted);
+      font-size: 0.84rem;
     }
 
     .class-card.open .class-body {
@@ -625,11 +681,20 @@
         margin-left: 0;
         padding: 0.8rem 0.9rem;
       }
+      .brand-name {
+        font-size: 1.12rem;
+      }
       .dash-nav {
         width: 100%;
       }
       .student-wrap {
         justify-content: flex-start;
+      }
+      .dashboard-footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 0.8rem 0;
       }
       .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .days-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -643,7 +708,10 @@
 <body>
   <div class="container">
     <header class="topbar">
-      <h1 class="brand">Salamanca SBK Dance Academy</h1>
+      <div class="brand" aria-label="Salamanca SBK Dance Academy">
+        <span class="brand-mark">S</span>
+        <h1 class="brand-name">Salamanca SBK Dance Academy</h1>
+      </div>
       <nav class="dash-nav" aria-label="Dashboard sections">
         <a href="#curriculum-section">Curriculum</a>
         <a href="#schedule-section">Schedule</a>
@@ -656,6 +724,8 @@
     </header>
 
     <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
+
+    <main class="dashboard-main">
 
     <section class="section" id="curriculum-section">
       <h2>Curriculum Journey</h2>
@@ -672,7 +742,16 @@
       <div id="day-tabs" class="days-tabs"></div>
       <div id="schedule-list" class="schedule-list"></div>
     </section>
+
+    </main>
   </div>
+
+  <footer class="dashboard-footer" role="contentinfo">
+    <div class="container">
+      <span>© <span id="dashboard-year"></span> Salamanca SBK Dance Academy</span>
+      <span>Keep dancing every week with clarity, flow, and connection.</span>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -1216,6 +1295,11 @@
     }
 
     boot();
+
+    const dashboardYear = document.getElementById('dashboard-year');
+    if (dashboardYear) {
+      dashboardYear.textContent = String(new Date().getFullYear());
+    }
   </script>
 </body>
 </html>
