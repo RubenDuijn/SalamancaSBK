@@ -967,6 +967,38 @@
       return styleEntryForSelected()?.levelSlug || 'beginner';
     }
 
+    function recurringSessionsForStyle(styleKey) {
+      const preferredDays = new Set(['Monday', 'Thursday']);
+      const rows = classScheduleRows
+        .filter((row) => styleKeyFromDanceStyle(row.dance_style) === styleKey)
+        .filter((row) => preferredDays.has(row.day))
+        .sort((a, b) => {
+          const dayDiff = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
+          if (dayDiff !== 0) return dayDiff;
+          return String(a.time).localeCompare(String(b.time));
+        });
+
+      const unique = [];
+      const seenDays = new Set();
+      for (const row of rows) {
+        if (!seenDays.has(row.day)) {
+          seenDays.add(row.day);
+          unique.push({ day: row.day, time: row.time });
+        }
+      }
+
+      if (!seenDays.has('Monday')) {
+        unique.unshift({ day: 'Monday', time: '18:00' });
+      }
+      if (!seenDays.has('Thursday')) {
+        unique.push({ day: 'Thursday', time: '18:30' });
+      }
+
+      return unique
+        .filter((s) => preferredDays.has(s.day))
+        .sort((a, b) => DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day));
+    }
+
     function weeklySessionsForFigure(styleKey, levelSlug, figureIndex) {
       return classScheduleRows
         .filter((row) => styleKeyFromDanceStyle(row.dance_style) === styleKey)
@@ -1032,6 +1064,28 @@
       if (delta < 0) {
         delta += 7;
       }
+      base.setDate(base.getDate() + delta);
+
+      const y = base.getFullYear();
+      const m = String(base.getMonth() + 1).padStart(2, '0');
+      const d = String(base.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function classDateForDayWithWeekOffset(dayName, weekOffset) {
+      const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
+      if (dayIndex < 0) {
+        return todaysDateISO();
+      }
+
+      const base = new Date();
+      const todayIdx = base.getDay();
+      let delta = dayIndex - todayIdx;
+      if (delta < 0) {
+        delta += 7;
+      }
+      const safeOffset = Math.max(0, Number(weekOffset) || 0);
+      delta += safeOffset * 7;
       base.setDate(base.getDate() + delta);
 
       const y = base.getFullYear();
@@ -1225,9 +1279,9 @@
       container.appendChild(wrap);
     }
 
-    async function buildSessionAttendButton(container, figureIdValue, figureName, sessionDay, sessionTime, enabled) {
+    async function buildSessionAttendButton(container, figureIdValue, figureName, sessionDay, sessionTime, enabled, weekOffset = 0) {
       const label = `${sessionDay} ${sessionTime}`;
-      const classDateISO = classDateForDay(sessionDay);
+      const classDateISO = classDateForDayWithWeekOffset(sessionDay, weekOffset);
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'attend-btn primary';
@@ -1319,7 +1373,7 @@
             </svg>
             <span class="arc-label">Figure ${currentFigure} / 6</span>
           </div>
-          <p class="progress-note">This week: recap figures 1-${recapEnd}, new today: figure ${currentFigure}</p>
+          <p class="progress-note">This week: recap previous figures, new today: figure ${currentFigure}</p>
         </div>
       `;
 
@@ -1374,7 +1428,8 @@
 
         const figureBody = card.querySelector('.figure-body');
         const attendEnabled = selectedLevelSlug === profile.level;
-        const salsaSessions = weeklySessionsForFigure('Salsa', selectedLevelSlug, figure.index);
+        const salsaSessions = recurringSessionsForStyle('Salsa');
+        const weekOffset = Math.max(0, figure.index - currentFigure);
 
         if (salsaSessions.length > 0) {
           const weeklyWrap = document.createElement('div');
@@ -1396,7 +1451,8 @@
               figure.name,
               session.day,
               session.time,
-              attendEnabled
+              attendEnabled,
+              weekOffset
             );
           }
 
