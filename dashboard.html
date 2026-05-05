@@ -1082,10 +1082,7 @@
       LEVELS.forEach((level) => {
         const button = document.createElement('button');
         const locked = !canAccessLevel(level.slug);
-        const suggested = !locked
-          && selectedStyleKey === 'Bachata'
-          && level.slug === 'intermediate_1'
-          && selectedLevelSlug !== level.slug;
+        const suggested = !locked && selectedLevelSlug !== level.slug;
         button.type = 'button';
         button.className = `tab${selectedLevelSlug === level.slug ? ' active' : ''}${locked ? ' locked' : ''}${suggested ? ' suggested' : ''}`;
         button.textContent = level.label;
@@ -1229,7 +1226,7 @@
     }
 
     async function buildSessionAttendButton(container, figureIdValue, figureName, sessionDay, sessionTime, enabled) {
-      const label = `every ${sessionDay} ${sessionTime}`;
+      const label = `${sessionDay} ${sessionTime}`;
       const classDateISO = classDateForDay(sessionDay);
       const btn = document.createElement('button');
       btn.type = 'button';
