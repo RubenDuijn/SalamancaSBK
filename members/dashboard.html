@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Salamanca SBK Members Dashboard</title>
-  <meta name="description" content="Salamanca SBK student dashboard" />
+  <title>Salamanca SBK Dance Academy Members Dashboard</title>
+  <meta name="description" content="Salamanca SBK Dance Academy student dashboard" />
   <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="theme-color" content="#130d11" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0a0a0f;
-      --bg-soft: #111119;
+      --bg: #130d11;
+      --bg-soft: #1a1117;
       --card: rgba(21, 18, 26, 0.78);
       --line: rgba(255, 255, 255, 0.13);
-      --text: #f6f1f5;
-      --muted: #d7cbd3;
-      --accent: #c4527a;
-      --accent-strong: #df658f;
-      --danger: #ff8ba7;
+      --text: #fff7ef;
+      --muted: #e6dacc;
+      --accent: #f2a74c;
+      --accent-strong: #ffd19a;
+      --danger: #ff7d68;
       --ok: #98e2b5;
       --radius: 18px;
       --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
@@ -32,11 +32,11 @@
 
     body {
       margin: 0;
-      font-family: "Outfit", "Segoe UI", sans-serif;
+      font-family: "Manrope", "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 12% 6%, rgba(196, 82, 122, 0.2), transparent 34%),
-        radial-gradient(circle at 88% 9%, rgba(196, 82, 122, 0.14), transparent 32%),
+        radial-gradient(circle at 12% 6%, rgba(242, 167, 76, 0.2), transparent 34%),
+        radial-gradient(circle at 88% 9%, rgba(255, 125, 104, 0.14), transparent 32%),
         radial-gradient(circle at 50% 100%, rgba(67, 23, 44, 0.48), transparent 52%),
         var(--bg);
       padding: 1.1rem;
@@ -79,7 +79,7 @@
 
     .brand {
       margin: 0;
-      font-family: "Cormorant Garamond", Georgia, serif;
+      font-family: "Playfair Display", Georgia, serif;
       font-size: clamp(1.5rem, 4vw, 2rem);
       line-height: 1;
       letter-spacing: 0.02em;
@@ -105,9 +105,9 @@
       align-items: center;
       padding: 0.28rem 0.6rem;
       border-radius: 999px;
-      border: 1px solid rgba(223, 101, 143, 0.35);
-      background: rgba(196, 82, 122, 0.2);
-      color: #ffd2e3;
+      border: 1px solid rgba(242, 167, 76, 0.35);
+      background: rgba(242, 167, 76, 0.2);
+      color: #ffd19a;
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.03em;
@@ -133,7 +133,7 @@
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #210f17;
+      color: #2b190b;
     }
 
     .btn-secondary {
@@ -143,9 +143,9 @@
     }
 
     .btn-danger {
-      background: rgba(255, 139, 167, 0.16);
-      border: 1px solid rgba(255, 139, 167, 0.35);
-      color: #ffd8e4;
+      background: rgba(255, 125, 104, 0.16);
+      border: 1px solid rgba(255, 125, 104, 0.35);
+      color: #ffd2b6;
     }
 
     .section {
@@ -154,7 +154,7 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background:
-        linear-gradient(145deg, rgba(196, 82, 122, 0.05), transparent 45%),
+        linear-gradient(145deg, rgba(242, 167, 76, 0.07), transparent 45%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
         var(--card);
       box-shadow: var(--shadow);
@@ -162,7 +162,7 @@
 
     .section h2 {
       margin: 0 0 0.35rem;
-      font-family: "Cormorant Garamond", Georgia, serif;
+      font-family: "Playfair Display", Georgia, serif;
       font-size: clamp(1.6rem, 4vw, 2rem);
       letter-spacing: 0.02em;
     }
@@ -195,9 +195,9 @@
     }
 
     .tab.active {
-      border-color: rgba(223, 101, 143, 0.52);
-      background: rgba(196, 82, 122, 0.26);
-      color: #ffe2ee;
+      border-color: rgba(242, 167, 76, 0.52);
+      background: rgba(242, 167, 76, 0.22);
+      color: #ffd19a;
     }
 
     .tab.locked {
@@ -270,7 +270,7 @@
     .arc-label {
       font-size: 0.83rem;
       font-weight: 700;
-      color: #ffe0ec;
+      color: #ffd19a;
     }
 
     .progress-note {
@@ -327,7 +327,7 @@
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #210f17;
+      color: #2b190b;
       background: linear-gradient(135deg, var(--accent), var(--accent-strong));
     }
 
@@ -427,7 +427,7 @@
     .attend-btn.primary {
       border: 0;
       background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #210f17;
+      color: #2b190b;
     }
 
     .attend-btn:disabled {
@@ -445,7 +445,7 @@
     }
 
     .locked-panel strong {
-      color: #f2d9e4;
+      color: #ffd19a;
       display: block;
       margin-bottom: 0.35rem;
     }
@@ -486,7 +486,7 @@
 
     .class-time {
       font-weight: 800;
-      color: #ffe1ec;
+      color: #ffd19a;
       font-size: 0.92rem;
     }
 
