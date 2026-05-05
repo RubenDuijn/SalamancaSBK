@@ -13,7 +13,7 @@
   --radius: 22px;
   --radius-sm: 16px;
   --font-body: "Manrope", "Segoe UI", Arial, sans-serif;
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Syne", "Segoe UI", Arial, sans-serif;
 }
 
 * {
@@ -38,9 +38,10 @@ body {
 
 h1,
 h2,
-.brand {
+.brand,
+h3 {
   font-family: var(--font-display);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
 }
 
 img {
@@ -85,7 +86,7 @@ a {
   align-items: center;
   gap: 0.7rem;
   font-size: 1.18rem;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .brand-mark {
@@ -714,10 +715,10 @@ a {
 }
 
 .shop-image {
-  min-height: 260px;
+  min-height: 360px;
   display: grid;
   place-items: center;
-  padding: 1rem;
+  padding: 1.2rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background:
@@ -729,7 +730,7 @@ a {
   width: 100%;
   max-width: 100%;
   height: 100%;
-  max-height: 320px;
+  max-height: 460px;
   object-fit: contain;
   object-position: center;
   display: block;
@@ -988,6 +989,7 @@ a {
 
   .shop-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
   }
 
   .about-grid {
@@ -1051,7 +1053,8 @@ a {
   }
 
   .shop-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem;
   }
 
   .footer-bottom {
