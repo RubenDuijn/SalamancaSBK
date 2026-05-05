@@ -99,8 +99,8 @@
     .brand-name {
       margin: 0;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(1.26rem, 2.8vw, 1.72rem);
-      line-height: 1.05;
+      font-size: 1.18rem;
+      line-height: 1;
       letter-spacing: -0.01em;
       font-weight: 700;
     }
@@ -108,11 +108,14 @@
     .dash-nav {
       display: inline-flex;
       align-items: center;
+      align-self: center;
       gap: 0.5rem;
       flex-wrap: wrap;
     }
 
     .dash-nav a {
+      display: inline-flex;
+      align-items: center;
       min-height: 34px;
       padding: 0.2rem 0.15rem;
       border-radius: 0;
@@ -123,6 +126,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.03em;
+      line-height: 1;
       background: transparent;
       transition: all 0.2s ease;
     }
@@ -538,7 +542,7 @@
 
     .attend-btn:disabled {
       opacity: 0.76;
-      cursor: not-allowed;
+      cursor: default;
     }
 
     .locked-panel {
@@ -568,6 +572,17 @@
       margin-top: 0.95rem;
       display: grid;
       gap: 0.65rem;
+    }
+
+    .schedule-tail {
+      margin-top: 0.9rem;
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.35;
     }
 
     .class-card {
@@ -682,7 +697,7 @@
         padding: 0.8rem 0.9rem;
       }
       .brand-name {
-        font-size: 1.12rem;
+        font-size: 1.06rem;
       }
       .dash-nav {
         width: 100%;
@@ -741,6 +756,7 @@
 
       <div id="day-tabs" class="days-tabs"></div>
       <div id="schedule-list" class="schedule-list"></div>
+      <div class="schedule-tail">Tip: choose a day and open a class card to keep focus. Your selection stays visible while you navigate.</div>
     </section>
 
     </main>
@@ -834,6 +850,7 @@
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const todayName = dayNames[new Date().getDay()];
     let selectedDay = DAY_ORDER.includes(todayName) ? todayName : 'Monday';
+    let openScheduleCardKey = null;
     const countCache = new Map();
 
     function showError(message) {
@@ -970,6 +987,40 @@
       }
     }
 
+    async function removeAttendanceRow(figureIdValue) {
+      const targetDate = todaysDateISO();
+      const entry = [...attendanceRows]
+        .reverse()
+        .find(
+          (row) => row.figure_id === figureIdValue
+            && row.class_date === targetDate
+            && row.student_id === authUser.id
+        );
+
+      if (!entry) {
+        return;
+      }
+
+      const { error } = await sbClient
+        .from('attendance')
+        .delete()
+        .eq('id', entry.id);
+
+      if (error) {
+        throw error;
+      }
+
+      const idx = attendanceRows.findIndex((row) => row.id === entry.id);
+      if (idx >= 0) {
+        attendanceRows.splice(idx, 1);
+      }
+
+      const cacheKey = `${figureIdValue}::${targetDate}`;
+      if (countCache.has(cacheKey) && typeof countCache.get(cacheKey) === 'number') {
+        countCache.set(cacheKey, Math.max(0, countCache.get(cacheKey) - 1));
+      }
+    }
+
     async function buildAttendRow(container, figureIdValue, figureName, enabled) {
       const wrap = document.createElement('div');
       wrap.className = 'attend-row';
@@ -986,35 +1037,56 @@
 
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `attend-btn${enabled ? ' primary' : ''}`;
+      btn.className = 'attend-btn';
 
-      const attendingSet = studentAttendingTodaySet();
-      const already = attendingSet.has(figureIdValue);
+      function syncAttendButton(state) {
+        const isAttending = state === 'attending';
+        const isBusy = state === 'saving' || state === 'undoing';
 
-      if (!enabled) {
-        btn.textContent = 'Review Only';
-        btn.disabled = true;
-      } else if (already) {
-        btn.textContent = '✓ Attending';
-        btn.disabled = true;
-      } else {
-        btn.textContent = 'Attend';
-        btn.disabled = false;
-        btn.addEventListener('click', async () => {
-          btn.disabled = true;
+        btn.classList.toggle('primary', enabled && !isAttending);
+        btn.disabled = !enabled || isBusy;
+
+        if (!enabled) {
+          btn.textContent = 'Review Only';
+          return;
+        }
+        if (state === 'saving') {
           btn.textContent = 'Saving...';
+          return;
+        }
+        if (state === 'undoing') {
+          btn.textContent = 'Undoing...';
+          return;
+        }
+
+        btn.textContent = isAttending ? '✓ Attending (Undo)' : 'Attend';
+      }
+
+      const alreadyAttending = studentAttendingTodaySet().has(figureIdValue);
+      syncAttendButton(alreadyAttending ? 'attending' : 'idle');
+
+      if (enabled) {
+        btn.addEventListener('click', async () => {
+          const currentlyAttending = studentAttendingTodaySet().has(figureIdValue);
+          syncAttendButton(currentlyAttending ? 'undoing' : 'saving');
           clearError();
+
           try {
-            await insertAttendanceRow(figureIdValue, figureName);
-            btn.textContent = '✓ Attending';
+            if (currentlyAttending) {
+              await removeAttendanceRow(figureIdValue);
+            } else {
+              await insertAttendanceRow(figureIdValue, figureName);
+            }
+
             const updated = await getAttendanceCountForFigure(figureIdValue);
             countPill.textContent = updated === null
               ? 'Attending today: unavailable'
               : `Attending today: ${updated}`;
+
+            syncAttendButton(currentlyAttending ? 'idle' : 'attending');
           } catch (err) {
-            btn.disabled = false;
-            btn.textContent = 'Attend';
-            showError(err.message || 'Could not register attendance.');
+            syncAttendButton(currentlyAttending ? 'attending' : 'idle');
+            showError(err.message || 'Could not update attendance.');
           }
         });
       }
@@ -1166,13 +1238,17 @@
         return;
       }
 
-      for (const row of rows) {
+      for (const [index, row] of rows.entries()) {
         const card = document.createElement('article');
         card.className = 'class-card';
 
         const figIdx = Math.max(1, Math.min(6, Number(row.current_figure_index) || 1));
         const figId = figureId(row.level_slug, figIdx);
         const figName = figureNameFromSchedule(row.level_slug, figIdx);
+        const cardKey = `${selectedDay}|${row.time}|${row.dance_style}|${row.level_slug}|${figIdx}`;
+        const shouldOpen = openScheduleCardKey
+          ? openScheduleCardKey === cardKey
+          : index === 0;
 
         card.innerHTML = `
           <button type="button" class="class-summary">
@@ -1181,25 +1257,50 @@
               <span class="class-style">${row.dance_style}</span>
               <span class="class-level">${levelTitle(row.level_slug)}</span>
             </span>
-            <span class="class-chevron">+</span>
+            <span class="class-chevron">${shouldOpen ? '−' : '+'}</span>
           </button>
           <div class="class-body">
             <p>Current figure this week: <strong>${figName}</strong> (Figure ${figIdx})</p>
           </div>
         `;
 
+        if (shouldOpen) {
+          card.classList.add('open');
+          openScheduleCardKey = cardKey;
+        }
+
         const summaryBtn = card.querySelector('.class-summary');
         const chevron = card.querySelector('.class-chevron');
         summaryBtn.addEventListener('click', () => {
           const isOpen = card.classList.toggle('open');
           chevron.textContent = isOpen ? '−' : '+';
+
+          if (isOpen) {
+            scheduleListEl.querySelectorAll('.class-card.open').forEach((other) => {
+              if (other !== card) {
+                other.classList.remove('open');
+                const symbol = other.querySelector('.class-chevron');
+                if (symbol) {
+                  symbol.textContent = '+';
+                }
+              }
+            });
+            openScheduleCardKey = cardKey;
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else if (openScheduleCardKey === cardKey) {
+            openScheduleCardKey = null;
+          }
         });
 
         const body = card.querySelector('.class-body');
         const attendEnabled = row.level_slug === profile.level;
         await buildAttendRow(body, figId, figName, attendEnabled);
-
         scheduleListEl.appendChild(card);
+      }
+
+      const openCard = scheduleListEl.querySelector('.class-card.open') || scheduleListEl.querySelector('.class-card');
+      if (openCard) {
+        openCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
 
