@@ -201,9 +201,31 @@
     }
 
     .tab.locked {
+      position: relative;
+      padding-right: 3.9rem;
       cursor: not-allowed;
       background: rgba(255, 255, 255, 0.03);
-      color: #a6949f;
+      color: #b8a899;
+      border-style: dashed;
+      opacity: 0.85;
+    }
+
+    .tab.locked::after {
+      content: "Locked";
+      position: absolute;
+      right: 0.48rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.64rem;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 800;
+      color: #ffd19a;
+      border: 1px solid rgba(242, 167, 76, 0.35);
+      background: rgba(242, 167, 76, 0.14);
+      border-radius: 999px;
+      padding: 0.22rem 0.4rem;
     }
 
     .level-panel {
@@ -437,9 +459,10 @@
 
     .locked-panel {
       padding: 1.4rem;
-      border: 1px dashed rgba(255, 255, 255, 0.26);
+      border: 1px dashed rgba(242, 167, 76, 0.33);
+      border-left: 4px solid rgba(242, 167, 76, 0.7);
       border-radius: 12px;
-      text-align: center;
+      text-align: left;
       color: var(--muted);
       background: rgba(255, 255, 255, 0.03);
     }
@@ -648,6 +671,20 @@
       advanced_3: buildFigures('advanced_3', ['La Memoria', 'El Maestro', 'La Improvisacion', 'El Cuadro', 'La Herencia', 'El Circulo Completo']),
     };
 
+    const FALLBACK_SCHEDULE = [
+      { day: 'Monday', time: '18:00', dance_style: 'Salsa Beginner', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Monday', time: '19:30', dance_style: 'Salsa Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Tuesday', time: '18:00', dance_style: 'Bachata Beginner', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Tuesday', time: '19:30', dance_style: 'Bachata Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Wednesday', time: '18:00', dance_style: 'Kizomba Beginner', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Wednesday', time: '19:30', dance_style: 'Kizomba Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Wednesday', time: '21:00', dance_style: 'Zouk Session', level_slug: 'intermediate_2', current_figure_index: 3 },
+      { day: 'Thursday', time: '18:30', dance_style: 'Salsa Partnerwork', level_slug: 'intermediate_2', current_figure_index: 3 },
+      { day: 'Thursday', time: '20:00', dance_style: 'Tango Session', level_slug: 'advanced_1', current_figure_index: 4 },
+      { day: 'Friday', time: '19:30', dance_style: 'Forro Session', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Friday', time: '21:00', dance_style: 'SBK Social Practice', level_slug: 'beginner', current_figure_index: 1 },
+    ];
+
     const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
     const errorBanner = document.getElementById('error-banner');
@@ -665,7 +702,9 @@
     let classScheduleRows = [];
     let attendanceRows = [];
     let selectedLevelSlug = 'beginner';
-    let selectedDay = 'Monday';
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const todayName = dayNames[new Date().getDay()];
+    let selectedDay = DAY_ORDER.includes(todayName) ? todayName : 'Monday';
     const countCache = new Map();
 
     function showError(message) {
@@ -767,7 +806,7 @@
         const locked = !canAccessLevel(level.slug);
         button.type = 'button';
         button.className = `tab${selectedLevelSlug === level.slug ? ' active' : ''}${locked ? ' locked' : ''}`;
-        button.textContent = locked ? `🔒 ${level.label}` : level.label;
+        button.textContent = level.label;
 
         if (!locked) {
           button.addEventListener('click', () => {
@@ -1055,6 +1094,9 @@
       }
 
       classScheduleRows = scheduleData || [];
+      if (classScheduleRows.length === 0) {
+        classScheduleRows = FALLBACK_SCHEDULE;
+      }
 
       const { data: attendData, error: attendError } = await sbClient
         .from('attendance')
