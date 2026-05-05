@@ -6,73 +6,29 @@
   <title>Salamanca SBK Members Login</title>
   <meta name="description" content="Salamanca SBK Members Area login" />
   <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="theme-color" content="#130d11" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
   <style>
-    :root {
-      --bg: #0a0a0f;
-      --bg-soft: #12121a;
-      --text: #f6f1f5;
-      --muted: #d7cbd3;
-      --line: rgba(255, 255, 255, 0.16);
-      --accent: #c4527a;
-      --accent-strong: #df658f;
-      --card: rgba(21, 18, 26, 0.78);
-      --danger: #ff8ba7;
-      --ok: #98e2b5;
-      --shadow: 0 26px 70px rgba(0, 0, 0, 0.46);
-      --radius: 20px;
+    .members-auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    * {
-      box-sizing: border-box;
+    .members-auth-main {
+      flex: 1;
     }
 
-    html,
-    body {
-      height: 100%;
+    .auth-wrap {
+      width: min(560px, 100%);
+      margin: 0 auto;
     }
 
-    body {
-      margin: 0;
-      font-family: "Outfit", "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 15% 8%, rgba(196, 82, 122, 0.2), transparent 36%),
-        radial-gradient(circle at 85% 12%, rgba(196, 82, 122, 0.14), transparent 34%),
-        radial-gradient(circle at 50% 100%, rgba(67, 23, 44, 0.55), transparent 55%),
-        var(--bg);
-      display: grid;
-      place-items: center;
-      overflow-x: hidden;
-      padding: 1.2rem;
-      position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.22;
-      mix-blend-mode: soft-light;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.22) 0.5px, transparent 0.5px);
-      background-size: 3px 3px;
-    }
-
-    .login-shell {
-      width: min(460px, 100%);
-      padding: 1.9rem;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(145deg, rgba(196, 82, 122, 0.07), transparent 36%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
-        var(--card);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
+    .auth-card {
+      padding: 1.35rem;
     }
 
     .wordmark {
@@ -86,11 +42,11 @@
 
     .subtitle {
       margin: 0.3rem 0 0;
-      color: var(--accent-strong);
-      font-weight: 600;
-      letter-spacing: 0.11em;
+      color: var(--accent-2);
+      font-weight: 800;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
     }
 
     .intro {
@@ -108,7 +64,7 @@
       display: block;
       margin-bottom: 0.35rem;
       font-size: 0.85rem;
-      color: #eadfe6;
+      color: var(--muted);
       letter-spacing: 0.02em;
     }
 
@@ -117,7 +73,7 @@
       min-height: 48px;
       border-radius: 12px;
       border: 1px solid var(--line);
-      background: rgba(10, 10, 15, 0.65);
+      background: rgba(0, 0, 0, 0.24);
       color: var(--text);
       padding: 0.7rem 0.85rem;
       font: inherit;
@@ -126,27 +82,13 @@
     }
 
     .field input:focus {
-      border-color: rgba(223, 101, 143, 0.95);
-      box-shadow: 0 0 0 3px rgba(196, 82, 122, 0.24);
+      border-color: rgba(242, 167, 76, 0.86);
+      box-shadow: 0 0 0 3px rgba(242, 167, 76, 0.2);
     }
 
     .submit-btn {
       width: 100%;
-      min-height: 50px;
       border: 0;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #210f17;
-      font: inherit;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      cursor: pointer;
-      transition: transform 0.18s ease, filter 0.18s ease;
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
     }
 
     .submit-btn:disabled {
@@ -164,11 +106,11 @@
     }
 
     .message.error {
-      color: var(--danger);
+      color: #ff8f88;
     }
 
     .message.success {
-      color: var(--ok);
+      color: #bce8c0;
     }
 
     .helper {
@@ -181,42 +123,111 @@
       display: inline-block;
       margin-top: 0.5rem;
       font-size: 0.88rem;
-      color: var(--accent-strong);
-      text-decoration: none;
-      font-weight: 600;
+      color: var(--accent-2);
+      font-weight: 700;
     }
 
-    .forgot-link:hover {
-      text-decoration: underline;
-      text-underline-offset: 2px;
+    @media (max-width: 760px) {
+      .auth-card {
+        padding: 1.1rem;
+      }
     }
   </style>
 </head>
-<body>
-  <main class="login-shell" aria-labelledby="members-title">
-    <h1 class="wordmark" id="members-title">Salamanca SBK</h1>
-    <p class="subtitle">Members Area</p>
-    <p class="intro">Sign in to access your curriculum and class schedule</p>
+<body id="top" class="members-auth-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="https://salamancasbk.es/">
+        <span class="brand-mark">S</span>
+        <span>Salamanca SBK</span>
+      </a>
 
-    <form id="login-form" novalidate>
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" autocomplete="email" required />
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav">
+        <a href="https://salamancasbk.es/#classes">Classes</a>
+        <a href="https://salamancasbk.es/#schedule">Schedule</a>
+        <a href="https://salamancasbk.es/#pricing">Pricing</a>
+        <a href="https://salamancasbk.es/#contact">Contact</a>
+        <a class="nav-members" href="https://members.salamancasbk.es">Members</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="members-auth-main">
+    <section class="section">
+      <div class="container auth-wrap">
+        <article class="hero-card auth-card" aria-labelledby="members-title">
+          <h1 class="wordmark" id="members-title">Salamanca SBK</h1>
+          <p class="subtitle">Members Area</p>
+          <p class="intro">Sign in to access your curriculum and class schedule</p>
+
+          <form id="login-form" novalidate>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" required />
+            </div>
+
+            <button class="button submit-btn" id="submit-btn" type="submit">Sign in</button>
+            <p id="message" class="message" role="alert" aria-live="polite"></p>
+
+            <p class="helper">No account yet? Your teacher will send you an invitation.</p>
+            <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
+          </form>
+        </article>
       </div>
-
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required />
-      </div>
-
-      <button class="submit-btn" id="submit-btn" type="submit">Sign in</button>
-      <p id="message" class="message" role="alert" aria-live="polite"></p>
-
-      <p class="helper">No account yet? Your teacher will send you an invitation.</p>
-      <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
-    </form>
+    </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>Salamanca SBK</h3>
+        <p>Salsa, Bachata, and Kizomba classes in Salamanca, with dedicated weekly sessions in Tango, Zouk, and Forró.</p>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:SalamancaSBK@gmail.com?subject=Salamanca%20SBK%20Class%20Enquiry">Email Salamanca SBK</a></li>
+          <li><a href="https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20would%20like%20more%20details%20about%20classes." target="_blank" rel="noopener noreferrer">WhatsApp Salamanca SBK</a></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Gran%20V%C3%ADa%2C%20Salamanca" target="_blank" rel="noopener noreferrer">Gran Vía, Salamanca</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Styles</h4>
+        <ul>
+          <li>Salsa Casino</li>
+          <li>Bachata Sensual &amp; Dominicana</li>
+          <li>Kizomba &amp; Tarraxinha</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="https://salamancasbk.es/#schedule">Weekly Schedule</a></li>
+          <li><a href="https://salamancasbk.es/#pricing">Pricing</a></li>
+          <li><a href="https://salamancasbk.es/#contact">Join the Community</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Salamanca SBK</span>
+      <span>Dance school in Salamanca</span>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   
@@ -333,7 +344,7 @@
           })
         );
 
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard.html';
       } catch (err) {
         setMessage('Unexpected error while signing in. Please try again.', 'error');
       } finally {
