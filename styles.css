@@ -426,6 +426,40 @@ a {
   padding: 1.15rem;
 }
 
+.quote-photo {
+  aspect-ratio: 16 / 10;
+  margin: -0.2rem -0.2rem 0.9rem;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(242, 167, 76, 0.18), rgba(255, 125, 104, 0.1));
+}
+
+.quote-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center 22%;
+  transform: scale(1.14);
+  transform-origin: center;
+}
+
+.quote-card--maria .quote-photo img {
+  object-position: 52% 24%;
+  transform: scale(1.18);
+}
+
+.quote-card--carlos .quote-photo img {
+  object-position: 50% 18%;
+  transform: scale(1.12);
+}
+
+.quote-card--laura .quote-photo img {
+  object-position: 88% 16%;
+  transform: scale(1.24);
+}
+
 .quote-card p {
   margin-top: 0;
 }
