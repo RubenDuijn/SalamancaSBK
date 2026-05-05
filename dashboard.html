@@ -69,11 +69,12 @@
       align-items: center;
       gap: 0.9rem;
       padding: 0.85rem 1rem;
-      border: 1px solid var(--line);
-      border-radius: 14px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
       background: rgba(10, 10, 15, 0.75);
       backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
+      box-shadow: none;
       margin-bottom: 1rem;
     }
 
@@ -95,22 +96,20 @@
 
     .dash-nav a {
       min-height: 36px;
-      padding: 0.45rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 0.2rem 0.25rem;
+      border-radius: 0;
+      border: 0;
       color: var(--muted);
       font-size: 0.76rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      background: rgba(255, 255, 255, 0.04);
+      background: transparent;
       transition: all 0.2s ease;
     }
 
     .dash-nav a:hover {
-      color: #2b190b;
-      border-color: rgba(255, 209, 154, 0.72);
-      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      color: var(--accent-strong);
     }
 
     .student-wrap {
@@ -178,13 +177,13 @@
     .section {
       margin-top: 1rem;
       padding: 1.1rem;
-      border: 1px solid var(--line);
+      border: 0;
       border-radius: var(--radius);
       background:
         linear-gradient(145deg, rgba(242, 167, 76, 0.07), transparent 45%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02)),
         var(--card);
-      box-shadow: var(--shadow);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
     }
 
     .section h2 {
@@ -237,35 +236,22 @@
 
     .tab.locked {
       position: relative;
-      padding-right: 3.9rem;
       cursor: not-allowed;
       background: rgba(255, 255, 255, 0.03);
-      color: #b8a899;
-      border-style: dashed;
+      color: #a79b90;
+      border-color: rgba(255, 255, 255, 0.12);
       opacity: 0.85;
     }
 
-    .tab.locked::after {
-      content: "Locked";
-      position: absolute;
-      right: 0.48rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.64rem;
-      line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      font-weight: 800;
-      color: #ffd19a;
-      border: 1px solid rgba(242, 167, 76, 0.35);
-      background: rgba(242, 167, 76, 0.14);
-      border-radius: 999px;
-      padding: 0.22rem 0.4rem;
+    .tab.locked:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #b9ada2;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .level-panel {
       margin-top: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 0;
       border-radius: 14px;
       padding: 1rem;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
@@ -294,7 +280,7 @@
     .progress-widget {
       min-width: 210px;
       padding: 0.65rem 0.8rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 0;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
       display: grid;
@@ -313,9 +299,8 @@
       height: 44px;
       border-radius: 50%;
       position: relative;
-      background: conic-gradient(var(--accent-strong) var(--progress), rgba(255, 255, 255, 0.13) var(--progress));
+      background: conic-gradient(from -90deg, var(--accent-strong) 0deg var(--progress), rgba(255, 255, 255, 0.13) var(--progress) 360deg);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      transform: rotate(-90deg);
     }
 
     .arc::after {
@@ -347,7 +332,7 @@
     }
 
     .figure-card {
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 0;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
       overflow: hidden;
@@ -417,7 +402,7 @@
     }
 
     .video-wrap {
-      border: 1px solid var(--line);
+      border: 0;
       border-radius: 10px;
       overflow: hidden;
       min-height: 170px;
@@ -538,7 +523,7 @@
     }
 
     .class-card {
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 0;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
       overflow: hidden;
@@ -611,9 +596,9 @@
 
     .error-banner {
       margin-top: 0.9rem;
-      border: 1px solid rgba(255, 139, 167, 0.4);
-      background: rgba(255, 139, 167, 0.13);
-      color: #ffd3e0;
+      border: 1px solid rgba(255, 125, 104, 0.45);
+      background: rgba(255, 125, 104, 0.14);
+      color: #ffd8bf;
       border-radius: 12px;
       padding: 0.65rem 0.8rem;
       font-size: 0.9rem;
@@ -655,7 +640,6 @@
       <nav class="dash-nav" aria-label="Dashboard sections">
         <a href="#curriculum-section">Curriculum</a>
         <a href="#schedule-section">Schedule</a>
-        <a href="/">Main Site</a>
       </nav>
       <div class="student-wrap">
         <span id="student-name" class="student-name">Loading...</span>
@@ -848,7 +832,7 @@
 
     function arcDegrees(current) {
       const clamped = Math.max(1, Math.min(6, current));
-      return Math.round((clamped / 6) * 360);
+      return Number(((clamped / 6) * 360).toFixed(3));
     }
 
     function currentFigureForLevel(levelSlug) {
