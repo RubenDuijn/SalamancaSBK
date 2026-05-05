@@ -59,8 +59,7 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      display: grid;
-      grid-template-columns: auto 1fr auto auto;
+      display: flex;
       align-items: center;
       gap: 0.9rem;
       width: 100vw;
@@ -81,6 +80,7 @@
       gap: 0.68rem;
       min-width: 0;
       margin: 0;
+      margin-right: auto;
     }
 
     .brand-mark {
@@ -105,42 +105,48 @@
       font-weight: 700;
     }
 
-    .dash-nav {
-      display: inline-flex;
-      align-items: center;
-      align-self: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .dash-nav a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 34px;
-      padding: 0.2rem 0.15rem;
-      border-radius: 0;
-      border: 0;
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 0.77rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      line-height: 1;
-      background: transparent;
-      transition: all 0.2s ease;
-    }
-
-    .dash-nav a:hover {
-      color: var(--accent-strong);
-    }
-
     .student-wrap {
       display: inline-flex;
       align-items: center;
       gap: 0.65rem;
       flex-wrap: wrap;
       justify-content: flex-end;
+    }
+
+    .style-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .style-tab {
+      min-height: 30px;
+      padding: 0.22rem 0.62rem;
+      border-radius: 999px;
+      border: 1px solid rgba(152, 226, 181, 0.32);
+      background: rgba(152, 226, 181, 0.08);
+      color: #b8efcf;
+      font: inherit;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .style-tab:hover {
+      border-color: rgba(184, 239, 207, 0.58);
+      background: rgba(152, 226, 181, 0.15);
+      color: #d8f8e5;
+    }
+
+    .style-tab.active {
+      border-color: rgba(184, 239, 207, 0.8);
+      background: linear-gradient(135deg, #84dba6, #b7f1cd);
+      color: #143222;
+      box-shadow: 0 8px 18px rgba(122, 214, 161, 0.22);
     }
 
     .student-name {
@@ -540,6 +546,12 @@
       color: #2b190b;
     }
 
+    .attend-btn.is-attending {
+      border: 0;
+      background: linear-gradient(135deg, #7fd8a1, #aaf0c2);
+      color: #153624;
+    }
+
     .attend-btn:disabled {
       opacity: 0.76;
       cursor: default;
@@ -572,17 +584,6 @@
       margin-top: 0.95rem;
       display: grid;
       gap: 0.65rem;
-    }
-
-    .schedule-tail {
-      margin-top: 0.9rem;
-      padding: 0.75rem 0.9rem;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.35;
     }
 
     .class-card {
@@ -645,7 +646,7 @@
     }
 
     .dashboard-footer {
-      margin-top: 1.55rem;
+      margin-top: 2.1rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(10, 8, 12, 0.35);
     }
@@ -690,17 +691,13 @@
 
     @media (max-width: 760px) {
       .topbar {
-        grid-template-columns: 1fr;
-        justify-items: start;
+        flex-wrap: wrap;
         width: 100%;
         margin-left: 0;
         padding: 0.8rem 0.9rem;
       }
       .brand-name {
         font-size: 1.06rem;
-      }
-      .dash-nav {
-        width: 100%;
       }
       .student-wrap {
         justify-content: flex-start;
@@ -727,12 +724,9 @@
         <span class="brand-mark">S</span>
         <h1 class="brand-name">Salamanca SBK Dance Academy</h1>
       </div>
-      <nav class="dash-nav" aria-label="Dashboard sections">
-        <a href="#curriculum-section">Curriculum</a>
-        <a href="#schedule-section">Schedule</a>
-      </nav>
       <div class="student-wrap">
         <span id="student-name" class="student-name">Loading...</span>
+        <div id="style-tabs" class="style-tabs" aria-label="Dance styles"></div>
         <span id="student-level" class="level-pill">Level</span>
       </div>
       <button id="signout-btn" class="btn btn-danger" type="button">Sign out</button>
@@ -756,7 +750,6 @@
 
       <div id="day-tabs" class="days-tabs"></div>
       <div id="schedule-list" class="schedule-list"></div>
-      <div class="schedule-tail">Tip: choose a day and open a class card to keep focus. Your selection stays visible while you navigate.</div>
     </section>
 
     </main>
@@ -835,6 +828,7 @@
     const errorBanner = document.getElementById('error-banner');
     const studentNameEl = document.getElementById('student-name');
     const studentLevelEl = document.getElementById('student-level');
+    const styleTabsEl = document.getElementById('style-tabs');
     const signoutBtn = document.getElementById('signout-btn');
     const levelTabsEl = document.getElementById('level-tabs');
     const levelPanelEl = document.getElementById('level-panel');
@@ -847,10 +841,11 @@
     let classScheduleRows = [];
     let attendanceRows = [];
     let selectedLevelSlug = 'beginner';
+    let selectedStyleKey = null;
+    let studentStyleEntries = [];
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const todayName = dayNames[new Date().getDay()];
     let selectedDay = DAY_ORDER.includes(todayName) ? todayName : 'Monday';
-    let openScheduleCardKey = null;
     const countCache = new Map();
 
     function showError(message) {
@@ -889,6 +884,58 @@
 
     function profileLevelDisplay(levelSlug) {
       return levelTitle(levelSlug);
+    }
+
+    function styleKeyFromDanceStyle(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return 'General';
+      const firstToken = raw.split(/\s+/)[0];
+      return firstToken.charAt(0).toUpperCase() + firstToken.slice(1).toLowerCase();
+    }
+
+    function deriveStudentStyleEntries() {
+      const byStyle = new Map();
+
+      classScheduleRows.forEach((row) => {
+        const styleKey = styleKeyFromDanceStyle(row.dance_style);
+        const levelSlug = row.level_slug || profile.level;
+        const current = byStyle.get(styleKey);
+
+        if (!current || LEVEL_INDEX[levelSlug] > LEVEL_INDEX[current.levelSlug]) {
+          byStyle.set(styleKey, { key: styleKey, label: styleKey, levelSlug });
+        }
+      });
+
+      return Array.from(byStyle.values()).sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    function styleEntryForSelected() {
+      return studentStyleEntries.find((entry) => entry.key === selectedStyleKey) || null;
+    }
+
+    function syncLevelPillForStyle() {
+      const selectedStyle = styleEntryForSelected();
+      const resolvedLevel = selectedStyle?.levelSlug || profile.level;
+      studentLevelEl.textContent = profileLevelDisplay(resolvedLevel);
+    }
+
+    function renderStyleTabs() {
+      if (!styleTabsEl) return;
+      styleTabsEl.innerHTML = '';
+
+      studentStyleEntries.forEach((entry) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `style-tab${entry.key === selectedStyleKey ? ' active' : ''}`;
+        button.textContent = entry.label;
+        button.addEventListener('click', () => {
+          selectedStyleKey = entry.key;
+          renderStyleTabs();
+          syncLevelPillForStyle();
+          renderSchedule();
+        });
+        styleTabsEl.appendChild(button);
+      });
     }
 
     function figureId(levelSlug, index) {
@@ -1044,22 +1091,14 @@
         const isBusy = state === 'saving' || state === 'undoing';
 
         btn.classList.toggle('primary', enabled && !isAttending);
+        btn.classList.toggle('is-attending', enabled && isAttending);
         btn.disabled = !enabled || isBusy;
 
         if (!enabled) {
           btn.textContent = 'Review Only';
           return;
         }
-        if (state === 'saving') {
-          btn.textContent = 'Saving...';
-          return;
-        }
-        if (state === 'undoing') {
-          btn.textContent = 'Undoing...';
-          return;
-        }
-
-        btn.textContent = isAttending ? '✓ Attending (Undo)' : 'Attend';
+        btn.textContent = isAttending ? 'Attending' : 'Attend';
       }
 
       const alreadyAttending = studentAttendingTodaySet().has(figureIdValue);
@@ -1068,7 +1107,7 @@
       if (enabled) {
         btn.addEventListener('click', async () => {
           const currentlyAttending = studentAttendingTodaySet().has(figureIdValue);
-          syncAttendButton(currentlyAttending ? 'undoing' : 'saving');
+          btn.disabled = true;
           clearError();
 
           try {
@@ -1231,10 +1270,11 @@
       scheduleListEl.innerHTML = '';
       const rows = classScheduleRows
         .filter((r) => r.day === selectedDay)
+        .filter((r) => !selectedStyleKey || styleKeyFromDanceStyle(r.dance_style) === selectedStyleKey)
         .sort((a, b) => String(a.time).localeCompare(String(b.time)));
 
       if (rows.length === 0) {
-        scheduleListEl.innerHTML = '<p class="section-sub">No classes scheduled for this day yet.</p>';
+        scheduleListEl.innerHTML = `<p class="section-sub">No ${selectedStyleKey || ''} classes scheduled for this day yet.</p>`;
         return;
       }
 
@@ -1245,10 +1285,7 @@
         const figIdx = Math.max(1, Math.min(6, Number(row.current_figure_index) || 1));
         const figId = figureId(row.level_slug, figIdx);
         const figName = figureNameFromSchedule(row.level_slug, figIdx);
-        const cardKey = `${selectedDay}|${row.time}|${row.dance_style}|${row.level_slug}|${figIdx}`;
-        const shouldOpen = openScheduleCardKey
-          ? openScheduleCardKey === cardKey
-          : index === 0;
+        const shouldOpen = index === 0;
 
         card.innerHTML = `
           <button type="button" class="class-summary">
@@ -1266,7 +1303,6 @@
 
         if (shouldOpen) {
           card.classList.add('open');
-          openScheduleCardKey = cardKey;
         }
 
         const summaryBtn = card.querySelector('.class-summary');
@@ -1274,33 +1310,12 @@
         summaryBtn.addEventListener('click', () => {
           const isOpen = card.classList.toggle('open');
           chevron.textContent = isOpen ? '−' : '+';
-
-          if (isOpen) {
-            scheduleListEl.querySelectorAll('.class-card.open').forEach((other) => {
-              if (other !== card) {
-                other.classList.remove('open');
-                const symbol = other.querySelector('.class-chevron');
-                if (symbol) {
-                  symbol.textContent = '+';
-                }
-              }
-            });
-            openScheduleCardKey = cardKey;
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          } else if (openScheduleCardKey === cardKey) {
-            openScheduleCardKey = null;
-          }
         });
 
         const body = card.querySelector('.class-body');
         const attendEnabled = row.level_slug === profile.level;
         await buildAttendRow(body, figId, figName, attendEnabled);
         scheduleListEl.appendChild(card);
-      }
-
-      const openCard = scheduleListEl.querySelector('.class-card.open') || scheduleListEl.querySelector('.class-card');
-      if (openCard) {
-        openCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
 
@@ -1375,8 +1390,12 @@
       try {
         await loadData();
 
+        studentStyleEntries = deriveStudentStyleEntries();
+        const salsaEntry = studentStyleEntries.find((entry) => entry.key === 'Salsa');
+        selectedStyleKey = (salsaEntry || studentStyleEntries[0])?.key || null;
+
         studentNameEl.textContent = profile.full_name;
-        studentLevelEl.textContent = profileLevelDisplay(profile.level);
+        syncLevelPillForStyle();
 
         sessionStorage.setItem(
           'sbk_profile',
@@ -1387,6 +1406,7 @@
         );
 
         selectedLevelSlug = profile.level;
+  renderStyleTabs();
         renderDayTabs();
         await renderCurriculum();
         await renderSchedule();
