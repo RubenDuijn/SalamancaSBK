@@ -19,6 +19,7 @@
       --text: #fff7ef;
       --muted: #e6dacc;
       --accent: #f2a74c;
+      --accent-3: #ff7d68;
       --accent-strong: #ffd19a;
       --danger: #ff7d68;
       --ok: #98e2b5;
@@ -37,6 +38,8 @@
       background:
         radial-gradient(circle at 8% -10%, rgba(242, 167, 76, 0.08), transparent 34%),
         radial-gradient(circle at 92% 10%, rgba(255, 125, 104, 0.06), transparent 30%),
+        linear-gradient(135deg, rgba(19, 13, 17, 0.74), rgba(19, 12, 16, 0.9)),
+        url('https://salamancasbk.es/images/Salamanca%20SBK.PNG') center top / cover no-repeat fixed,
         linear-gradient(180deg, var(--bg), #0d090d 42%, #130c10);
       padding: 0;
       position: relative;
@@ -46,7 +49,7 @@
     }
 
     .container {
-      width: min(1180px, calc(100% - 1.4rem));
+      width: min(1120px, calc(100% - 1.4rem));
       margin: 0 auto;
     }
 
@@ -62,9 +65,10 @@
       display: flex;
       align-items: center;
       gap: 0.9rem;
+      min-height: 76px;
       width: 100vw;
       margin-left: calc(50% - 50vw);
-      padding: 0.85rem max(0.9rem, calc((100vw - 1180px) / 2));
+      padding: 0 max(0.7rem, calc((100vw - 1120px) / 2));
       border: 0;
       border-bottom: 1px solid var(--line);
       border-radius: 0;
@@ -89,7 +93,7 @@
       display: grid;
       place-items: center;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), #ff7d68);
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
       color: #25170c;
       font-weight: 800;
       box-shadow: 0 12px 28px rgba(242, 167, 76, 0.24);
