@@ -13,7 +13,7 @@
   --radius: 22px;
   --radius-sm: 16px;
   --font-body: "Manrope", "Segoe UI", Arial, sans-serif;
-  --font-display: "Syne", "Segoe UI", Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
 }
 
 * {
@@ -41,7 +41,7 @@ h2,
 .brand,
 h3 {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 img {
@@ -694,7 +694,14 @@ a {
 
 .shop-grid {
   display: grid;
-  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .shop-card {
@@ -715,10 +722,11 @@ a {
 }
 
 .shop-image {
-  min-height: 360px;
+  aspect-ratio: 3 / 2;
   display: grid;
   place-items: center;
-  padding: 1.2rem;
+  overflow: hidden;
+  padding: 0.6rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background:
@@ -728,9 +736,7 @@ a {
 
 .shop-image img {
   width: 100%;
-  max-width: 100%;
   height: 100%;
-  max-height: 460px;
   object-fit: contain;
   object-position: center;
   display: block;
