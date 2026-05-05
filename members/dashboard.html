@@ -15,7 +15,7 @@
       --bg: #130d11;
       --bg-soft: #1a1117;
       --card: rgba(21, 18, 26, 0.78);
-      --line: rgba(255, 255, 255, 0.13);
+      --line: rgba(255, 255, 255, 0.09);
       --text: #fff7ef;
       --muted: #e6dacc;
       --accent: #f2a74c;
@@ -65,7 +65,7 @@
       top: 0;
       z-index: 20;
       display: grid;
-      grid-template-columns: 1fr auto auto;
+      grid-template-columns: auto 1fr auto auto;
       align-items: center;
       gap: 0.9rem;
       padding: 0.85rem 1rem;
@@ -84,6 +84,33 @@
       line-height: 1;
       letter-spacing: 0.02em;
       font-weight: 700;
+    }
+
+    .dash-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .dash-nav a {
+      min-height: 36px;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.2s ease;
+    }
+
+    .dash-nav a:hover {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.72);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
     }
 
     .student-wrap {
@@ -177,27 +204,35 @@
       margin-top: 1rem;
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 0.45rem;
+      gap: 0.55rem;
     }
 
     .tab {
       min-height: 42px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.04);
-      color: var(--text);
+      color: var(--muted);
       font: inherit;
       font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.02em;
       padding: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .tab:hover {
+      border-color: rgba(255, 209, 154, 0.35);
+      color: #fff1df;
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .tab.active {
-      border-color: rgba(242, 167, 76, 0.52);
-      background: rgba(242, 167, 76, 0.22);
-      color: #ffd19a;
+      border-color: rgba(255, 209, 154, 0.7);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      color: #2b190b;
+      box-shadow: 0 10px 24px rgba(242, 167, 76, 0.18);
     }
 
     .tab.locked {
@@ -230,10 +265,10 @@
 
     .level-panel {
       margin-top: 1rem;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
       padding: 1rem;
-      background: rgba(10, 10, 15, 0.35);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
     }
 
     .panel-head {
@@ -259,9 +294,9 @@
     .progress-widget {
       min-width: 210px;
       padding: 0.65rem 0.8rem;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       display: grid;
       gap: 0.35rem;
     }
@@ -273,12 +308,14 @@
     }
 
     .arc {
+      --progress: 0deg;
       width: 44px;
       height: 44px;
       border-radius: 50%;
       position: relative;
-      background: conic-gradient(var(--accent-strong) 0deg, rgba(255, 255, 255, 0.13) 0deg);
+      background: conic-gradient(var(--accent-strong) var(--progress), rgba(255, 255, 255, 0.13) var(--progress));
       border: 1px solid rgba(255, 255, 255, 0.15);
+      transform: rotate(-90deg);
     }
 
     .arc::after {
@@ -287,6 +324,7 @@
       inset: 6px;
       border-radius: 50%;
       background: #111019;
+      border: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .arc-label {
@@ -309,9 +347,9 @@
     }
 
     .figure-card {
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       overflow: hidden;
       position: relative;
     }
@@ -320,7 +358,7 @@
       display: grid;
       gap: 0.25rem;
       padding: 0.8rem;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .figure-kicker {
@@ -409,9 +447,22 @@
     }
 
     .video-lock-icon {
-      font-size: 1.35rem;
-      margin-bottom: 0.35rem;
-      display: block;
+      display: none;
+    }
+
+    .video-lock-label {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.28rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(242, 167, 76, 0.35);
+      background: rgba(242, 167, 76, 0.14);
+      color: #ffd19a;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
     }
 
     .attend-row {
@@ -426,7 +477,7 @@
       align-items: center;
       padding: 0.2rem 0.5rem;
       border-radius: 999px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--muted);
       font-size: 0.74rem;
       font-weight: 700;
@@ -487,9 +538,9 @@
     }
 
     .class-card {
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       overflow: hidden;
     }
 
@@ -582,6 +633,9 @@
         grid-template-columns: 1fr;
         justify-items: start;
       }
+      .dash-nav {
+        width: 100%;
+      }
       .student-wrap {
         justify-content: flex-start;
       }
@@ -598,6 +652,11 @@
   <div class="container">
     <header class="topbar">
       <h1 class="brand">Salamanca SBK Dance Academy</h1>
+      <nav class="dash-nav" aria-label="Dashboard sections">
+        <a href="#curriculum-section">Curriculum</a>
+        <a href="#schedule-section">Schedule</a>
+        <a href="/">Main Site</a>
+      </nav>
       <div class="student-wrap">
         <span id="student-name" class="student-name">Loading...</span>
         <span id="student-level" class="level-pill">Level</span>
@@ -631,12 +690,12 @@
 
     const LEVELS = [
       { slug: 'beginner', label: 'Beginner', subtitle: 'Your foundation and flow start here.' },
-      { slug: 'intermediate_1', label: 'Int 1', subtitle: 'Connection and cleaner transitions.' },
-      { slug: 'intermediate_2', label: 'Int 2', subtitle: 'More precision, contrast, and timing.' },
-      { slug: 'intermediate_3', label: 'Int 3', subtitle: 'Complex combinations with confidence.' },
-      { slug: 'advanced_1', label: 'Adv 1', subtitle: 'Dynamic control and musical interpretation.' },
-      { slug: 'advanced_2', label: 'Adv 2', subtitle: 'Layered movement and partner sensitivity.' },
-      { slug: 'advanced_3', label: 'Adv 3', subtitle: 'Master level integration and improvisation.' },
+      { slug: 'intermediate_1', label: 'Intermediate 1', subtitle: 'Connection and cleaner transitions.' },
+      { slug: 'intermediate_2', label: 'Intermediate 2', subtitle: 'More precision, contrast, and timing.' },
+      { slug: 'intermediate_3', label: 'Intermediate 3', subtitle: 'Complex combinations with confidence.' },
+      { slug: 'advanced_1', label: 'Advanced 1', subtitle: 'Dynamic control and musical interpretation.' },
+      { slug: 'advanced_2', label: 'Advanced 2', subtitle: 'Layered movement and partner sensitivity.' },
+      { slug: 'advanced_3', label: 'Advanced 3', subtitle: 'Master level integration and improvisation.' },
     ];
 
     const LEVEL_INDEX = Object.fromEntries(LEVELS.map((l, i) => [l.slug, i]));
@@ -742,7 +801,7 @@
     }
 
     function profileLevelDisplay(levelSlug) {
-      return levelTitle(levelSlug).replace('Intermediate', 'Int').replace('Advanced', 'Adv');
+      return levelTitle(levelSlug);
     }
 
     function figureId(levelSlug, index) {
@@ -929,7 +988,7 @@
         </div>
         <div class="progress-widget">
           <div class="progress-top">
-            <div class="arc" style="background: conic-gradient(var(--accent-strong) ${deg}deg, rgba(255, 255, 255, 0.13) ${deg}deg);"></div>
+            <div class="arc" style="--progress:${deg}deg;"></div>
             <span class="arc-label">Figure ${currentFigure} / 6</span>
           </div>
           <p class="progress-note">This week: recap figures 1-${recapEnd}, new today: figure ${currentFigure}</p>
@@ -977,7 +1036,7 @@
           videoWrap.innerHTML = `
             <div class="video-locked">
               <div>
-                <span class="video-lock-icon">🔒</span>
+                <span class="video-lock-label">Preview Locked</span>
                 Unlocks at ${levelTitle(selectedLevelSlug)}
               </div>
             </div>

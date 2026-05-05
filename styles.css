@@ -583,6 +583,14 @@ a {
 
 .schedule-member-button {
   margin-top: 0.7rem;
+  width: fit-content;
+  font-weight: 800;
+  box-shadow: 0 12px 26px rgba(242, 167, 76, 0.24);
+}
+
+.schedule-member-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
 }
 
 .schedule-poster {
