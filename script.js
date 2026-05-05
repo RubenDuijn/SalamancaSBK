@@ -90,7 +90,7 @@ function renderScheduleCards(dayData) {
       <div class="schedule-card-body">
         <p>This week's focus: coming soon</p>
         <p>Full video curriculum available in the Members Area</p>
-        <a class="button secondary schedule-member-button" href="https://members.salamancasbk.es" target="_blank" rel="noopener noreferrer">Open Members Area →</a>
+        <a class="button secondary schedule-member-button" href="https://salamancasbk.es/members/" target="_blank" rel="noopener noreferrer">Open Members Area →</a>
       </div>
     `;
 
