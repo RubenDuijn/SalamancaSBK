@@ -78,6 +78,7 @@ function renderScheduleCards(dayData) {
       card.open = true;
     }
 
+    const isFirstOpen = index === 0;
     card.innerHTML = `
       <summary>
         <div>
@@ -85,7 +86,7 @@ function renderScheduleCards(dayData) {
           <p class="schedule-name">${entry.title}</p>
           <small class="schedule-focus">${dayData.focus}</small>
         </div>
-        <span class="schedule-expand">+</span>
+        <span class="schedule-expand">${isFirstOpen ? '−' : '+'}</span>
       </summary>
       <div class="schedule-card-body">
         <p>This week's focus: coming soon</p>
@@ -93,6 +94,10 @@ function renderScheduleCards(dayData) {
         <a class="button secondary schedule-member-button" href="https://salamancasbk.es/members/" target="_blank" rel="noopener noreferrer">Open Members Area →</a>
       </div>
     `;
+
+    card.addEventListener('toggle', () => {
+      card.querySelector('.schedule-expand').textContent = card.open ? '−' : '+';
+    });
 
     dayPanelEl.appendChild(card);
   });
@@ -116,9 +121,11 @@ function renderScheduleTabs(activeDay) {
 }
 
 if (dayTabsEl && dayPanelEl) {
-  const initialDay = scheduleData[0];
-  renderScheduleTabs(initialDay.day);
-  renderScheduleCards(initialDay);
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const todayName = dayNames[new Date().getDay()];
+  const todayData = scheduleData.find(d => d.day === todayName) || scheduleData[0];
+  renderScheduleTabs(todayData.day);
+  renderScheduleCards(todayData);
 }
 
 const SHOP_WHATSAPP_NUMBER = '34659376099';
