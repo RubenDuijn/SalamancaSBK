@@ -89,9 +89,7 @@ function renderScheduleCards(dayData) {
         <span class="schedule-expand">${isFirstOpen ? '−' : '+'}</span>
       </summary>
       <div class="schedule-card-body">
-        <p>This week's focus: coming soon</p>
-        <p>Full video curriculum available in the Members Area</p>
-        <a class="button schedule-member-button" href="https://salamancasbk.es/members/" target="_blank" rel="noopener noreferrer">Reserve Your Spot →</a>
+        <a class="button schedule-member-button" href="https://salamancasbk.es/members/" target="_blank" rel="noopener noreferrer">Watch Video & Reserve Your Spot →</a>
       </div>
     `;
 
