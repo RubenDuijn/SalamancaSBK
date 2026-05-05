@@ -120,3 +120,150 @@ if (dayTabsEl && dayPanelEl) {
   renderScheduleTabs(initialDay.day);
   renderScheduleCards(initialDay);
 }
+
+const SHOP_WHATSAPP_NUMBER = '34659376099';
+const shopCards = document.querySelectorAll('.shop-card');
+let shopCustomerProfilePromise = null;
+
+function getKnownSupabaseClient() {
+  return window.supabaseClient || window.sbClient || window.membersSupabaseClient || null;
+}
+
+async function getShopCustomerProfile() {
+  if (shopCustomerProfilePromise) {
+    return shopCustomerProfilePromise;
+  }
+
+  shopCustomerProfilePromise = (async () => {
+    try {
+      const cachedProfile = sessionStorage.getItem('sbk_profile');
+      if (cachedProfile) {
+        const parsed = JSON.parse(cachedProfile);
+        if (parsed?.name) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      // Ignore cache parsing issues and continue with runtime lookup.
+    }
+
+    const client = getKnownSupabaseClient();
+    if (!client || typeof client.auth?.getSession !== 'function') {
+      return null;
+    }
+
+    try {
+      const { data: sessionData, error: sessionError } = await client.auth.getSession();
+      if (sessionError || !sessionData?.session?.user?.id) {
+        return null;
+      }
+
+      const { data: profile, error: profileError } = await client
+        .from('profiles')
+        .select('full_name, level')
+        .eq('id', sessionData.session.user.id)
+        .single();
+
+      if (profileError || !profile?.full_name) {
+        return null;
+      }
+
+      const resolvedProfile = { name: profile.full_name, level: profile.level };
+      sessionStorage.setItem('sbk_profile', JSON.stringify(resolvedProfile));
+      return resolvedProfile;
+    } catch (error) {
+      return null;
+    }
+  })();
+
+  return shopCustomerProfilePromise;
+}
+
+function getSelectedColour(card) {
+  return card.querySelector('.swatch.is-selected')?.dataset.colour || '';
+}
+
+function setSelectedColour(card, swatch) {
+  card.querySelectorAll('.swatch').forEach((button) => {
+    const selected = button === swatch;
+    button.classList.toggle('is-selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+}
+
+function getQuantity(card) {
+  return Number(card.querySelector('.qty-value')?.textContent || '1');
+}
+
+function setQuantity(card, quantity) {
+  const value = Math.max(1, quantity);
+  const qtyValue = card.querySelector('.qty-value');
+  if (qtyValue) {
+    qtyValue.textContent = String(value);
+  }
+}
+
+function buildShopMessage({ productName, size, colour, quantity, customerName }) {
+  return [
+    "Hi, I'd like to order from Salamanca SBK Shop:",
+    `Product: ${productName}`,
+    `Size: ${size}`,
+    `Colour: ${colour}`,
+    `Quantity: ${quantity}`,
+    `Name: ${customerName}`,
+  ].join('\n');
+}
+
+shopCards.forEach((card) => {
+  const productName = card.dataset.productName || 'Salamanca SBK Shop Item';
+  const sizeSelect = card.querySelector('.shop-size');
+  const minusBtn = card.querySelector('.qty-minus');
+  const plusBtn = card.querySelector('.qty-plus');
+  const nameField = card.querySelector('.shop-name-field');
+  const nameInput = card.querySelector('.shop-name-input');
+  const orderButton = card.querySelector('.shop-order-btn');
+
+  card.querySelectorAll('.swatch').forEach((swatch) => {
+    swatch.addEventListener('click', () => setSelectedColour(card, swatch));
+  });
+
+  minusBtn?.addEventListener('click', () => {
+    setQuantity(card, getQuantity(card) - 1);
+  });
+
+  plusBtn?.addEventListener('click', () => {
+    setQuantity(card, getQuantity(card) + 1);
+  });
+
+  orderButton?.addEventListener('click', async () => {
+    const profile = await getShopCustomerProfile();
+    let customerName = profile?.name || '';
+
+    if (!customerName) {
+      if (nameField) {
+        nameField.hidden = false;
+      }
+      customerName = nameInput?.value.trim() || '';
+      if (!customerName) {
+        nameInput?.focus();
+        return;
+      }
+    } else if (nameField) {
+      nameField.hidden = true;
+      if (nameInput) {
+        nameInput.value = customerName;
+      }
+    }
+
+    const message = buildShopMessage({
+      productName,
+      size: sizeSelect?.value || 'M',
+      colour: getSelectedColour(card),
+      quantity: getQuantity(card),
+      customerName,
+    });
+
+    const url = `https://wa.me/${SHOP_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener');
+  });
+});
