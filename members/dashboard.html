@@ -149,6 +149,14 @@
       box-shadow: 0 8px 18px rgba(122, 214, 161, 0.22);
     }
 
+    .style-tab:disabled {
+      border-color: rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      color: #9b9288;
+      cursor: default;
+      box-shadow: none;
+    }
+
     .student-name {
       font-weight: 600;
       color: #f7e8f0;
@@ -445,6 +453,30 @@
       color: var(--muted);
       font-size: 0.88rem;
       line-height: 1.4;
+    }
+
+    .weekly-attend {
+      display: grid;
+      gap: 0.45rem;
+      padding: 0.55rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .weekly-attend-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .weekly-attend-buttons {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
     }
 
     .tips {
@@ -744,14 +776,6 @@
       <div id="level-panel" class="level-panel"></div>
     </section>
 
-    <section class="section" id="schedule-section">
-      <h2>Class Schedule</h2>
-      <p class="section-sub">Your weekly academy timetable with the current focus for each day.</p>
-
-      <div id="day-tabs" class="days-tabs"></div>
-      <div id="schedule-list" class="schedule-list"></div>
-    </section>
-
     </main>
   </div>
 
@@ -824,6 +848,11 @@
     ];
 
     const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const STYLE_ORDER = ['Salsa', 'Bachata', 'Kizomba', 'Tango', 'Zouk', 'Forró'];
+    const DEMO_STUDENT_STYLE_LEVELS = {
+      Salsa: 'beginner',
+      Bachata: 'intermediate_1',
+    };
 
     const errorBanner = document.getElementById('error-banner');
     const studentNameEl = document.getElementById('student-name');
@@ -832,8 +861,6 @@
     const signoutBtn = document.getElementById('signout-btn');
     const levelTabsEl = document.getElementById('level-tabs');
     const levelPanelEl = document.getElementById('level-panel');
-    const dayTabsEl = document.getElementById('day-tabs');
-    const scheduleListEl = document.getElementById('schedule-list');
 
     let sbClient = null;
     let authUser = null;
@@ -843,9 +870,6 @@
     let selectedLevelSlug = 'beginner';
     let selectedStyleKey = null;
     let studentStyleEntries = [];
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const todayName = dayNames[new Date().getDay()];
-    let selectedDay = DAY_ORDER.includes(todayName) ? todayName : 'Monday';
     const countCache = new Map();
 
     function showError(message) {
@@ -890,27 +914,43 @@
       const raw = String(value || '').trim();
       if (!raw) return 'General';
       const firstToken = raw.split(/\s+/)[0];
-      return firstToken.charAt(0).toUpperCase() + firstToken.slice(1).toLowerCase();
+      const normalized = firstToken.charAt(0).toUpperCase() + firstToken.slice(1).toLowerCase();
+      if (normalized === 'Sbk') {
+        return 'Salsa';
+      }
+      return normalized;
     }
 
     function deriveStudentStyleEntries() {
-      const byStyle = new Map();
-
-      classScheduleRows.forEach((row) => {
-        const styleKey = styleKeyFromDanceStyle(row.dance_style);
-        const levelSlug = row.level_slug || profile.level;
-        const current = byStyle.get(styleKey);
-
-        if (!current || LEVEL_INDEX[levelSlug] > LEVEL_INDEX[current.levelSlug]) {
-          byStyle.set(styleKey, { key: styleKey, label: styleKey, levelSlug });
-        }
+      return STYLE_ORDER.map((style) => {
+        const levelSlug = DEMO_STUDENT_STYLE_LEVELS[style] || null;
+        return {
+          key: style,
+          label: style,
+          levelSlug,
+          enabled: Boolean(levelSlug),
+        };
       });
-
-      return Array.from(byStyle.values()).sort((a, b) => a.label.localeCompare(b.label));
     }
 
     function styleEntryForSelected() {
       return studentStyleEntries.find((entry) => entry.key === selectedStyleKey) || null;
+    }
+
+    function activeStyleLevelSlug() {
+      return styleEntryForSelected()?.levelSlug || profile.level;
+    }
+
+    function weeklySessionsForFigure(styleKey, levelSlug, figureIndex) {
+      return classScheduleRows
+        .filter((row) => styleKeyFromDanceStyle(row.dance_style) === styleKey)
+        .filter((row) => row.level_slug === levelSlug)
+        .filter((row) => Number(row.current_figure_index) === Number(figureIndex))
+        .sort((a, b) => {
+          const dayDiff = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
+          if (dayDiff !== 0) return dayDiff;
+          return String(a.time).localeCompare(String(b.time));
+        });
     }
 
     function syncLevelPillForStyle() {
@@ -928,12 +968,14 @@
         button.type = 'button';
         button.className = `style-tab${entry.key === selectedStyleKey ? ' active' : ''}`;
         button.textContent = entry.label;
-        button.addEventListener('click', () => {
-          selectedStyleKey = entry.key;
-          renderStyleTabs();
-          syncLevelPillForStyle();
-          renderSchedule();
-        });
+        button.disabled = !entry.enabled;
+        if (entry.enabled) {
+          button.addEventListener('click', () => {
+            selectedStyleKey = entry.key;
+            renderStyleTabs();
+            syncLevelPillForStyle();
+          });
+        }
         styleTabsEl.appendChild(button);
       });
     }
@@ -1134,6 +1176,48 @@
       container.appendChild(wrap);
     }
 
+    async function buildSessionAttendButton(container, attendanceKey, figureName, label, enabled) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'attend-btn primary';
+
+      function syncState(isAttending) {
+        btn.classList.toggle('primary', enabled && !isAttending);
+        btn.classList.toggle('is-attending', enabled && isAttending);
+        btn.disabled = !enabled;
+
+        if (!enabled) {
+          btn.textContent = `${label} Review`;
+          return;
+        }
+        btn.textContent = isAttending ? `${label} Attending` : `${label} Attend`;
+      }
+
+      syncState(studentAttendingTodaySet().has(attendanceKey));
+
+      if (enabled) {
+        btn.addEventListener('click', async () => {
+          const currentlyAttending = studentAttendingTodaySet().has(attendanceKey);
+          btn.disabled = true;
+          clearError();
+
+          try {
+            if (currentlyAttending) {
+              await removeAttendanceRow(attendanceKey);
+            } else {
+              await insertAttendanceRow(attendanceKey, `${figureName} (${label})`);
+            }
+            syncState(!currentlyAttending);
+          } catch (err) {
+            syncState(currentlyAttending);
+            showError(err.message || 'Could not update attendance.');
+          }
+        });
+      }
+
+      container.appendChild(btn);
+    }
+
     async function renderLevelPanel() {
       const levelMeta = LEVELS.find((l) => l.slug === selectedLevelSlug);
       const unlocked = canAccessLevel(selectedLevelSlug);
@@ -1224,13 +1308,38 @@
           `;
         }
 
+        const figureBody = card.querySelector('.figure-body');
         const attendEnabled = selectedLevelSlug === profile.level;
-        await buildAttendRow(
-          card.querySelector('.figure-body'),
-          figureId(selectedLevelSlug, figure.index),
-          figure.name,
-          attendEnabled
-        );
+        const salsaSessions = weeklySessionsForFigure('Salsa', selectedLevelSlug, figure.index);
+
+        if (salsaSessions.length > 0) {
+          const weeklyWrap = document.createElement('div');
+          weeklyWrap.className = 'weekly-attend';
+
+          const weeklyLabel = document.createElement('p');
+          weeklyLabel.className = 'weekly-attend-label';
+          weeklyLabel.textContent = 'This week attendance';
+          weeklyWrap.appendChild(weeklyLabel);
+
+          const buttonRow = document.createElement('div');
+          buttonRow.className = 'weekly-attend-buttons';
+          weeklyWrap.appendChild(buttonRow);
+
+          for (const session of salsaSessions) {
+            const buttonLabel = `${session.day}`;
+            const attendanceKey = `${figureId(selectedLevelSlug, figure.index)}@${session.day}`;
+            await buildSessionAttendButton(buttonRow, attendanceKey, figure.name, buttonLabel, attendEnabled);
+          }
+
+          figureBody.appendChild(weeklyWrap);
+        } else {
+          await buildAttendRow(
+            figureBody,
+            figureId(selectedLevelSlug, figure.index),
+            figure.name,
+            attendEnabled
+          );
+        }
 
         grid.appendChild(card);
       }
@@ -1243,80 +1352,6 @@
     async function renderCurriculum() {
       renderLevelTabs();
       await renderLevelPanel();
-    }
-
-    function renderDayTabs() {
-      dayTabsEl.innerHTML = '';
-      DAY_ORDER.forEach((day) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `tab${selectedDay === day ? ' active' : ''}`;
-        btn.textContent = day;
-        btn.addEventListener('click', () => {
-          selectedDay = day;
-          renderDayTabs();
-          renderSchedule();
-        });
-        dayTabsEl.appendChild(btn);
-      });
-    }
-
-    function figureNameFromSchedule(levelSlug, index) {
-      const list = FIGURE_DATA[levelSlug] || [];
-      return list.find((f) => f.index === Number(index))?.name || `Figure ${index}`;
-    }
-
-    async function renderSchedule() {
-      scheduleListEl.innerHTML = '';
-      const rows = classScheduleRows
-        .filter((r) => r.day === selectedDay)
-        .filter((r) => !selectedStyleKey || styleKeyFromDanceStyle(r.dance_style) === selectedStyleKey)
-        .sort((a, b) => String(a.time).localeCompare(String(b.time)));
-
-      if (rows.length === 0) {
-        scheduleListEl.innerHTML = `<p class="section-sub">No ${selectedStyleKey || ''} classes scheduled for this day yet.</p>`;
-        return;
-      }
-
-      for (const [index, row] of rows.entries()) {
-        const card = document.createElement('article');
-        card.className = 'class-card';
-
-        const figIdx = Math.max(1, Math.min(6, Number(row.current_figure_index) || 1));
-        const figId = figureId(row.level_slug, figIdx);
-        const figName = figureNameFromSchedule(row.level_slug, figIdx);
-        const shouldOpen = index === 0;
-
-        card.innerHTML = `
-          <button type="button" class="class-summary">
-            <span class="class-time">${row.time}</span>
-            <span class="class-meta">
-              <span class="class-style">${row.dance_style}</span>
-              <span class="class-level">${levelTitle(row.level_slug)}</span>
-            </span>
-            <span class="class-chevron">${shouldOpen ? '−' : '+'}</span>
-          </button>
-          <div class="class-body">
-            <p>Current figure this week: <strong>${figName}</strong> (Figure ${figIdx})</p>
-          </div>
-        `;
-
-        if (shouldOpen) {
-          card.classList.add('open');
-        }
-
-        const summaryBtn = card.querySelector('.class-summary');
-        const chevron = card.querySelector('.class-chevron');
-        summaryBtn.addEventListener('click', () => {
-          const isOpen = card.classList.toggle('open');
-          chevron.textContent = isOpen ? '−' : '+';
-        });
-
-        const body = card.querySelector('.class-body');
-        const attendEnabled = row.level_slug === profile.level;
-        await buildAttendRow(body, figId, figName, attendEnabled);
-        scheduleListEl.appendChild(card);
-      }
     }
 
     async function loadData() {
@@ -1405,11 +1440,9 @@
           })
         );
 
-        selectedLevelSlug = profile.level;
+        selectedLevelSlug = DEMO_STUDENT_STYLE_LEVELS.Salsa || profile.level;
   renderStyleTabs();
-        renderDayTabs();
         await renderCurriculum();
-        await renderSchedule();
       } catch (err) {
         showError(err.message || 'Could not initialize dashboard.');
       }
