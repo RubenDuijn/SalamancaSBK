@@ -35,28 +35,16 @@
       font-family: "Manrope", "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 12% 6%, rgba(242, 167, 76, 0.2), transparent 34%),
-        radial-gradient(circle at 88% 9%, rgba(255, 125, 104, 0.14), transparent 32%),
-        radial-gradient(circle at 50% 100%, rgba(67, 23, 44, 0.48), transparent 52%),
-        var(--bg);
-      padding: 1.1rem;
+        radial-gradient(circle at 8% -10%, rgba(242, 167, 76, 0.08), transparent 34%),
+        radial-gradient(circle at 92% 10%, rgba(255, 125, 104, 0.06), transparent 30%),
+        linear-gradient(180deg, var(--bg), #0d090d 42%, #130c10);
+      padding: 0;
       position: relative;
       overflow-x: hidden;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.2;
-      mix-blend-mode: soft-light;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.22) 0.5px, transparent 0.5px);
-      background-size: 3px 3px;
-    }
-
     .container {
-      width: min(1180px, 100%);
+      width: min(1180px, calc(100% - 1.4rem));
       margin: 0 auto;
     }
 
@@ -68,12 +56,14 @@
       grid-template-columns: auto 1fr auto auto;
       align-items: center;
       gap: 0.9rem;
-      padding: 0.85rem 1rem;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      padding: 0.85rem max(0.9rem, calc((100vw - 1180px) / 2));
       border: 0;
       border-bottom: 1px solid var(--line);
       border-radius: 0;
-      background: rgba(10, 10, 15, 0.75);
-      backdrop-filter: blur(10px);
+      background: rgba(17, 12, 16, 0.8);
+      backdrop-filter: blur(16px);
       box-shadow: none;
       margin-bottom: 1rem;
     }
@@ -99,6 +89,7 @@
       padding: 0.2rem 0.25rem;
       border-radius: 0;
       border: 0;
+      text-decoration: none;
       color: var(--muted);
       font-size: 0.76rem;
       font-weight: 700;
@@ -169,9 +160,17 @@
     }
 
     .btn-danger {
-      background: rgba(255, 125, 104, 0.16);
-      border: 1px solid rgba(255, 125, 104, 0.35);
-      color: #ffd2b6;
+      min-height: 34px;
+      padding: 0.42rem 0.72rem;
+      border: 1px solid rgba(242, 167, 76, 0.6);
+      background: rgba(242, 167, 76, 0.1);
+      color: #ffd19a;
+    }
+
+    .btn-danger:hover {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.85);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.85));
     }
 
     .section {
@@ -236,7 +235,7 @@
 
     .tab.locked {
       position: relative;
-      cursor: not-allowed;
+      cursor: default;
       background: rgba(255, 255, 255, 0.03);
       color: #a79b90;
       border-color: rgba(255, 255, 255, 0.12);
@@ -294,22 +293,24 @@
     }
 
     .arc {
-      --progress: 0deg;
       width: 44px;
       height: 44px;
-      border-radius: 50%;
-      position: relative;
-      background: conic-gradient(from -90deg, var(--accent-strong) 0deg var(--progress), rgba(255, 255, 255, 0.13) var(--progress) 360deg);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: block;
     }
 
-    .arc::after {
-      content: "";
-      position: absolute;
-      inset: 6px;
-      border-radius: 50%;
-      background: #111019;
-      border: 1px solid rgba(255, 255, 255, 0.07);
+    .arc-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.13);
+      stroke-width: 4;
+    }
+
+    .arc-fill {
+      fill: none;
+      stroke: var(--accent-strong);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transform-origin: 22px 22px;
+      transform: rotate(-90deg);
     }
 
     .arc-label {
@@ -339,6 +340,11 @@
       position: relative;
     }
 
+    .figure-card.is-current {
+      background: linear-gradient(160deg, rgba(242, 167, 76, 0.18), rgba(255, 255, 255, 0.03) 46%, rgba(255, 125, 104, 0.14));
+      box-shadow: 0 14px 28px rgba(242, 167, 76, 0.16);
+    }
+
     .figure-head {
       display: grid;
       gap: 0.25rem;
@@ -363,7 +369,10 @@
     }
 
     .badge-week {
-      margin-top: 0.3rem;
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      z-index: 2;
       display: inline-flex;
       width: fit-content;
       border-radius: 999px;
@@ -569,12 +578,12 @@
     .class-chevron {
       font-size: 0.95rem;
       color: var(--muted);
-      transition: transform 0.2s ease;
+      font-weight: 800;
     }
 
     .class-body {
       padding: 0 0.85rem 0.85rem;
-      border-top: 1px solid var(--line);
+      border-top: 0;
       display: none;
       gap: 0.6rem;
       background: rgba(10, 10, 15, 0.35);
@@ -582,10 +591,6 @@
 
     .class-card.open .class-body {
       display: grid;
-    }
-
-    .class-card.open .class-chevron {
-      transform: rotate(180deg);
     }
 
     .class-body p {
@@ -613,10 +618,12 @@
     }
 
     @media (max-width: 760px) {
-      body { padding: 0.85rem; }
       .topbar {
         grid-template-columns: 1fr;
         justify-items: start;
+        width: 100%;
+        margin-left: 0;
+        padding: 0.8rem 0.9rem;
       }
       .dash-nav {
         width: 100%;
@@ -830,11 +837,6 @@
       return count ?? 0;
     }
 
-    function arcDegrees(current) {
-      const clamped = Math.max(1, Math.min(6, current));
-      return Number(((clamped / 6) * 360).toFixed(3));
-    }
-
     function currentFigureForLevel(levelSlug) {
       const rows = classScheduleRows.filter((r) => r.level_slug === levelSlug);
       if (rows.length === 0) return 1;
@@ -959,7 +961,10 @@
 
       const currentFigure = currentFigureForLevel(selectedLevelSlug);
       const recapEnd = Math.max(1, currentFigure - 1);
-      const deg = arcDegrees(currentFigure);
+      const progressRatio = Math.max(0, Math.min(1, currentFigure / 6));
+      const arcRadius = 18;
+      const arcCircumference = 2 * Math.PI * arcRadius;
+      const arcOffset = Number((arcCircumference * (1 - progressRatio)).toFixed(6));
 
       const wrapper = document.createElement('div');
 
@@ -972,7 +977,10 @@
         </div>
         <div class="progress-widget">
           <div class="progress-top">
-            <div class="arc" style="--progress:${deg}deg;"></div>
+            <svg class="arc" viewBox="0 0 44 44" aria-hidden="true">
+              <circle class="arc-track" cx="22" cy="22" r="18"></circle>
+              <circle class="arc-fill" cx="22" cy="22" r="18" style="stroke-dasharray:${arcCircumference};stroke-dashoffset:${arcOffset};"></circle>
+            </svg>
             <span class="arc-label">Figure ${currentFigure} / 6</span>
           </div>
           <p class="progress-note">This week: recap figures 1-${recapEnd}, new today: figure ${currentFigure}</p>
@@ -986,10 +994,9 @@
 
       const figures = FIGURE_DATA[selectedLevelSlug] || [];
       for (const figure of figures) {
-        const card = document.createElement('article');
-        card.className = 'figure-card';
-
         const thisWeek = figure.index === currentFigure;
+        const card = document.createElement('article');
+        card.className = `figure-card${thisWeek ? ' is-current' : ''}`;
         card.innerHTML = `
           <div class="figure-head">
             <p class="figure-kicker">Figure ${figure.index}</p>
@@ -1095,7 +1102,7 @@
               <span class="class-style">${row.dance_style}</span>
               <span class="class-level">${levelTitle(row.level_slug)}</span>
             </span>
-            <span class="class-chevron">⌄</span>
+            <span class="class-chevron">+</span>
           </button>
           <div class="class-body">
             <p>Current figure this week: <strong>${figName}</strong> (Figure ${figIdx})</p>
@@ -1103,8 +1110,10 @@
         `;
 
         const summaryBtn = card.querySelector('.class-summary');
+        const chevron = card.querySelector('.class-chevron');
         summaryBtn.addEventListener('click', () => {
-          card.classList.toggle('open');
+          const isOpen = card.classList.toggle('open');
+          chevron.textContent = isOpen ? '−' : '+';
         });
 
         const body = card.querySelector('.class-body');
