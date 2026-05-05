@@ -106,11 +106,17 @@
     }
 
     .student-wrap {
-      display: inline-flex;
+      display: inline-grid;
+      grid-template-columns: auto auto;
       align-items: center;
       gap: 0.65rem;
-      flex-wrap: wrap;
       justify-content: flex-end;
+    }
+
+    .student-meta {
+      display: grid;
+      gap: 0.3rem;
+      justify-items: start;
     }
 
     .style-tabs {
@@ -118,6 +124,7 @@
       align-items: center;
       gap: 0.45rem;
       flex-wrap: wrap;
+      justify-self: end;
     }
 
     .style-tab {
@@ -166,7 +173,9 @@
     .level-pill {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       padding: 0.28rem 0.6rem;
+      min-width: 124px;
       border-radius: 999px;
       border: 1px solid rgba(242, 167, 76, 0.35);
       background: rgba(242, 167, 76, 0.2);
@@ -732,7 +741,11 @@
         font-size: 1.06rem;
       }
       .student-wrap {
-        justify-content: flex-start;
+        grid-template-columns: 1fr;
+        justify-items: start;
+      }
+      .style-tabs {
+        justify-self: start;
       }
       .dashboard-footer .container {
         flex-direction: column;
@@ -757,9 +770,11 @@
         <h1 class="brand-name">Salamanca SBK Dance Academy</h1>
       </div>
       <div class="student-wrap">
-        <span id="student-name" class="student-name">Loading...</span>
+        <div class="student-meta">
+          <span id="student-name" class="student-name">Loading...</span>
+          <span id="student-level" class="level-pill">Level</span>
+        </div>
         <div id="style-tabs" class="style-tabs" aria-label="Dance styles"></div>
-        <span id="student-level" class="level-pill">Level</span>
       </div>
       <button id="signout-btn" class="btn btn-danger" type="button">Sign out</button>
     </header>
@@ -992,6 +1007,26 @@
       return `${y}-${m}-${d}`;
     }
 
+    function classDateForDay(dayName) {
+      const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
+      if (dayIndex < 0) {
+        return todaysDateISO();
+      }
+
+      const base = new Date();
+      const todayIdx = base.getDay();
+      let delta = dayIndex - todayIdx;
+      if (delta < 0) {
+        delta += 7;
+      }
+      base.setDate(base.getDate() + delta);
+
+      const y = base.getFullYear();
+      const m = String(base.getMonth() + 1).padStart(2, '0');
+      const d = String(base.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
     function studentAttendingTodaySet() {
       const today = todaysDateISO();
       return new Set(
@@ -1051,12 +1086,12 @@
       });
     }
 
-    async function insertAttendanceRow(figureIdValue, figureName) {
+    async function insertAttendanceRow(figureIdValue, figureName, classDateISO = todaysDateISO()) {
       const payload = {
         student_id: authUser.id,
         figure_id: figureIdValue,
         figure_name: figureName,
-        class_date: todaysDateISO(),
+        class_date: classDateISO,
       };
 
       const { data, error } = await sbClient
@@ -1070,14 +1105,14 @@
       }
 
       attendanceRows.push(data);
-      const cacheKey = `${figureIdValue}::${todaysDateISO()}`;
+      const cacheKey = `${figureIdValue}::${classDateISO}`;
       if (countCache.has(cacheKey) && typeof countCache.get(cacheKey) === 'number') {
         countCache.set(cacheKey, countCache.get(cacheKey) + 1);
       }
     }
 
-    async function removeAttendanceRow(figureIdValue) {
-      const targetDate = todaysDateISO();
+    async function removeAttendanceRow(figureIdValue, classDateISO = todaysDateISO()) {
+      const targetDate = classDateISO;
       const entry = [...attendanceRows]
         .reverse()
         .find(
@@ -1176,7 +1211,9 @@
       container.appendChild(wrap);
     }
 
-    async function buildSessionAttendButton(container, attendanceKey, figureName, label, enabled) {
+    async function buildSessionAttendButton(container, figureIdValue, figureName, sessionDay, sessionTime, enabled) {
+      const label = `${sessionDay} ${sessionTime}`;
+      const classDateISO = classDateForDay(sessionDay);
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'attend-btn primary';
@@ -1187,25 +1224,35 @@
         btn.disabled = !enabled;
 
         if (!enabled) {
-          btn.textContent = `${label} Review`;
+          btn.textContent = `Attend ${label}`;
           return;
         }
-        btn.textContent = isAttending ? `${label} Attending` : `${label} Attend`;
+        btn.textContent = isAttending ? `Attending ${label}` : `Attend ${label}`;
       }
 
-      syncState(studentAttendingTodaySet().has(attendanceKey));
+      syncState(
+        attendanceRows.some(
+          (row) => row.figure_id === figureIdValue
+            && row.class_date === classDateISO
+            && row.student_id === authUser.id
+        )
+      );
 
       if (enabled) {
         btn.addEventListener('click', async () => {
-          const currentlyAttending = studentAttendingTodaySet().has(attendanceKey);
+          const currentlyAttending = attendanceRows.some(
+            (row) => row.figure_id === figureIdValue
+              && row.class_date === classDateISO
+              && row.student_id === authUser.id
+          );
           btn.disabled = true;
           clearError();
 
           try {
             if (currentlyAttending) {
-              await removeAttendanceRow(attendanceKey);
+              await removeAttendanceRow(figureIdValue, classDateISO);
             } else {
-              await insertAttendanceRow(attendanceKey, `${figureName} (${label})`);
+              await insertAttendanceRow(figureIdValue, `${figureName} (${label})`, classDateISO);
             }
             syncState(!currentlyAttending);
           } catch (err) {
@@ -1326,9 +1373,14 @@
           weeklyWrap.appendChild(buttonRow);
 
           for (const session of salsaSessions) {
-            const buttonLabel = `${session.day}`;
-            const attendanceKey = `${figureId(selectedLevelSlug, figure.index)}@${session.day}`;
-            await buildSessionAttendButton(buttonRow, attendanceKey, figure.name, buttonLabel, attendEnabled);
+            await buildSessionAttendButton(
+              buttonRow,
+              figureId(selectedLevelSlug, figure.index),
+              figure.name,
+              session.day,
+              session.time,
+              attendEnabled
+            );
           }
 
           figureBody.appendChild(weeklyWrap);
