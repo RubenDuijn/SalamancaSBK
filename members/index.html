@@ -39,21 +39,38 @@
 
     .members-head-actions {
       display: inline-flex;
-      gap: 0.45rem;
+      gap: 0;
+    }
+
+    .members-lang-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.16rem;
+      min-height: 32px;
+      padding: 0.14rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .members-head-actions .nav-lang {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 32px;
-      padding: 0.3rem 0.58rem;
+      min-height: 29px;
+      min-width: 41px;
+      padding: 0.26rem 0.54rem;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 0;
       color: var(--muted);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.08em;
+    }
+
+    .members-head-actions .nav-lang:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .members-head-actions .nav-lang.nav-lang-active {
@@ -199,8 +216,10 @@
         <span>Salamanca SBK Dance Academy</span>
       </a>
       <div class="members-head-actions" aria-label="Language selector">
-        <a class="nav-lang nav-lang-active" href="/members/" aria-current="page">EN</a>
-        <a class="nav-lang" href="/es/members/">ES</a>
+        <div class="members-lang-group">
+          <a class="nav-lang nav-lang-active" href="/members/" aria-current="page">EN</a>
+          <a class="nav-lang" href="/es/members/">ES</a>
+        </div>
       </div>
     </div>
   </header>

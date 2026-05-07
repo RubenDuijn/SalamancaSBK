@@ -164,17 +164,33 @@ a {
   border-color: rgba(255, 209, 154, 0.85);
 }
 
-.site-nav .nav-lang {
+.site-nav .nav-lang-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18rem;
   min-height: 34px;
-  padding: 0.38rem 0.56rem;
+  padding: 0.16rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.site-nav .nav-lang {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  min-width: 42px;
+  padding: 0.28rem 0.54rem;
+  border-radius: 999px;
+  border: 0;
   font-size: 0.72rem;
   letter-spacing: 0.08em;
 }
 
 .site-nav .nav-lang:hover {
-  border-color: rgba(255, 209, 154, 0.72);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .site-nav .nav-lang-active {
