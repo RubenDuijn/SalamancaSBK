@@ -270,10 +270,10 @@ const scheduleDataEs = [
 ];
 
 const scheduleData = isSpanishPage ? scheduleDataEs : scheduleDataEn;
-const scheduleCtaText = isSpanishPage ? 'Reserva tu primera clase ->' : 'Book Your First Class ->';
+const scheduleCtaText = isSpanishPage ? 'Reserva tu clase ->' : 'Book Your Class ->';
 const scheduleCtaHref = isSpanishPage
-  ? 'https://wa.me/34659376099?text=Hola%20Salamanca%20SBK%2C%20quiero%20reservar%20mi%20primera%20clase.'
-  : 'https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20want%20to%20book%20my%20first%20class.';
+  ? 'https://wa.me/34659376099?text=Hola%20Salamanca%20SBK%2C%20quiero%20reservar%20una%20clase.'
+  : 'https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20want%20to%20book%20a%20class.';
 
 function renderScheduleCards(dayData) {
   if (!dayPanelEl) return;

@@ -875,6 +875,28 @@ html.reveal-ready .proof-item.reveal-item {
   filter: brightness(1.03);
 }
 
+.schedule-newbie-cta {
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.schedule-newbie-link {
+  color: var(--accent-2);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.schedule-newbie-link:hover {
+  color: var(--accent);
+}
+
 .schedule-poster {
   margin: 0 0 1rem;
   padding: 0.8rem;
