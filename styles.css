@@ -1246,6 +1246,26 @@ a {
     padding: 5.5rem 0 4rem;
   }
 
+  .proof-strip {
+    z-index: 3;
+    margin-top: -2.35rem;
+    padding-top: 0;
+    background: transparent;
+    border-top: 0;
+    border-bottom: 0;
+  }
+
+  .proof-grid {
+    position: relative;
+    z-index: 3;
+  }
+
+  .proof-item {
+    background: linear-gradient(180deg, rgba(31, 22, 29, 0.86), rgba(20, 14, 19, 0.94));
+    backdrop-filter: blur(12px);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+  }
+
   .hero-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
