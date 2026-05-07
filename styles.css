@@ -863,9 +863,14 @@ html.reveal-ready .proof-item.reveal-item {
   margin: 0.2rem 0;
 }
 
-.schedule-member-button {
+.schedule-card-actions {
   margin-top: 0.7rem;
-  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.schedule-member-button {
   font-weight: 800;
   box-shadow: 0 12px 26px rgba(242, 167, 76, 0.24);
 }
@@ -875,26 +880,18 @@ html.reveal-ready .proof-item.reveal-item {
   filter: brightness(1.03);
 }
 
-.schedule-newbie-cta {
-  margin-top: 1.6rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  gap: 0.6rem 1rem;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.schedule-newbie-link {
-  color: var(--accent-2);
+.schedule-newbie-button {
   font-weight: 700;
-  white-space: nowrap;
+  background: linear-gradient(135deg, rgba(74, 196, 143, 0.18), rgba(52, 168, 120, 0.12));
+  border: 1px solid rgba(74, 196, 143, 0.38);
+  color: #7de8bc;
+  box-shadow: 0 8px 20px rgba(52, 168, 120, 0.16);
 }
 
-.schedule-newbie-link:hover {
-  color: var(--accent);
+.schedule-newbie-button:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, rgba(74, 196, 143, 0.28), rgba(52, 168, 120, 0.2));
+  box-shadow: 0 10px 24px rgba(52, 168, 120, 0.26);
 }
 
 .schedule-poster {
