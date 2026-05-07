@@ -100,10 +100,26 @@ const scheduleDataEn = [
   },
   {
     day: 'Friday',
-    focus: 'Social + Forro',
+    focus: 'Social Warm-Up',
     classes: [
       { title: 'Forro Dedicated Session', time: '19:30' },
       { title: 'SBK Social Practice', time: '21:00' },
+    ],
+  },
+  {
+    day: 'Saturday',
+    focus: 'Signature Social Night',
+    classes: [
+      { title: 'Pre-Social Workshop: Partner Connection & Flow', time: '20:00' },
+      { title: 'SBK Social Night with Guest DJ Set', time: '22:00' },
+    ],
+  },
+  {
+    day: 'Sunday',
+    focus: 'Community Session',
+    classes: [
+      { title: 'Sunday Recovery Practice Circle', time: '17:30' },
+      { title: 'Musicality & Styling Lab', time: '19:00' },
     ],
   },
 ];
@@ -144,10 +160,26 @@ const scheduleDataEs = [
   },
   {
     day: 'Viernes',
-    focus: 'Social + Forro',
+    focus: 'Calentamiento social',
     classes: [
       { title: 'Sesion Especial de Forro', time: '19:30' },
       { title: 'Practica Social SBK', time: '21:00' },
+    ],
+  },
+  {
+    day: 'Sabado',
+    focus: 'Noche social principal',
+    classes: [
+      { title: 'Pre-social: Taller de Conexion y Fluidez en Pareja', time: '20:00' },
+      { title: 'Noche Social SBK con DJ invitado', time: '22:00' },
+    ],
+  },
+  {
+    day: 'Domingo',
+    focus: 'Sesion de comunidad',
+    classes: [
+      { title: 'Circulo de practica y recuperacion', time: '17:30' },
+      { title: 'Laboratorio de Musicalidad y Estilo', time: '19:00' },
     ],
   },
 ];
