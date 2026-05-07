@@ -526,6 +526,16 @@ html.reveal-ready .proof-item.reveal-item {
   line-height: 1.5;
 }
 
+.proof-item .proof-stars {
+  display: block;
+  margin: 0.08rem 0 0.16rem;
+  color: #ffd58f;
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  text-shadow: 0 0 12px rgba(242, 167, 76, 0.24);
+  opacity: 0.95;
+}
+
 .section {
   padding: 4rem 0;
 }
