@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Members Login | Salamanca SBK Dance Academy</title>
-  <meta name="description" content="Sign in to Salamanca SBK Members Area" />
-  <link rel="canonical" href="https://salamancasbk.es/members/" />
+  <title>Acceso de Miembros | Salamanca SBK Dance Academy</title>
+  <meta name="description" content="Inicia sesion en el area de miembros de Salamanca SBK" />
+  <link rel="canonical" href="https://salamancasbk.es/es/members/" />
   <link rel="alternate" hreflang="en" href="https://salamancasbk.es/members/" />
   <link rel="alternate" hreflang="es" href="https://salamancasbk.es/es/members/" />
   <link rel="alternate" hreflang="x-default" href="https://salamancasbk.es/members/" />
@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../../styles.css" />
   <style>
     .members-auth-page {
       min-height: 100vh;
@@ -194,13 +194,13 @@
 <body id="top" class="members-auth-page">
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand members-brand" href="/" aria-label="Salamanca SBK Dance Academy">
+      <a class="brand members-brand" href="/es/" aria-label="Salamanca SBK Dance Academy">
         <span class="brand-mark">S</span>
         <span>Salamanca SBK Dance Academy</span>
       </a>
       <div class="members-head-actions" aria-label="Language selector">
-        <a class="nav-lang nav-lang-active" href="/members/" aria-current="page">EN</a>
-        <a class="nav-lang" href="/es/members/">ES</a>
+        <a class="nav-lang" href="/members/">EN</a>
+        <a class="nav-lang nav-lang-active" href="/es/members/" aria-current="page">ES</a>
       </div>
     </div>
   </header>
@@ -210,25 +210,25 @@
       <div class="container auth-wrap">
         <article class="hero-card auth-card" aria-labelledby="members-title">
           <h1 class="wordmark" id="members-title">Salamanca SBK Dance Academy</h1>
-          <p class="subtitle">Members Area</p>
-          <p class="intro">Sign in to access your curriculum and class schedule</p>
+          <p class="subtitle">Area de Miembros</p>
+          <p class="intro">Inicia sesion para acceder a tu curriculum y tu horario de clases</p>
 
           <form id="login-form" novalidate>
             <div class="field">
-              <label for="email">Email</label>
+              <label for="email">Correo</label>
               <input id="email" name="email" type="email" autocomplete="email" required />
             </div>
 
             <div class="field">
-              <label for="password">Password</label>
+              <label for="password">Contrasena</label>
               <input id="password" name="password" type="password" autocomplete="current-password" required />
             </div>
 
-            <button class="button submit-btn" id="submit-btn" type="submit">Sign in</button>
+            <button class="button submit-btn" id="submit-btn" type="submit">Entrar</button>
             <p id="message" class="message" role="alert" aria-live="polite"></p>
 
-            <p class="helper">No account yet? Your teacher will send you an invitation.</p>
-            <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
+            <p class="helper">Aun no tienes cuenta? Tu profesor te enviara una invitacion.</p>
+            <a href="#" class="forgot-link" id="forgot-link">Olvidaste tu contrasena?</a>
           </form>
         </article>
       </div>
@@ -241,7 +241,7 @@
     </div>
   </footer>
 
-  <script src="../script.js"></script>
+  <script src="../../script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   
@@ -269,7 +269,7 @@
 
     let supabaseClient = null;
     if (!isValidHttpUrl(SUPABASE_URL) || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === 'YOUR_ANON_KEY') {
-      setMessage('Supabase configuration is invalid. Please check SUPABASE_URL and SUPABASE_ANON_KEY.', 'error');
+      setMessage('La configuracion de Supabase no es valida. Revisa SUPABASE_URL y SUPABASE_ANON_KEY.', 'error');
       submitBtn.disabled = true;
       forgotLink.style.pointerEvents = 'none';
       forgotLink.style.opacity = '0.6';
@@ -286,20 +286,20 @@
     }
 
     function normalizeAuthError(error) {
-      if (!error) return 'Something went wrong. Please try again.';
+      if (!error) return 'Algo salio mal. Intentalo de nuevo.';
       const msg = (error.message || '').toLowerCase();
 
       if (msg.includes('invalid login credentials')) {
-        return 'Incorrect email or password.';
+        return 'Correo o contrasena incorrectos.';
       }
       if (msg.includes('email not confirmed')) {
-        return 'Your email is not confirmed yet. Please check your inbox.';
+        return 'Tu correo aun no esta confirmado. Revisa tu bandeja de entrada.';
       }
       if (msg.includes('too many requests')) {
-        return 'Too many attempts. Please wait a moment and try again.';
+        return 'Demasiados intentos. Espera un momento e intentalo de nuevo.';
       }
 
-      return error.message || 'Something went wrong. Please try again.';
+      return error.message || 'Algo salio mal. Intentalo de nuevo.';
     }
 
     form.addEventListener('submit', async (event) => {
@@ -307,7 +307,7 @@
       setMessage('');
 
       if (!supabaseClient) {
-        setMessage('Login is temporarily unavailable due to configuration.', 'error');
+        setMessage('El acceso no esta disponible temporalmente por configuracion.', 'error');
         return;
       }
 
@@ -315,12 +315,12 @@
       const password = passwordInput.value;
 
       if (!email || !password) {
-        setMessage('Please enter both email and password.', 'error');
+        setMessage('Introduce correo y contrasena.', 'error');
         return;
       }
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Signing in...';
+      submitBtn.textContent = 'Entrando...';
 
       try {
         const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -335,7 +335,7 @@
 
         const userId = data?.user?.id;
         if (!userId) {
-          setMessage('Login succeeded but no user was returned.', 'error');
+          setMessage('El acceso fue correcto, pero no se devolvio ningun usuario.', 'error');
           return;
         }
 
@@ -346,7 +346,7 @@
           .single();
 
         if (profileError) {
-          setMessage('Signed in, but your profile could not be loaded.', 'error');
+          setMessage('Has iniciado sesion, pero no se pudo cargar tu perfil.', 'error');
           return;
         }
 
@@ -360,10 +360,10 @@
 
         window.location.href = '/dashboard.html';
       } catch (err) {
-        setMessage('Unexpected error while signing in. Please try again.', 'error');
+        setMessage('Error inesperado al iniciar sesion. Intentalo de nuevo.', 'error');
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Sign in';
+        submitBtn.textContent = 'Entrar';
       }
     });
 
@@ -372,13 +372,13 @@
       setMessage('');
 
       if (!supabaseClient) {
-        setMessage('Password reset is temporarily unavailable due to configuration.', 'error');
+        setMessage('El restablecimiento de contrasena no esta disponible temporalmente por configuracion.', 'error');
         return;
       }
 
       const email = emailInput.value.trim();
       if (!email) {
-        setMessage('Enter your email above, then click Forgot password again.', 'error');
+        setMessage('Escribe tu correo arriba y vuelve a pulsar Olvidaste tu contrasena.', 'error');
         return;
       }
 
@@ -395,9 +395,9 @@
           return;
         }
 
-        setMessage('Password reset email sent. Please check your inbox.', 'success');
+        setMessage('Correo de recuperacion enviado. Revisa tu bandeja de entrada.', 'success');
       } catch (err) {
-        setMessage('Could not send reset email right now. Please try again.', 'error');
+        setMessage('No se pudo enviar el correo de recuperacion ahora. Intentalo de nuevo.', 'error');
       } finally {
         forgotLink.style.pointerEvents = '';
         forgotLink.style.opacity = '';

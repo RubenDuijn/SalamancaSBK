@@ -3,6 +3,45 @@ const siteNav = document.getElementById('site-nav');
 const pageLang = (document.documentElement.lang || 'en').toLowerCase();
 const isSpanishPage = pageLang.startsWith('es');
 
+function normalizePath(pathname) {
+  return pathname
+    .replace(/index\.html$/, '')
+    .replace(/\/+$/, '') || '/';
+}
+
+const langLinks = document.querySelectorAll('.nav-lang');
+if (langLinks.length) {
+  langLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      if (href.startsWith('/es')) {
+        localStorage.setItem('sbk_lang', 'es');
+      } else if (href === '/' || href.startsWith('/members')) {
+        localStorage.setItem('sbk_lang', 'en');
+      }
+    });
+  });
+
+  const currentPath = normalizePath(window.location.pathname);
+  const preferredLang = localStorage.getItem('sbk_lang');
+  const enToEsRoutes = {
+    '/': '/es/',
+    '/members': '/es/members/',
+  };
+  const esToEnRoutes = {
+    '/es': '/',
+    '/es/members': '/members/',
+  };
+
+  if (preferredLang === 'es' && enToEsRoutes[currentPath]) {
+    window.location.replace(enToEsRoutes[currentPath]);
+  }
+
+  if (preferredLang === 'en' && esToEnRoutes[currentPath]) {
+    window.location.replace(esToEnRoutes[currentPath]);
+  }
+}
+
 if (menuToggle && siteNav) {
   menuToggle.addEventListener('click', () => {
     const isOpen = siteNav.classList.toggle('is-open');
