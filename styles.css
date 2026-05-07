@@ -520,6 +520,16 @@ html.reveal-ready .proof-item.reveal-item {
   letter-spacing: 0.02em;
 }
 
+.proof-rating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.42rem;
+}
+
+.proof-rating strong {
+  margin: 0;
+}
+
 .proof-item span {
   color: var(--muted);
   font-size: 0.88rem;
@@ -527,11 +537,11 @@ html.reveal-ready .proof-item.reveal-item {
 }
 
 .proof-item .proof-stars {
-  display: block;
-  margin: 0.08rem 0 0.16rem;
+  display: inline-block;
+  margin: 0;
   color: #ffd58f;
-  font-size: 0.86rem;
-  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
   text-shadow: 0 0 12px rgba(242, 167, 76, 0.24);
   opacity: 0.95;
 }
