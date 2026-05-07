@@ -831,10 +831,6 @@
         <span class="brand-mark">S</span>
         <span class="brand-name">Salamanca SBK Dance Academy</span>
       </div>
-      <div class="dash-lang-group" aria-label="Selector de idioma">
-        <a class="dash-lang" href="/dashboard.html">EN</a>
-        <a class="dash-lang dash-lang-active" href="/es/dashboard.html" aria-current="page">ES</a>
-      </div>
       <div class="student-wrap">
         <div class="student-meta">
           <span id="student-name" class="student-name">Cargando...</span>
@@ -842,6 +838,10 @@
         <div id="style-tabs" class="style-tabs" aria-label="Estilos de baile"></div>
       </div>
       <button id="signout-btn" class="btn btn-danger" type="button">Cerrar sesion</button>
+      <div class="dash-lang-group" aria-label="Selector de idioma">
+        <a class="dash-lang" href="/dashboard.html">EN</a>
+        <a class="dash-lang dash-lang-active" href="/es/dashboard.html" aria-current="page">ES</a>
+      </div>
     </header>
 
     <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
@@ -914,20 +914,32 @@
     };
 
     const FALLBACK_SCHEDULE = [
-      { day: 'Monday', time: '18:00', dance_style: 'Salsa Beginner', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Monday', time: '19:30', dance_style: 'Salsa Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Tuesday', time: '18:00', dance_style: 'Bachata Beginner', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Tuesday', time: '19:30', dance_style: 'Bachata Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Wednesday', time: '18:00', dance_style: 'Kizomba Beginner', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Wednesday', time: '19:30', dance_style: 'Kizomba Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Monday', time: '19:00', dance_style: 'Salsa Beginner', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Monday', time: '20:00', dance_style: 'Salsa Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Monday', time: '21:00', dance_style: 'Salsa Partnerwork Drills', level_slug: 'intermediate_2', current_figure_index: 3 },
+      { day: 'Tuesday', time: '19:00', dance_style: 'Bachata Beginner', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Tuesday', time: '20:00', dance_style: 'Bachata Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Tuesday', time: '21:00', dance_style: 'Bachata Connection Lab', level_slug: 'intermediate_2', current_figure_index: 3 },
+      { day: 'Wednesday', time: '19:00', dance_style: 'Kizomba Beginner', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Wednesday', time: '20:00', dance_style: 'Kizomba Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
       { day: 'Wednesday', time: '21:00', dance_style: 'Zouk Session', level_slug: 'intermediate_2', current_figure_index: 3 },
-      { day: 'Thursday', time: '18:30', dance_style: 'Salsa Partnerwork', level_slug: 'intermediate_2', current_figure_index: 3 },
+      { day: 'Thursday', time: '19:00', dance_style: 'Salsa Partnerwork', level_slug: 'intermediate_2', current_figure_index: 3 },
       { day: 'Thursday', time: '20:00', dance_style: 'Tango Session', level_slug: 'advanced_1', current_figure_index: 4 },
-      { day: 'Friday', time: '19:30', dance_style: 'Forro Session', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Thursday', time: '21:00', dance_style: 'Styling & Musicality Lab', level_slug: 'intermediate_2', current_figure_index: 3 },
+      { day: 'Friday', time: '19:00', dance_style: 'Forro Session', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Friday', time: '20:00', dance_style: 'Bachata Social Prep', level_slug: 'intermediate_1', current_figure_index: 2 },
       { day: 'Friday', time: '21:00', dance_style: 'SBK Social Practice', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Friday', time: '22:00', dance_style: 'Open Social Dance Floor', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Saturday', time: '19:00', dance_style: 'Pre-Social Workshop', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Saturday', time: '20:00', dance_style: 'Salsa Social Lab', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Saturday', time: '21:00', dance_style: 'Bachata Social Lab', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Saturday', time: '22:00', dance_style: 'SBK Social Night', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Sunday', time: '19:00', dance_style: 'Recovery Practice Circle', level_slug: 'beginner', current_figure_index: 1 },
+      { day: 'Sunday', time: '20:00', dance_style: 'Musicality & Styling Lab', level_slug: 'intermediate_1', current_figure_index: 2 },
+      { day: 'Sunday', time: '21:00', dance_style: 'Guided Social Practica', level_slug: 'beginner', current_figure_index: 1 },
     ];
 
-    const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const STYLE_ORDER = ['Salsa', 'Bachata', 'Kizomba', 'Tango', 'Zouk', 'Forró'];
     const DEMO_STUDENT_STYLE_LEVELS = {
       Salsa: 'beginner',
@@ -968,6 +980,26 @@
       } catch (err) {
         return false;
       }
+    }
+
+    function scheduleRowKey(entry) {
+      return `${entry.day}|${entry.time}|${entry.dance_style}`;
+    }
+
+    function mergeScheduleWithFallback(rows) {
+      const merged = new Map();
+      FALLBACK_SCHEDULE.forEach((entry) => {
+        merged.set(scheduleRowKey(entry), { ...entry });
+      });
+
+      (rows || []).forEach((entry) => {
+        if (!entry?.day || !entry?.time || !entry?.dance_style) {
+          return;
+        }
+        merged.set(scheduleRowKey(entry), entry);
+      });
+
+      return Array.from(merged.values());
     }
 
     function canAccessLevel(targetSlug) {
@@ -1557,10 +1589,7 @@
         throw new Error('No se pudo cargar el horario de clases.');
       }
 
-      classScheduleRows = scheduleData || [];
-      if (classScheduleRows.length === 0) {
-        classScheduleRows = FALLBACK_SCHEDULE;
-      }
+      classScheduleRows = mergeScheduleWithFallback(scheduleData || []);
 
       const { data: attendData, error: attendError } = await sbClient
         .from('attendance')

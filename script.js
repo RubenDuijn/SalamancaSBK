@@ -69,24 +69,26 @@ const scheduleDataEn = [
     day: 'Monday',
     focus: 'Salsa Core',
     classes: [
-      { title: 'Salsa Beginner', time: '18:00' },
-      { title: 'Salsa Intermediate', time: '19:30' },
+      { title: 'Salsa Beginner', time: '19:00' },
+      { title: 'Salsa Intermediate', time: '20:00' },
+      { title: 'Salsa Partnerwork Drills', time: '21:00' },
     ],
   },
   {
     day: 'Tuesday',
     focus: 'Bachata Core',
     classes: [
-      { title: 'Bachata Beginner', time: '18:00' },
-      { title: 'Bachata Intermediate', time: '19:30' },
+      { title: 'Bachata Beginner', time: '19:00' },
+      { title: 'Bachata Intermediate', time: '20:00' },
+      { title: 'Bachata Connection Lab', time: '21:00' },
     ],
   },
   {
     day: 'Wednesday',
     focus: 'Kizomba + Zouk',
     classes: [
-      { title: 'Kizomba Beginner', time: '18:00' },
-      { title: 'Kizomba Intermediate', time: '19:30' },
+      { title: 'Kizomba Beginner', time: '19:00' },
+      { title: 'Kizomba Intermediate', time: '20:00' },
       { title: 'Zouk Dedicated Session', time: '21:00' },
     ],
   },
@@ -94,23 +96,28 @@ const scheduleDataEn = [
     day: 'Thursday',
     focus: 'Salsa + Tango',
     classes: [
-      { title: 'Salsa Partnerwork', time: '18:30' },
+      { title: 'Salsa Partnerwork', time: '19:00' },
       { title: 'Tango Dedicated Session', time: '20:00' },
+      { title: 'Styling & Musicality Lab', time: '21:00' },
     ],
   },
   {
     day: 'Friday',
     focus: 'Social Warm-Up',
     classes: [
-      { title: 'Forro Dedicated Session', time: '19:30' },
+      { title: 'Forro Dedicated Session', time: '19:00' },
+      { title: 'Bachata Social Prep', time: '20:00' },
       { title: 'SBK Social Practice', time: '21:00' },
+      { title: 'Open Social Dance Floor', time: '22:00' },
     ],
   },
   {
     day: 'Saturday',
     focus: 'Signature Social Night',
     classes: [
-      { title: 'Pre-Social Workshop: Partner Connection & Flow', time: '20:00' },
+      { title: 'Pre-Social Workshop: Partner Connection & Flow', time: '19:00' },
+      { title: 'Salsa Social Lab', time: '20:00' },
+      { title: 'Bachata Social Lab', time: '21:00' },
       { title: 'SBK Social Night with Guest DJ Set', time: '22:00' },
     ],
   },
@@ -118,8 +125,9 @@ const scheduleDataEn = [
     day: 'Sunday',
     focus: 'Community Session',
     classes: [
-      { title: 'Sunday Recovery Practice Circle', time: '17:30' },
-      { title: 'Musicality & Styling Lab', time: '19:00' },
+      { title: 'Sunday Recovery Practice Circle', time: '19:00' },
+      { title: 'Musicality & Styling Lab', time: '20:00' },
+      { title: 'Guided Social Practica', time: '21:00' },
     ],
   },
 ];
@@ -129,24 +137,26 @@ const scheduleDataEs = [
     day: 'Lunes',
     focus: 'Base de Salsa',
     classes: [
-      { title: 'Salsa Iniciacion', time: '18:00' },
-      { title: 'Salsa Intermedio', time: '19:30' },
+      { title: 'Salsa Iniciacion', time: '19:00' },
+      { title: 'Salsa Intermedio', time: '20:00' },
+      { title: 'Practica de pareja de Salsa', time: '21:00' },
     ],
   },
   {
     day: 'Martes',
     focus: 'Base de Bachata',
     classes: [
-      { title: 'Bachata Iniciacion', time: '18:00' },
-      { title: 'Bachata Intermedio', time: '19:30' },
+      { title: 'Bachata Iniciacion', time: '19:00' },
+      { title: 'Bachata Intermedio', time: '20:00' },
+      { title: 'Laboratorio de conexion de Bachata', time: '21:00' },
     ],
   },
   {
     day: 'Miercoles',
     focus: 'Kizomba + Zouk',
     classes: [
-      { title: 'Kizomba Iniciacion', time: '18:00' },
-      { title: 'Kizomba Intermedio', time: '19:30' },
+      { title: 'Kizomba Iniciacion', time: '19:00' },
+      { title: 'Kizomba Intermedio', time: '20:00' },
       { title: 'Sesion Especial de Zouk', time: '21:00' },
     ],
   },
@@ -154,23 +164,28 @@ const scheduleDataEs = [
     day: 'Jueves',
     focus: 'Salsa + Tango',
     classes: [
-      { title: 'Salsa Partnerwork', time: '18:30' },
+      { title: 'Salsa Partnerwork', time: '19:00' },
       { title: 'Sesion Especial de Tango', time: '20:00' },
+      { title: 'Laboratorio de estilo y musicalidad', time: '21:00' },
     ],
   },
   {
     day: 'Viernes',
     focus: 'Calentamiento social',
     classes: [
-      { title: 'Sesion Especial de Forro', time: '19:30' },
+      { title: 'Sesion Especial de Forro', time: '19:00' },
+      { title: 'Preparacion social de Bachata', time: '20:00' },
       { title: 'Practica Social SBK', time: '21:00' },
+      { title: 'Pista social abierta', time: '22:00' },
     ],
   },
   {
     day: 'Sabado',
     focus: 'Noche social principal',
     classes: [
-      { title: 'Pre-social: Taller de Conexion y Fluidez en Pareja', time: '20:00' },
+      { title: 'Pre-social: Taller de Conexion y Fluidez en Pareja', time: '19:00' },
+      { title: 'Laboratorio social de Salsa', time: '20:00' },
+      { title: 'Laboratorio social de Bachata', time: '21:00' },
       { title: 'Noche Social SBK con DJ invitado', time: '22:00' },
     ],
   },
@@ -178,8 +193,9 @@ const scheduleDataEs = [
     day: 'Domingo',
     focus: 'Sesion de comunidad',
     classes: [
-      { title: 'Circulo de practica y recuperacion', time: '17:30' },
-      { title: 'Laboratorio de Musicalidad y Estilo', time: '19:00' },
+      { title: 'Circulo de practica y recuperacion', time: '19:00' },
+      { title: 'Laboratorio de Musicalidad y Estilo', time: '20:00' },
+      { title: 'Practica social guiada', time: '21:00' },
     ],
   },
 ];
