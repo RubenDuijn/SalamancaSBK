@@ -358,11 +358,30 @@ a {
 .contact-card,
 .instructor-card,
 .cta-card {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   backdrop-filter: blur(6px);
+}
+
+.hero-card::before,
+.quote-card::before,
+.class-card::before,
+.feature-card::before,
+.pricing-card::before,
+.contact-card::before,
+.instructor-card::before,
+.cta-card::before,
+.proof-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 44%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 82%);
+  pointer-events: none;
 }
 
 .quote-card,
@@ -435,26 +454,36 @@ a {
 .proof-grid {
   display: grid;
   gap: 0.65rem;
+  align-items: stretch;
 }
 
 .proof-item {
+  position: relative;
   padding: 0.95rem 1rem;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.proof-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 209, 154, 0.34);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
 }
 
 .proof-item strong {
   display: block;
   color: var(--accent-2);
-  font-size: 1.05rem;
+  font-size: 1.16rem;
   font-weight: 800;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
 }
 
 .proof-item span {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .section {
@@ -474,7 +503,7 @@ a {
 
 .section-heading {
   max-width: 42rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .section-heading h2 {
@@ -485,7 +514,9 @@ a {
 
 .section-heading p {
   margin: 0;
+  max-width: 38rem;
   color: var(--muted);
+  line-height: 1.72;
 }
 
 .quote-grid,

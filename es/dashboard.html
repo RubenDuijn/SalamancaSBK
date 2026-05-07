@@ -158,6 +158,14 @@
       box-shadow: 0 6px 14px rgba(242, 167, 76, 0.28);
     }
 
+    .topbar-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-left: auto;
+      flex: 0 0 auto;
+    }
+
     .student-wrap {
       display: inline-grid;
       grid-template-columns: auto auto;
@@ -802,7 +810,14 @@
       .brand-name {
         font-size: 1.06rem;
       }
+      .topbar-actions {
+        order: 2;
+        width: 100%;
+        justify-content: space-between;
+      }
       .student-wrap {
+        order: 3;
+        width: 100%;
         grid-template-columns: 1fr;
         justify-items: start;
       }
@@ -837,11 +852,13 @@
         </div>
         <div id="style-tabs" class="style-tabs" aria-label="Estilos de baile"></div>
       </div>
-      <div class="dash-lang-group" aria-label="Selector de idioma">
-        <a class="dash-lang" href="/dashboard.html">EN</a>
-        <a class="dash-lang dash-lang-active" href="/es/dashboard.html" aria-current="page">ES</a>
+      <div class="topbar-actions">
+        <div class="dash-lang-group" aria-label="Selector de idioma">
+          <a class="dash-lang" href="/dashboard.html">EN</a>
+          <a class="dash-lang dash-lang-active" href="/es/dashboard.html" aria-current="page">ES</a>
+        </div>
+        <button id="signout-btn" class="btn btn-danger" type="button">Cerrar sesion</button>
       </div>
-      <button id="signout-btn" class="btn btn-danger" type="button">Cerrar sesion</button>
     </header>
 
     <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
