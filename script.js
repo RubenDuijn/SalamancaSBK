@@ -61,6 +61,75 @@ if (yearEl) {
   yearEl.textContent = String(new Date().getFullYear());
 }
 
+function setupScrollReveals() {
+  const selectors = [
+    '.hero-copy',
+    '.hero-card',
+    '.proof-item',
+    '.section-heading',
+    '.quote-card',
+    '.vibe-feature',
+    '.class-card',
+    '.feature-card',
+    '.schedule-poster',
+    '.about-grid > div',
+    '.pricing-card',
+    '.cta-card',
+    '.shop-card',
+    '.center-action',
+    '.footer-grid > div'
+  ];
+  const items = Array.from(
+    new Set(selectors.flatMap((selector) => Array.from(document.querySelectorAll(selector))))
+  );
+
+  if (!items.length) {
+    return;
+  }
+
+  items.forEach((item, index) => {
+    item.classList.add('reveal-item');
+    item.style.setProperty('--reveal-delay', `${(index % 4) * 70}ms`);
+  });
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || typeof IntersectionObserver === 'undefined') {
+    items.forEach((item) => item.classList.add('is-visible'));
+    document.documentElement.classList.add('reveal-ready');
+    return;
+  }
+
+  const viewportHeight = window.innerHeight || 0;
+  items.forEach((item) => {
+    const rect = item.getBoundingClientRect();
+    if (rect.top <= viewportHeight * 0.9) {
+      item.classList.add('is-visible');
+    }
+  });
+
+  document.documentElement.classList.add('reveal-ready');
+
+  const observer = new IntersectionObserver(
+    (entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+        entry.target.classList.add('is-visible');
+        currentObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.16,
+      rootMargin: '0px 0px -10% 0px',
+    }
+  );
+
+  items.forEach((item) => observer.observe(item));
+}
+
+setupScrollReveals();
+
 const dayTabsEl = document.getElementById('schedule-day-tabs');
 const dayPanelEl = document.getElementById('schedule-day-panel');
 
