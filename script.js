@@ -270,7 +270,7 @@ const scheduleDataEs = [
 ];
 
 const scheduleData = isSpanishPage ? scheduleDataEs : scheduleDataEn;
-const scheduleMemberText = isSpanishPage ? 'Reserva tu clase →' : 'Book Your Class →';
+const scheduleMemberText = isSpanishPage ? 'Reserva tu plaza →' : 'Reserve Your Spot →';
 const scheduleMemberHref = isSpanishPage ? '/es/members/' : '/members/';
 const scheduleNewbieText = isSpanishPage ? '¿Nuevo? Reserva tu primera clase por WhatsApp →' : 'New? Book your first class via WhatsApp →';
 const scheduleNewbieHref = isSpanishPage
