@@ -1,5 +1,7 @@
 const menuToggle = document.getElementById('menu-toggle');
 const siteNav = document.getElementById('site-nav');
+const pageLang = (document.documentElement.lang || 'en').toLowerCase();
+const isSpanishPage = pageLang.startsWith('es');
 
 if (menuToggle && siteNav) {
   menuToggle.addEventListener('click', () => {
@@ -23,7 +25,7 @@ if (yearEl) {
 const dayTabsEl = document.getElementById('schedule-day-tabs');
 const dayPanelEl = document.getElementById('schedule-day-panel');
 
-const scheduleData = [
+const scheduleDataEn = [
   {
     day: 'Monday',
     focus: 'Salsa Core',
@@ -67,6 +69,56 @@ const scheduleData = [
   },
 ];
 
+const scheduleDataEs = [
+  {
+    day: 'Lunes',
+    focus: 'Base de Salsa',
+    classes: [
+      { title: 'Salsa Iniciacion', time: '18:00' },
+      { title: 'Salsa Intermedio', time: '19:30' },
+    ],
+  },
+  {
+    day: 'Martes',
+    focus: 'Base de Bachata',
+    classes: [
+      { title: 'Bachata Iniciacion', time: '18:00' },
+      { title: 'Bachata Intermedio', time: '19:30' },
+    ],
+  },
+  {
+    day: 'Miercoles',
+    focus: 'Kizomba + Zouk',
+    classes: [
+      { title: 'Kizomba Iniciacion', time: '18:00' },
+      { title: 'Kizomba Intermedio', time: '19:30' },
+      { title: 'Sesion Especial de Zouk', time: '21:00' },
+    ],
+  },
+  {
+    day: 'Jueves',
+    focus: 'Salsa + Tango',
+    classes: [
+      { title: 'Salsa Partnerwork', time: '18:30' },
+      { title: 'Sesion Especial de Tango', time: '20:00' },
+    ],
+  },
+  {
+    day: 'Viernes',
+    focus: 'Social + Forro',
+    classes: [
+      { title: 'Sesion Especial de Forro', time: '19:30' },
+      { title: 'Practica Social SBK', time: '21:00' },
+    ],
+  },
+];
+
+const scheduleData = isSpanishPage ? scheduleDataEs : scheduleDataEn;
+const scheduleCtaText = isSpanishPage ? 'Reserva tu primera clase ->' : 'Book Your First Class ->';
+const scheduleCtaHref = isSpanishPage
+  ? 'https://wa.me/34659376099?text=Hola%20Salamanca%20SBK%2C%20quiero%20reservar%20mi%20primera%20clase.'
+  : 'https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20want%20to%20book%20my%20first%20class.';
+
 function renderScheduleCards(dayData) {
   if (!dayPanelEl) return;
   dayPanelEl.innerHTML = '';
@@ -89,7 +141,7 @@ function renderScheduleCards(dayData) {
         <span class="schedule-expand">${isFirstOpen ? '−' : '+'}</span>
       </summary>
       <div class="schedule-card-body">
-        <a class="button schedule-member-button" href="https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20want%20to%20book%20my%20first%20class." target="_blank" rel="noopener noreferrer">Book Your First Class →</a>
+        <a class="button schedule-member-button" href="${scheduleCtaHref}" target="_blank" rel="noopener noreferrer">${scheduleCtaText}</a>
       </div>
     `;
 
@@ -119,7 +171,9 @@ function renderScheduleTabs(activeDay) {
 }
 
 if (dayTabsEl && dayPanelEl) {
-  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayNames = isSpanishPage
+    ? ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+    : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const todayName = dayNames[new Date().getDay()];
   const todayData = scheduleData.find(d => d.day === todayName) || scheduleData[0];
   renderScheduleTabs(todayData.day);
@@ -209,6 +263,17 @@ function setQuantity(card, quantity) {
 }
 
 function buildShopMessage({ productName, size, colour, quantity, customerName }) {
+  if (isSpanishPage) {
+    return [
+      'Hola, me gustaria hacer un pedido en Salamanca SBK Shop:',
+      `Producto: ${productName}`,
+      `Talla: ${size}`,
+      `Color: ${colour}`,
+      `Cantidad: ${quantity}`,
+      `Nombre: ${customerName}`,
+    ].join('\n');
+  }
+
   return [
     "Hi, I'd like to order from Salamanca SBK Shop:",
     `Product: ${productName}`,

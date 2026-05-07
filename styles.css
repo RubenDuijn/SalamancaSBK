@@ -164,6 +164,25 @@ a {
   border-color: rgba(255, 209, 154, 0.85);
 }
 
+.site-nav .nav-lang {
+  min-height: 34px;
+  padding: 0.38rem 0.56rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.site-nav .nav-lang:hover {
+  border-color: rgba(255, 209, 154, 0.72);
+}
+
+.site-nav .nav-lang-active {
+  color: #2b190b;
+  border-color: rgba(255, 209, 154, 0.7);
+  background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+}
+
 .hero {
   position: relative;
   overflow: hidden;
