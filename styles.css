@@ -884,16 +884,16 @@ html.reveal-ready .proof-item.reveal-item {
 
 .schedule-newbie-button {
   font-weight: 700;
-  background: linear-gradient(135deg, rgba(74, 196, 143, 0.18), rgba(52, 168, 120, 0.12));
-  border: 1px solid rgba(74, 196, 143, 0.38);
-  color: #7de8bc;
-  box-shadow: 0 8px 20px rgba(52, 168, 120, 0.16);
+  background: linear-gradient(135deg, rgba(242, 167, 76, 0.16), rgba(255, 125, 104, 0.1));
+  border: 1px solid rgba(242, 167, 76, 0.36);
+  color: var(--accent-2);
+  box-shadow: 0 8px 20px rgba(242, 167, 76, 0.14);
 }
 
 .schedule-newbie-button:hover {
   transform: translateY(-1px);
-  background: linear-gradient(135deg, rgba(74, 196, 143, 0.28), rgba(52, 168, 120, 0.2));
-  box-shadow: 0 10px 24px rgba(52, 168, 120, 0.26);
+  background: linear-gradient(135deg, rgba(242, 167, 76, 0.28), rgba(255, 125, 104, 0.2));
+  box-shadow: 0 10px 24px rgba(242, 167, 76, 0.24);
 }
 
 .schedule-poster {
