@@ -541,9 +541,18 @@ html.reveal-ready .proof-item.reveal-item {
   margin: 0;
   color: #ffd58f;
   font-size: 0.78rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-shadow: 0 0 12px rgba(242, 167, 76, 0.24);
   opacity: 0.95;
+}
+
+.proof-item .proof-stars-main,
+.proof-item .proof-stars-last {
+  display: inline-block;
+}
+
+.proof-item .proof-stars-last {
+  opacity: 0.56;
 }
 
 .section {
