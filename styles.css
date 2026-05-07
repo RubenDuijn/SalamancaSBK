@@ -536,6 +536,10 @@ html.reveal-ready .proof-item.reveal-item {
   line-height: 1.5;
 }
 
+.proof-item > span {
+  display: block;
+}
+
 .proof-item .proof-stars {
   display: inline-block;
   margin: 0;
