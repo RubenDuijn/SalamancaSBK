@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Salamanca SBK Dance Academy Members Dashboard</title>
-  <meta name="description" content="Salamanca SBK Dance Academy student dashboard" />
+  <title>Panel de Miembros | Salamanca SBK Dance Academy</title>
+  <meta name="description" content="Panel de estudiante de Salamanca SBK Dance Academy" />
+  <link rel="canonical" href="https://salamancasbk.es/es/dashboard.html" />
+  <link rel="alternate" hreflang="en" href="https://salamancasbk.es/dashboard.html" />
+  <link rel="alternate" hreflang="es" href="https://salamancasbk.es/es/dashboard.html" />
+  <link rel="alternate" hreflang="x-default" href="https://salamancasbk.es/dashboard.html" />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#130d11" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -827,17 +831,17 @@
         <span class="brand-mark">S</span>
         <span class="brand-name">Salamanca SBK Dance Academy</span>
       </div>
-      <div class="dash-lang-group" aria-label="Language selector">
-        <a class="dash-lang dash-lang-active" href="/dashboard.html" aria-current="page">EN</a>
-        <a class="dash-lang" href="/es/dashboard.html">ES</a>
+      <div class="dash-lang-group" aria-label="Selector de idioma">
+        <a class="dash-lang" href="/dashboard.html">EN</a>
+        <a class="dash-lang dash-lang-active" href="/es/dashboard.html" aria-current="page">ES</a>
       </div>
       <div class="student-wrap">
         <div class="student-meta">
-          <span id="student-name" class="student-name">Loading...</span>
+          <span id="student-name" class="student-name">Cargando...</span>
         </div>
-        <div id="style-tabs" class="style-tabs" aria-label="Dance styles"></div>
+        <div id="style-tabs" class="style-tabs" aria-label="Estilos de baile"></div>
       </div>
-      <button id="signout-btn" class="btn btn-danger" type="button">Sign out</button>
+      <button id="signout-btn" class="btn btn-danger" type="button">Cerrar sesion</button>
     </header>
 
     <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
@@ -845,8 +849,8 @@
     <main class="dashboard-main">
 
     <section class="section" id="curriculum-section">
-      <h2>Curriculum Journey</h2>
-      <p class="section-sub">Follow your current syllabus, track what is active this week, and keep your attendance in one place.</p>
+      <h2>Recorrido del Curriculum</h2>
+      <p class="section-sub">Sigue tu plan actual, revisa lo que esta activo esta semana y controla tu asistencia en un solo lugar.</p>
 
       <div id="level-tabs" class="tabs"></div>
       <div id="level-panel" class="level-panel"></div>
@@ -858,7 +862,7 @@
   <footer class="dashboard-footer" role="contentinfo">
     <div class="container">
       <span>© <span id="dashboard-year"></span> Salamanca SBK Dance Academy</span>
-      <span>Keep dancing every week with clarity, flow, and connection.</span>
+      <span>Sigue bailando cada semana con claridad, fluidez y conexion.</span>
     </div>
   </footer>
 
@@ -1426,7 +1430,7 @@
             </svg>
             <span class="arc-label">Figure ${currentFigure} / 6</span>
           </div>
-          <p class="progress-note">This week: recap previous figures, new today: figure ${currentFigure}</p>
+          <p class="progress-note">Esta semana: repaso de figuras anteriores; nueva de hoy: figura ${currentFigure}</p>
         </div>
       `;
 
@@ -1445,8 +1449,8 @@
           <div class="figure-head">
             <p class="figure-kicker">Figure ${figure.index}</p>
             <h4 class="figure-name">${figure.name}</h4>
-            ${thisWeek ? '<span class="badge-week">This week</span>' : ''}
-            ${nextWeek ? '<span class="badge-next-week">Next week</span>' : ''}
+            ${thisWeek ? '<span class="badge-week">Esta semana</span>' : ''}
+            ${nextWeek ? '<span class="badge-next-week">Semana proxima</span>' : ''}
           </div>
           <div class="figure-body">
             <p>${figure.description}</p>
@@ -1472,7 +1476,7 @@
           videoWrap.innerHTML = `
             <div class="video-locked">
               <div>
-                <span class="video-lock-label">Preview Locked</span>
+                <span class="video-lock-label">Vista previa bloqueada</span>
                 Unlocks at ${levelTitle(selectedLevelSlug)}
               </div>
             </div>
@@ -1490,7 +1494,7 @@
 
           const weeklyLabel = document.createElement('p');
           weeklyLabel.className = 'weekly-attend-label';
-          weeklyLabel.textContent = 'This week attendance';
+          weeklyLabel.textContent = 'Asistencia de esta semana';
           weeklyWrap.appendChild(weeklyLabel);
 
           const buttonRow = document.createElement('div');
@@ -1550,7 +1554,7 @@
         .select('id, day, time, dance_style, level_slug, current_figure_index, current_week');
 
       if (scheduleError) {
-        throw new Error('Could not load class schedule.');
+        throw new Error('No se pudo cargar el horario de clases.');
       }
 
       classScheduleRows = scheduleData || [];

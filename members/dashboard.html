@@ -114,6 +114,46 @@
       font-weight: 800;
     }
 
+    .dash-lang-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.16rem;
+      min-height: 32px;
+      padding: 0.14rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .dash-lang {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      min-width: 41px;
+      padding: 0.26rem 0.54rem;
+      border-radius: 999px;
+      border: 0;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .dash-lang:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .dash-lang-active {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      box-shadow: 0 6px 14px rgba(242, 167, 76, 0.28);
+    }
+
     .student-wrap {
       display: inline-grid;
       grid-template-columns: auto auto;
@@ -786,6 +826,10 @@
       <div class="brand" aria-label="Salamanca SBK Dance Academy">
         <span class="brand-mark">S</span>
         <span class="brand-name">Salamanca SBK Dance Academy</span>
+      </div>
+      <div class="dash-lang-group" aria-label="Language selector">
+        <a class="dash-lang dash-lang-active" href="/dashboard.html" aria-current="page">EN</a>
+        <a class="dash-lang" href="/es/dashboard.html">ES</a>
       </div>
       <div class="student-wrap">
         <div class="student-meta">
