@@ -89,7 +89,7 @@ function renderScheduleCards(dayData) {
         <span class="schedule-expand">${isFirstOpen ? '−' : '+'}</span>
       </summary>
       <div class="schedule-card-body">
-        <a class="button schedule-member-button" href="https://salamancasbk.es/members/" target="_blank" rel="noopener noreferrer">Watch Video & Reserve Your Spot →</a>
+        <a class="button schedule-member-button" href="https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20want%20to%20book%20my%20first%20class." target="_blank" rel="noopener noreferrer">Book Your First Class →</a>
       </div>
     `;
 

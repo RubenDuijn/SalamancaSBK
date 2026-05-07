@@ -385,12 +385,54 @@ a {
   font-size: 0.9rem;
 }
 
+.proof-strip {
+  position: relative;
+  padding: 1rem 0 1.25rem;
+  background:
+    linear-gradient(180deg, rgba(255, 125, 104, 0.08), rgba(255, 255, 255, 0.01)),
+    rgba(12, 9, 13, 0.94);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.proof-grid {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.proof-item {
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.proof-item strong {
+  display: block;
+  color: var(--accent-2);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.proof-item span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .section {
   padding: 4rem 0;
 }
 
 .section-alt {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.008));
+}
+
+.section-luxe {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 125, 104, 0.08), transparent 28%),
+    radial-gradient(circle at 10% 80%, rgba(242, 167, 76, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(13, 10, 14, 0.95), rgba(10, 8, 11, 0.98));
 }
 
 .section-heading {
@@ -466,6 +508,69 @@ a {
 
 .quote-card strong {
   color: var(--accent-2);
+}
+
+.vibe-feature {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow);
+  min-height: 410px;
+}
+
+.vibe-feature img {
+  width: 100%;
+  height: 100%;
+  min-height: 410px;
+  object-fit: cover;
+  display: block;
+}
+
+.vibe-feature::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(8, 6, 9, 0.9) 22%, rgba(8, 6, 9, 0.45) 58%, rgba(8, 6, 9, 0.12) 100%),
+    radial-gradient(circle at 82% 24%, rgba(242, 167, 76, 0.2), transparent 42%);
+}
+
+.vibe-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 1.2rem;
+}
+
+.vibe-kicker {
+  margin: 0;
+  color: var(--accent-2);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.vibe-overlay h3 {
+  margin: 0.35rem 0 0.5rem;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  line-height: 1.03;
+}
+
+.vibe-overlay p {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--muted);
+}
+
+.vibe-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .class-strip {
@@ -1015,6 +1120,11 @@ a {
     width: auto;
   }
 
+  .proof-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
   .contact-action {
     width: 100%;
   }
@@ -1041,6 +1151,11 @@ a {
   .about-grid {
     grid-template-columns: 1.1fr 0.9fr;
     align-items: start;
+  }
+
+  .vibe-actions {
+    flex-direction: row;
+    align-items: center;
   }
 
   .footer-grid {
