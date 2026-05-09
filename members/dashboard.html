@@ -3,118 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Salamanca SBK Dance Academy Members Dashboard</title>
-  <meta name="description" content="Salamanca SBK Dance Academy student dashboard" />
+  <title>Members Dashboard | Salamanca SBK Dance Academy</title>
+  <meta name="description" content="Salamanca SBK members dashboard with style and level training cards." />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#130d11" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
   <style>
-    :root {
-      --bg: #130d11;
-      --bg-soft: #1a1117;
-      --card: rgba(21, 18, 26, 0.78);
-      --line: rgba(255, 255, 255, 0.09);
-      --text: #fff7ef;
-      --muted: #e6dacc;
-      --accent: #f2a74c;
-      --accent-3: #ff7d68;
-      --accent-strong: #ffd19a;
-      --danger: #ff7d68;
-      --ok: #98e2b5;
-      --radius: 18px;
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body { min-height: 100%; }
-
-    body {
-      margin: 0;
-      font-family: "Manrope", "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 8% -10%, rgba(242, 167, 76, 0.08), transparent 34%),
-        radial-gradient(circle at 92% 10%, rgba(255, 125, 104, 0.06), transparent 30%),
-        linear-gradient(135deg, rgba(19, 13, 17, 0.74), rgba(19, 12, 16, 0.9)),
-        url('https://salamancasbk.es/images/Salamanca%20SBK.PNG') center top / cover no-repeat fixed,
-        linear-gradient(180deg, var(--bg), #0d090d 42%, #130c10);
-      padding: 0;
-      position: relative;
-      overflow-x: hidden;
+    .dashboard-page {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    .container {
-      width: min(1120px, calc(100% - 1.4rem));
-      margin: 0 auto;
-    }
-
     .dashboard-main {
       flex: 1;
-      width: 100%;
+      padding: 1.2rem 0 2.2rem;
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      min-height: 76px;
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      padding: 0 max(0.7rem, calc((100vw - 1120px) / 2));
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      border-radius: 0;
-      background: rgba(17, 12, 16, 0.8);
-      backdrop-filter: blur(16px);
-      box-shadow: none;
-      margin-bottom: 1rem;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      min-width: 0;
-      margin: 0;
-      margin-right: auto;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: 1.18rem;
-      font-weight: 800;
-    }
-
-    .brand-mark {
-      width: 2rem;
-      height: 2rem;
+    .dashboard-shell {
       display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-3));
-      color: #25170c;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 800;
-      box-shadow: 0 12px 28px rgba(242, 167, 76, 0.24);
-      flex: 0 0 auto;
+      gap: 1rem;
     }
 
-    .brand-name {
-      margin: 0;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: 1.18rem;
-      line-height: 1;
-      letter-spacing: -0.01em;
-      font-weight: 800;
+    .members-head-actions {
+      display: inline-flex;
+      gap: 0;
     }
 
-    .dash-lang-group {
+    .members-lang-group {
       display: inline-flex;
       align-items: center;
       gap: 0.16rem;
@@ -126,7 +45,7 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
-    .dash-lang {
+    .members-head-actions .nav-lang {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -142,57 +61,103 @@
       text-decoration: none;
     }
 
-    .dash-lang:hover {
+    .members-head-actions .nav-lang:hover {
       color: var(--text);
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .dash-lang-active {
+    .members-head-actions .nav-lang.nav-lang-active {
       color: #2b190b;
       border-color: rgba(255, 209, 154, 0.8);
       background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
       box-shadow: 0 6px 14px rgba(242, 167, 76, 0.28);
     }
 
-    .topbar-actions {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      margin-left: auto;
-      flex: 0 0 auto;
-    }
-
-    .student-wrap {
-      display: inline-grid;
-      grid-template-columns: auto auto;
-      align-items: center;
-      gap: 0.65rem;
-      justify-content: flex-end;
-    }
-
-    .student-meta {
+    .dashboard-hero {
       display: grid;
-      gap: 0;
-      justify-items: start;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at top left, rgba(242, 167, 76, 0.16), transparent 46%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+      box-shadow: var(--shadow);
     }
 
-    .style-tabs {
+    .dashboard-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .dashboard-sub {
+      margin: 0.32rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .dashboard-meta {
+      display: grid;
+      justify-items: end;
+      gap: 0.4rem;
+      text-align: right;
+    }
+
+    .member-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      flex-wrap: wrap;
-      justify-self: end;
+      min-height: 32px;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    .style-tab {
-      min-height: 30px;
-      padding: 0.22rem 0.62rem;
+    .dashboard-actions {
+      display: inline-flex;
+      gap: 0.55rem;
+    }
+
+    .tabs-wrap {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tabs-label {
+      margin: 0 0 0.55rem;
+      color: var(--accent-2);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .tab-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
       border-radius: 999px;
-      border: 1px solid rgba(152, 226, 181, 0.32);
-      background: rgba(152, 226, 181, 0.08);
-      color: #b8efcf;
+      min-height: 38px;
+      padding: 0.36rem 0.78rem;
       font: inherit;
-      font-size: 0.74rem;
+      font-size: 0.8rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -200,682 +165,233 @@
       transition: all 0.2s ease;
     }
 
-    .style-tab:hover {
-      border-color: rgba(184, 239, 207, 0.58);
-      background: rgba(152, 226, 181, 0.15);
-      color: #d8f8e5;
-    }
-
-    .style-tab.active {
-      border-color: rgba(184, 239, 207, 0.8);
-      background: linear-gradient(135deg, #84dba6, #b7f1cd);
-      color: #143222;
-      box-shadow: 0 8px 18px rgba(122, 214, 161, 0.22);
-    }
-
-    .style-tab:disabled {
-      border-color: rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: #9b9288;
-      cursor: default;
-      box-shadow: none;
-    }
-
-    .student-name {
-      font-weight: 600;
-      color: #f7e8f0;
-      font-size: 0.95rem;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 999px;
-      min-height: 42px;
-      padding: 0.65rem 1rem;
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s ease, filter 0.2s ease;
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #2b190b;
-    }
-
-    .btn-secondary {
+    .tab-btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 209, 154, 0.5);
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--line);
+    }
+
+    .tab-btn.active {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      box-shadow: 0 8px 18px rgba(242, 167, 76, 0.28);
+    }
+
+    .tab-btn.locked {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .combo-title {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.4vw, 1.5rem);
       color: var(--text);
     }
 
-    .btn-danger {
-      min-height: 34px;
-      padding: 0.42rem 0.72rem;
-      border: 1px solid rgba(242, 167, 76, 0.6);
-      background: rgba(242, 167, 76, 0.1);
-      color: #ffd19a;
-    }
-
-    .btn-danger:hover {
-      color: #2b190b;
-      border-color: rgba(255, 209, 154, 0.85);
-      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.85));
-    }
-
-    .section {
-      margin-top: 1rem;
-      padding: 1.15rem;
-      border: 0;
-      border-radius: var(--radius);
-      background:
-        linear-gradient(145deg, rgba(242, 167, 76, 0.06), transparent 45%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.016)),
-        var(--card);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .section h2 {
-      margin: 0 0 0.35rem;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(1.6rem, 4vw, 2rem);
-      letter-spacing: 0.02em;
-    }
-
-    .section-sub {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .tabs {
-      margin-top: 1rem;
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 0.55rem;
-    }
-
-    .tab {
-      min-height: 42px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--muted);
-      font: inherit;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      padding: 0.35rem;
-      transition: all 0.2s ease;
-    }
-
-    .tab:hover {
-      border-color: rgba(255, 209, 154, 0.35);
-      color: #fff1df;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .tab.active {
-      border-color: rgba(255, 209, 154, 0.7);
-      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
-      color: #2b190b;
-      box-shadow: 0 10px 24px rgba(242, 167, 76, 0.18);
-    }
-
-    .tab.suggested {
-      border-color: rgba(255, 209, 154, 0.48);
-      background: linear-gradient(135deg, rgba(242, 167, 76, 0.22), rgba(255, 125, 104, 0.14));
-      color: #ffe9d1;
-      box-shadow: 0 8px 18px rgba(242, 167, 76, 0.13);
-    }
-
-    .tab.locked {
-      position: relative;
-      cursor: default;
-      background: rgba(255, 255, 255, 0.03);
-      color: #a79b90;
-      border-color: rgba(255, 255, 255, 0.12);
-      opacity: 0.85;
-    }
-
-    .tab.locked:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #b9ada2;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .level-panel {
-      margin-top: 1rem;
-      border: 0;
-      border-radius: 14px;
-      padding: 1rem;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.01));
-    }
-
-    .panel-head {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 0.9rem;
-    }
-
-    .panel-head h3 {
-      margin: 0;
-      font-size: 1.25rem;
-      letter-spacing: 0.01em;
-    }
-
-    .panel-head p {
+    .combo-sub {
       margin: 0.28rem 0 0;
       color: var(--muted);
       font-size: 0.9rem;
     }
 
-    .progress-widget {
-      min-width: 210px;
-      padding: 0.65rem 0.8rem;
-      border: 0;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.022);
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .progress-top {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-
-    .arc {
-      width: 44px;
-      height: 44px;
-      display: block;
-    }
-
-    .arc-track {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.13);
-      stroke-width: 4;
-    }
-
-    .arc-fill {
-      fill: none;
-      stroke: var(--accent-strong);
-      stroke-width: 4;
-      stroke-linecap: round;
-      transform-origin: 22px 22px;
-      transform: rotate(-90deg);
-    }
-
-    .arc-label {
-      font-size: 0.83rem;
-      font-weight: 700;
-      color: #ffd19a;
-    }
-
-    .progress-note {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.82rem;
-      line-height: 1.35;
-    }
-
-    .figure-grid {
+    .cards-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.8rem;
     }
 
     .figure-card {
-      border: 0;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
       overflow: hidden;
-      position: relative;
-    }
-
-    .figure-card.is-current {
-      background: linear-gradient(160deg, rgba(242, 167, 76, 0.22), rgba(255, 255, 255, 0.045) 46%, rgba(255, 125, 104, 0.2));
-      box-shadow: 0 16px 34px rgba(242, 167, 76, 0.24);
-    }
-
-    .figure-card.is-current::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 3px;
-      background: linear-gradient(180deg, var(--accent), #ff7d68);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 100%;
     }
 
     .figure-head {
+      padding: 0.72rem 0.78rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: grid;
-      gap: 0.25rem;
-      padding: 0.8rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 0.18rem;
     }
 
-    .figure-kicker {
+    .figure-index {
       margin: 0;
-      color: var(--accent-strong);
+      color: var(--accent-2);
       font-size: 0.72rem;
-      letter-spacing: 0.08em;
+      font-weight: 800;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      font-weight: 700;
     }
 
     .figure-name {
       margin: 0;
       font-size: 1rem;
       line-height: 1.3;
-      font-weight: 700;
-    }
-
-    .badge-week {
-      position: absolute;
-      top: 0.8rem;
-      right: 0.8rem;
-      z-index: 2;
-      display: inline-flex;
-      width: fit-content;
-      border-radius: 999px;
-      padding: 0.18rem 0.5rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #2b190b;
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      box-shadow: 0 10px 20px rgba(242, 167, 76, 0.3);
-    }
-
-    .badge-next-week {
-      position: absolute;
-      top: 0.8rem;
-      right: 0.8rem;
-      z-index: 2;
-      display: inline-flex;
-      width: fit-content;
-      border-radius: 999px;
-      padding: 0.18rem 0.5rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #d8f8e5;
-      background: linear-gradient(135deg, rgba(122, 214, 161, 0.5), rgba(115, 180, 242, 0.42));
-      border: 1px solid rgba(184, 239, 207, 0.5);
     }
 
     .figure-body {
-      padding: 0.8rem;
+      padding: 0.78rem;
       display: grid;
-      gap: 0.62rem;
+      align-content: start;
+      gap: 0.7rem;
     }
 
-    .figure-body p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.4;
-    }
-
-    .weekly-attend {
-      display: grid;
-      gap: 0.45rem;
-      padding: 0.55rem;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-    }
-
-    .weekly-attend-label {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.76rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .weekly-attend-buttons {
-      display: grid;
-      gap: 0.45rem;
-      justify-items: start;
-    }
-
-    .tips {
-      margin: 0;
-      padding-left: 1rem;
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.35;
-    }
-
-    .tips li + li {
-      margin-top: 0.22rem;
-    }
-
-    .video-wrap {
+    .figure-video {
       border: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       min-height: 170px;
-      position: relative;
       background: #09090e;
     }
 
-    .video-wrap iframe {
+    .figure-video iframe {
       width: 100%;
-      height: 100%;
       min-height: 170px;
       border: 0;
       display: block;
     }
 
-    .video-locked {
-      position: absolute;
-      inset: 0;
+    .figure-actions {
       display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 1rem;
-      background: rgba(6, 6, 10, 0.86);
-      color: #dac5cf;
-      font-size: 0.86rem;
-      line-height: 1.4;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
     }
 
-    .video-lock-icon {
-      display: none;
-    }
-
-    .video-lock-label {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.28rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(242, 167, 76, 0.35);
-      background: rgba(242, 167, 76, 0.14);
-      color: #ffd19a;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 0.45rem;
-    }
-
-    .attend-row {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .count-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2rem 0.5rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--muted);
-      font-size: 0.74rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .attend-btn {
-      min-height: 36px;
-      padding: 0.45rem 0.75rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-      font: inherit;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .attend-btn.primary {
-      border: 0;
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #2b190b;
-    }
-
-    .attend-btn.is-attending {
-      border: 0;
-      background: linear-gradient(135deg, #7fd8a1, #aaf0c2);
-      color: #153624;
-    }
-
-    .attend-btn:disabled {
-      opacity: 0.76;
-      cursor: default;
-    }
-
-    .locked-panel {
-      padding: 1.4rem;
-      border: 1px dashed rgba(242, 167, 76, 0.33);
-      border-left: 4px solid rgba(242, 167, 76, 0.7);
-      border-radius: 12px;
-      text-align: left;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .locked-panel strong {
-      color: #ffd19a;
-      display: block;
-      margin-bottom: 0.35rem;
-    }
-
-    .days-tabs {
-      margin-top: 0.95rem;
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 0.45rem;
-    }
-
-    .schedule-list {
-      margin-top: 0.95rem;
-      display: grid;
-      gap: 0.65rem;
-    }
-
-    .class-card {
-      border: 0;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.02);
-      overflow: hidden;
-    }
-
-    .class-summary {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      padding: 0.85rem;
-      text-align: left;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 0.7rem;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .class-time {
-      font-weight: 800;
-      color: #ffd19a;
-      font-size: 0.92rem;
-    }
-
-    .class-meta {
-      display: grid;
-      gap: 0.12rem;
-    }
-
-    .class-style {
-      font-weight: 700;
-      font-size: 0.92rem;
-    }
-
-    .class-level {
-      font-size: 0.77rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .class-chevron {
-      font-size: 1rem;
-      color: var(--muted);
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .class-body {
-      padding: 0 0.85rem 0.85rem;
-      border-top: 0;
-      display: none;
-      gap: 0.6rem;
-      background: rgba(10, 10, 15, 0.24);
-    }
-
-    .dashboard-footer {
-      margin-top: 2.1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(10, 8, 12, 0.35);
-    }
-
-    .dashboard-footer .container {
-      min-height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.9rem;
+    .figure-status {
+      margin: 0;
       color: var(--muted);
       font-size: 0.84rem;
+      line-height: 1.3;
     }
 
-    .class-card.open .class-body {
-      display: grid;
-    }
-
-    .class-body p {
-      margin: 0.55rem 0 0;
-      color: var(--muted);
-      font-size: 0.88rem;
+    .attend-active {
+      color: #bff1cb;
+      font-weight: 700;
     }
 
     .error-banner {
-      margin-top: 0.9rem;
-      border: 1px solid rgba(255, 125, 104, 0.45);
+      display: none;
+      border: 1px solid rgba(255, 125, 104, 0.55);
       background: rgba(255, 125, 104, 0.14);
       color: #ffd8bf;
       border-radius: 12px;
       padding: 0.65rem 0.8rem;
       font-size: 0.9rem;
-      display: none;
     }
 
-    .error-banner.show { display: block; }
+    .error-banner.show {
+      display: block;
+    }
 
-    @media (max-width: 1024px) {
-      .figure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .members-footer {
+      border-top: 1px solid var(--line);
+      background: rgba(10, 8, 12, 0.36);
+      padding: 1rem 0 1.2rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .members-footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    @media (max-width: 980px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 760px) {
-      .topbar {
-        flex-wrap: wrap;
-        width: 100%;
-        margin-left: 0;
-        padding: 0.8rem 0.9rem;
+      .dashboard-main {
+        padding-top: 0.9rem;
       }
-      .brand-name {
-        font-size: 1.06rem;
-      }
-      .topbar-actions {
-        order: 2;
-        width: 100%;
-        justify-content: space-between;
-      }
-      .student-wrap {
-        order: 3;
-        width: 100%;
+
+      .dashboard-hero {
         grid-template-columns: 1fr;
+      }
+
+      .dashboard-meta {
         justify-items: start;
+        text-align: left;
       }
-      .style-tabs {
-        justify-self: start;
+
+      .figure-actions {
+        grid-template-columns: 1fr;
       }
-      .dashboard-footer .container {
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .members-footer .container {
         flex-direction: column;
         align-items: flex-start;
-        justify-content: center;
-        padding: 0.8rem 0;
-      }
-      .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .days-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .figure-grid { grid-template-columns: 1fr; }
-      .panel-head {
-        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <header class="topbar">
-      <div class="brand" aria-label="Salamanca SBK Dance Academy">
+<body class="dashboard-page" id="top">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Salamanca SBK Dance Academy">
         <span class="brand-mark">S</span>
-        <span class="brand-name">Salamanca SBK Dance Academy</span>
-      </div>
-      <div class="student-wrap">
-        <div class="student-meta">
-          <span id="student-name" class="student-name">Loading...</span>
+        <span>Salamanca SBK Dance Academy</span>
+      </a>
+      <div class="members-head-actions" aria-label="Language selector">
+        <div class="members-lang-group">
+          <a class="nav-lang nav-lang-active" href="/members/dashboard.html" aria-current="page">EN</a>
+          <a class="nav-lang" href="/es/members/dashboard.html">ES</a>
         </div>
-        <div id="style-tabs" class="style-tabs" aria-label="Dance styles"></div>
       </div>
-      <div class="topbar-actions">
-        <div class="dash-lang-group" aria-label="Language selector">
-          <a class="dash-lang dash-lang-active" href="/dashboard.html" aria-current="page">EN</a>
-          <a class="dash-lang" href="/es/dashboard.html">ES</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container dashboard-shell">
+      <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
+
+      <section class="dashboard-hero" aria-labelledby="dashboard-title">
+        <div>
+          <h1 id="dashboard-title" class="dashboard-title">Member Training Dashboard</h1>
+          <p class="dashboard-sub">Choose style, choose level, and train with your six weekly figures.</p>
         </div>
-        <button id="signout-btn" class="btn btn-danger" type="button">Sign out</button>
-      </div>
-    </header>
+        <div class="dashboard-meta">
+          <span id="student-name" class="member-pill">Loading...</span>
+          <div class="dashboard-actions">
+            <button id="signout-btn" class="button secondary" type="button">Sign out</button>
+          </div>
+        </div>
+      </section>
 
-    <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
+      <section class="tabs-wrap" aria-labelledby="style-tabs-title">
+        <p id="style-tabs-title" class="tabs-label">Style</p>
+        <div id="style-tabs" class="tab-row"></div>
+      </section>
 
-    <main class="dashboard-main">
+      <section class="tabs-wrap" aria-labelledby="level-tabs-title">
+        <p id="level-tabs-title" class="tabs-label">Level</p>
+        <div id="level-tabs" class="tab-row"></div>
+      </section>
 
-    <section class="section" id="curriculum-section">
-      <h2>Curriculum Journey</h2>
-      <p class="section-sub">Follow your current syllabus, track what is active this week, and keep your attendance in one place.</p>
+      <section class="tabs-wrap" aria-labelledby="combo-title">
+        <h2 id="combo-title" class="combo-title">Loading curriculum...</h2>
+        <p id="combo-sub" class="combo-sub"></p>
+        <div id="cards-grid" class="cards-grid"></div>
+      </section>
+    </div>
+  </main>
 
-      <div id="level-tabs" class="tabs"></div>
-      <div id="level-panel" class="level-panel"></div>
-    </section>
-
-    </main>
-  </div>
-
-  <footer class="dashboard-footer" role="contentinfo">
+  <footer class="members-footer" role="contentinfo">
     <div class="container">
       <span>© <span id="dashboard-year"></span> Salamanca SBK Dance Academy</span>
-      <span>Keep dancing every week with clarity, flow, and connection.</span>
+      <span>Simple weekly structure: style + level + six cards.</span>
     </div>
   </footer>
 
@@ -885,96 +401,35 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4YW5zdmZuZ2tqdGJiZG12Z3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDM5MzIsImV4cCI6MjA5MzQ3OTkzMn0.X8eXfZDlORDKzAbr2fsulaRw4vi_4VG4vhV1sPujYCo';
 
     const LEVELS = [
-      { slug: 'beginner', label: 'Beginner', subtitle: 'Your foundation and flow start here.' },
-      { slug: 'intermediate_1', label: 'Intermediate 1', subtitle: 'Connection and cleaner transitions.' },
-      { slug: 'intermediate_2', label: 'Intermediate 2', subtitle: 'More precision, contrast, and timing.' },
-      { slug: 'intermediate_3', label: 'Intermediate 3', subtitle: 'Complex combinations with confidence.' },
-      { slug: 'advanced_1', label: 'Advanced 1', subtitle: 'Dynamic control and musical interpretation.' },
-      { slug: 'advanced_2', label: 'Advanced 2', subtitle: 'Layered movement and partner sensitivity.' },
-      { slug: 'advanced_3', label: 'Advanced 3', subtitle: 'Master level integration and improvisation.' },
+      { slug: 'beginner', label: 'Beginner' },
+      { slug: 'intermediate_1', label: 'Intermediate 1' },
+      { slug: 'intermediate_2', label: 'Intermediate 2' },
+      { slug: 'intermediate_3', label: 'Intermediate 3' },
+      { slug: 'advanced_1', label: 'Advanced 1' },
+      { slug: 'advanced_2', label: 'Advanced 2' },
+      { slug: 'advanced_3', label: 'Advanced 3' },
     ];
 
-    const LEVEL_INDEX = Object.fromEntries(LEVELS.map((l, i) => [l.slug, i]));
-    const PUBLIC_VIDEO_ID = 'J5qp261RRR4';
+    const STYLE_ORDER = ['Salsa', 'Bachata', 'Kizomba', 'Tango', 'Zouk', 'Forro'];
+    const VIDEO_IDS = ['J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4'];
 
-    function levelTitle(slug) {
-      return LEVELS.find((l) => l.slug === slug)?.label || slug;
-    }
-
-    function buildFigures(levelSlug, names) {
-      return names.map((name, idx) => ({
-        index: idx + 1,
-        name,
-        description: `${name} builds control, timing, and cleaner communication between partners with practical social floor application.`,
-        tips: [
-          'Keep your frame calm and your steps grounded.',
-          'Lead/follow from body intention before using arms.',
-          'Prioritize rhythm and clarity over speed.'
-        ],
-        videoId: PUBLIC_VIDEO_ID,
-        levelSlug,
-      }));
-    }
-
-    const FIGURE_DATA = {
-      beginner: buildFigures('beginner', ['El Paso Raiz', 'La Guia Suave', 'El Giro Sencillo', 'La Ventana', 'El Abrazo Cerrado', 'La Pausa Dramatica']),
-      intermediate_1: buildFigures('intermediate_1', ['La Media Luna', 'El Desliz Lateral', 'La Corona', 'El Puente', 'La Ola', 'El Nudo']),
-      intermediate_2: buildFigures('intermediate_2', ['La Sombra', 'El Espejo', 'La Espiral', 'El Floreado', 'La Trampa', 'El Columpio']),
-      intermediate_3: buildFigures('intermediate_3', ['El Rompecabezas', 'La Cascada', 'El Corazon', 'La Marea', 'El Latigo', 'La Firma']),
-      advanced_1: buildFigures('advanced_1', ['La Tormenta', 'El Susurro', 'La Mariposa', 'El Pendulo Doble', 'La Cuerda', 'El Relampago']),
-      advanced_2: buildFigures('advanced_2', ['La Constelacion', 'El Silencio', 'La Telarana', 'El Desequilibrio', 'La Seduccion', 'El Torbellino']),
-      advanced_3: buildFigures('advanced_3', ['La Memoria', 'El Maestro', 'La Improvisacion', 'El Cuadro', 'La Herencia', 'El Circulo Completo']),
-    };
-
-    const FALLBACK_SCHEDULE = [
-      { day: 'Monday', time: '19:00', dance_style: 'Salsa Beginner', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Monday', time: '20:00', dance_style: 'Salsa Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Monday', time: '21:00', dance_style: 'Salsa Partnerwork Drills', level_slug: 'intermediate_2', current_figure_index: 3 },
-      { day: 'Tuesday', time: '19:00', dance_style: 'Bachata Beginner', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Tuesday', time: '20:00', dance_style: 'Bachata Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Tuesday', time: '21:00', dance_style: 'Bachata Connection Lab', level_slug: 'intermediate_2', current_figure_index: 3 },
-      { day: 'Wednesday', time: '19:00', dance_style: 'Kizomba Beginner', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Wednesday', time: '20:00', dance_style: 'Kizomba Intermediate', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Wednesday', time: '21:00', dance_style: 'Zouk Session', level_slug: 'intermediate_2', current_figure_index: 3 },
-      { day: 'Thursday', time: '19:00', dance_style: 'Salsa Partnerwork', level_slug: 'intermediate_2', current_figure_index: 3 },
-      { day: 'Thursday', time: '20:00', dance_style: 'Tango Session', level_slug: 'advanced_1', current_figure_index: 4 },
-      { day: 'Thursday', time: '21:00', dance_style: 'Styling & Musicality Lab', level_slug: 'intermediate_2', current_figure_index: 3 },
-      { day: 'Friday', time: '19:00', dance_style: 'Forro Session', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Friday', time: '20:00', dance_style: 'Bachata Social Prep', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Friday', time: '21:00', dance_style: 'SBK Social Practice', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Friday', time: '22:00', dance_style: 'Open Social Dance Floor', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Saturday', time: '19:00', dance_style: 'Pre-Social Workshop', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Saturday', time: '20:00', dance_style: 'Salsa Social Lab', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Saturday', time: '21:00', dance_style: 'Bachata Social Lab', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Saturday', time: '22:00', dance_style: 'SBK Social Night', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Sunday', time: '19:00', dance_style: 'Recovery Practice Circle', level_slug: 'beginner', current_figure_index: 1 },
-      { day: 'Sunday', time: '20:00', dance_style: 'Musicality & Styling Lab', level_slug: 'intermediate_1', current_figure_index: 2 },
-      { day: 'Sunday', time: '21:00', dance_style: 'Guided Social Practica', level_slug: 'beginner', current_figure_index: 1 },
-    ];
-
-    const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const STYLE_ORDER = ['Salsa', 'Bachata', 'Kizomba', 'Tango', 'Zouk', 'Forró'];
-    const DEMO_STUDENT_STYLE_LEVELS = {
-      Salsa: 'beginner',
-      Bachata: 'intermediate_1',
-    };
+    const LEVEL_INDEX = Object.fromEntries(LEVELS.map((level, index) => [level.slug, index]));
 
     const errorBanner = document.getElementById('error-banner');
     const studentNameEl = document.getElementById('student-name');
-    const styleTabsEl = document.getElementById('style-tabs');
     const signoutBtn = document.getElementById('signout-btn');
+    const styleTabsEl = document.getElementById('style-tabs');
     const levelTabsEl = document.getElementById('level-tabs');
-    const levelPanelEl = document.getElementById('level-panel');
+    const comboTitleEl = document.getElementById('combo-title');
+    const comboSubEl = document.getElementById('combo-sub');
+    const cardsGridEl = document.getElementById('cards-grid');
 
     let sbClient = null;
     let authUser = null;
     let profile = null;
-    let classScheduleRows = [];
     let attendanceRows = [];
-    let selectedLevelSlug = 'beginner';
-    let selectedStyleKey = null;
-    let studentStyleEntries = [];
-    const countCache = new Map();
+    let selectedStyle = STYLE_ORDER[0];
+    let selectedLevel = 'beginner';
 
     function showError(message) {
       errorBanner.textContent = message;
@@ -995,158 +450,42 @@
       }
     }
 
-    function scheduleRowKey(entry) {
-      return `${entry.day}|${entry.time}|${entry.dance_style}`;
+    function normalizeText(value) {
+      return String(value || '').trim();
     }
 
-    function mergeScheduleWithFallback(rows) {
-      const merged = new Map();
-      FALLBACK_SCHEDULE.forEach((entry) => {
-        merged.set(scheduleRowKey(entry), { ...entry });
-      });
-
-      (rows || []).forEach((entry) => {
-        if (!entry?.day || !entry?.time || !entry?.dance_style) {
-          return;
-        }
-        merged.set(scheduleRowKey(entry), entry);
-      });
-
-      return Array.from(merged.values());
+    function levelLabel(levelSlug) {
+      return LEVELS.find((level) => level.slug === levelSlug)?.label || 'Unknown';
     }
 
-    function canAccessLevel(targetSlug) {
-      const activeLevel = activeStyleLevelSlug();
-      if (!(activeLevel in LEVEL_INDEX) || !(targetSlug in LEVEL_INDEX)) {
-        return false;
-      }
-      return LEVEL_INDEX[targetSlug] <= LEVEL_INDEX[activeLevel];
-    }
+    function styleMaxLevelSlug(style) {
+      const profileLevel = profile?.level || 'beginner';
 
-    function videoUnlocked(levelSlug, figureIndex) {
-      if (levelSlug === 'beginner' && (figureIndex === 1 || figureIndex === 2)) {
-        return true;
-      }
-      return LEVEL_INDEX[profile.level] >= LEVEL_INDEX[levelSlug];
-    }
-
-    function lockMessageFor(levelSlug) {
-      return `Unlocks at ${levelTitle(levelSlug)}`;
-    }
-
-    function profileLevelDisplay(levelSlug) {
-      return levelTitle(levelSlug);
-    }
-
-    function styleKeyFromDanceStyle(value) {
-      const raw = String(value || '').trim();
-      if (!raw) return 'General';
-      const firstToken = raw.split(/\s+/)[0];
-      const normalized = firstToken.charAt(0).toUpperCase() + firstToken.slice(1).toLowerCase();
-      if (normalized === 'Sbk') {
-        return 'Salsa';
-      }
-      return normalized;
-    }
-
-    function deriveStudentStyleEntries() {
-      return STYLE_ORDER.map((style) => {
-        const levelSlug = DEMO_STUDENT_STYLE_LEVELS[style] || null;
-        return {
-          key: style,
-          label: style,
-          levelSlug,
-          enabled: Boolean(levelSlug),
-        };
-      });
-    }
-
-    function styleEntryForSelected() {
-      return studentStyleEntries.find((entry) => entry.key === selectedStyleKey) || null;
-    }
-
-    function activeStyleLevelSlug() {
-      return styleEntryForSelected()?.levelSlug || 'beginner';
-    }
-
-    function recurringSessionsForStyle(styleKey) {
-      const preferredDays = new Set(['Monday', 'Thursday']);
-      const rows = classScheduleRows
-        .filter((row) => styleKeyFromDanceStyle(row.dance_style) === styleKey)
-        .filter((row) => preferredDays.has(row.day))
-        .sort((a, b) => {
-          const dayDiff = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
-          if (dayDiff !== 0) return dayDiff;
-          return String(a.time).localeCompare(String(b.time));
-        });
-
-      const unique = [];
-      const seenDays = new Set();
-      for (const row of rows) {
-        if (!seenDays.has(row.day)) {
-          seenDays.add(row.day);
-          unique.push({ day: row.day, time: row.time });
+      if (profile && profile.style_levels && typeof profile.style_levels === 'object') {
+        const styleKey = style.toLowerCase();
+        const styleSpecificLevel = profile.style_levels[styleKey];
+        if (styleSpecificLevel && styleSpecificLevel in LEVEL_INDEX) {
+          return styleSpecificLevel;
         }
       }
 
-      if (!seenDays.has('Monday')) {
-        unique.unshift({ day: 'Monday', time: '18:00' });
-      }
-      if (!seenDays.has('Thursday')) {
-        unique.push({ day: 'Thursday', time: '18:30' });
-      }
-
-      return unique
-        .filter((s) => preferredDays.has(s.day))
-        .sort((a, b) => DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day));
+      return profileLevel in LEVEL_INDEX ? profileLevel : 'beginner';
     }
 
-    function weeklySessionsForFigure(styleKey, levelSlug, figureIndex) {
-      return classScheduleRows
-        .filter((row) => styleKeyFromDanceStyle(row.dance_style) === styleKey)
-        .filter((row) => row.level_slug === levelSlug)
-        .filter((row) => Number(row.current_figure_index) === Number(figureIndex))
-        .sort((a, b) => {
-          const dayDiff = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
-          if (dayDiff !== 0) return dayDiff;
-          return String(a.time).localeCompare(String(b.time));
-        });
+    function levelLocked(levelSlug) {
+      const maxLevelSlug = styleMaxLevelSlug(selectedStyle);
+      return LEVEL_INDEX[levelSlug] > LEVEL_INDEX[maxLevelSlug];
     }
 
-    function applyStyleLevelContext() {
-      const styleLevel = activeStyleLevelSlug();
-      if (!canAccessLevel(selectedLevelSlug)) {
-        selectedLevelSlug = styleLevel;
-      }
+    function figureId(style, levelSlug, figureIndex) {
+      return `${style}|${levelSlug}|${figureIndex}`;
     }
 
-    function renderStyleTabs() {
-      if (!styleTabsEl) return;
-      styleTabsEl.innerHTML = '';
-
-      studentStyleEntries.forEach((entry) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = `style-tab${entry.key === selectedStyleKey ? ' active' : ''}`;
-        button.textContent = entry.label;
-        button.disabled = !entry.enabled;
-        if (entry.enabled) {
-          button.addEventListener('click', () => {
-            selectedStyleKey = entry.key;
-            applyStyleLevelContext();
-            renderStyleTabs();
-            renderCurriculum();
-          });
-        }
-        styleTabsEl.appendChild(button);
-      });
+    function figureName(style, levelSlug, figureIndex) {
+      return `${style} ${levelLabel(levelSlug)} Figure ${figureIndex}`;
     }
 
-    function figureId(levelSlug, index) {
-      return `${levelSlug}:${index}`;
-    }
-
-    function todaysDateISO() {
+    function todayIso() {
       const now = new Date();
       const y = now.getFullYear();
       const m = String(now.getMonth() + 1).padStart(2, '0');
@@ -1154,114 +493,30 @@
       return `${y}-${m}-${d}`;
     }
 
-    function classDateForDay(dayName) {
-      const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
-      if (dayIndex < 0) {
-        return todaysDateISO();
-      }
-
-      const base = new Date();
-      const todayIdx = base.getDay();
-      let delta = dayIndex - todayIdx;
-      if (delta < 0) {
-        delta += 7;
-      }
-      base.setDate(base.getDate() + delta);
-
-      const y = base.getFullYear();
-      const m = String(base.getMonth() + 1).padStart(2, '0');
-      const d = String(base.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
+    function isAttending(figureIdValue) {
+      const today = todayIso();
+      return attendanceRows.some((row) => row.figure_id === figureIdValue && row.class_date === today);
     }
 
-    function classDateForDayWithWeekOffset(dayName, weekOffset) {
-      const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
-      if (dayIndex < 0) {
-        return todaysDateISO();
-      }
-
-      const base = new Date();
-      const todayIdx = base.getDay();
-      let delta = dayIndex - todayIdx;
-      if (delta < 0) {
-        delta += 7;
-      }
-      const safeOffset = Math.max(0, Number(weekOffset) || 0);
-      delta += safeOffset * 7;
-      base.setDate(base.getDate() + delta);
-
-      const y = base.getFullYear();
-      const m = String(base.getMonth() + 1).padStart(2, '0');
-      const d = String(base.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
-
-    function studentAttendingTodaySet() {
-      const today = todaysDateISO();
-      return new Set(
-        attendanceRows
-          .filter((r) => r.class_date === today)
-          .map((r) => r.figure_id)
-      );
-    }
-
-    async function getAttendanceCountForFigure(figureIdValue) {
-      const cacheKey = `${figureIdValue}::${todaysDateISO()}`;
-      if (countCache.has(cacheKey)) {
-        return countCache.get(cacheKey);
-      }
-
-      const { count, error } = await sbClient
+    async function loadAttendance() {
+      const { data, error } = await sbClient
         .from('attendance')
-        .select('*', { count: 'exact', head: true })
-        .eq('figure_id', figureIdValue)
-        .eq('class_date', todaysDateISO());
+        .select('id, student_id, figure_id, figure_name, class_date, created_at')
+        .eq('student_id', authUser.id);
 
       if (error) {
-        countCache.set(cacheKey, null);
-        return null;
+        throw new Error('Could not load attendance records.');
       }
 
-      countCache.set(cacheKey, count ?? 0);
-      return count ?? 0;
+      attendanceRows = data || [];
     }
 
-    function currentFigureForLevel(levelSlug) {
-      const rows = classScheduleRows.filter((r) => r.level_slug === levelSlug);
-      if (rows.length === 0) return 1;
-      const maxVal = Math.max(...rows.map((r) => Number(r.current_figure_index) || 1));
-      return Math.max(1, Math.min(6, maxVal));
-    }
-
-    function renderLevelTabs() {
-      levelTabsEl.innerHTML = '';
-      LEVELS.forEach((level) => {
-        const button = document.createElement('button');
-        const locked = !canAccessLevel(level.slug);
-        const suggested = !locked && selectedLevelSlug !== level.slug;
-        button.type = 'button';
-        button.className = `tab${selectedLevelSlug === level.slug ? ' active' : ''}${locked ? ' locked' : ''}${suggested ? ' suggested' : ''}`;
-        button.textContent = level.label;
-
-        if (!locked) {
-          button.addEventListener('click', () => {
-            selectedLevelSlug = level.slug;
-            renderCurriculum();
-          });
-        } else {
-          button.title = lockMessageFor(level.slug);
-        }
-
-        levelTabsEl.appendChild(button);
-      });
-    }
-
-    async function insertAttendanceRow(figureIdValue, figureName, classDateISO = todaysDateISO()) {
+    async function markAttendance(figureIdValue, name) {
       const payload = {
         student_id: authUser.id,
         figure_id: figureIdValue,
-        figure_name: figureName,
-        class_date: classDateISO,
+        figure_name: name,
+        class_date: todayIso(),
       };
 
       const { data, error } = await sbClient
@@ -1275,345 +530,181 @@
       }
 
       attendanceRows.push(data);
-      const cacheKey = `${figureIdValue}::${classDateISO}`;
-      if (countCache.has(cacheKey) && typeof countCache.get(cacheKey) === 'number') {
-        countCache.set(cacheKey, countCache.get(cacheKey) + 1);
-      }
     }
 
-    async function removeAttendanceRow(figureIdValue, classDateISO = todaysDateISO()) {
-      const targetDate = classDateISO;
-      const entry = [...attendanceRows]
-        .reverse()
-        .find(
-          (row) => row.figure_id === figureIdValue
-            && row.class_date === targetDate
-            && row.student_id === authUser.id
-        );
-
-      if (!entry) {
+    async function unmarkAttendance(figureIdValue) {
+      const today = todayIso();
+      const existing = attendanceRows.find((row) => row.figure_id === figureIdValue && row.class_date === today);
+      if (!existing) {
         return;
       }
 
       const { error } = await sbClient
         .from('attendance')
         .delete()
-        .eq('id', entry.id);
+        .eq('id', existing.id);
 
       if (error) {
         throw error;
       }
 
-      const idx = attendanceRows.findIndex((row) => row.id === entry.id);
-      if (idx >= 0) {
-        attendanceRows.splice(idx, 1);
-      }
-
-      const cacheKey = `${figureIdValue}::${targetDate}`;
-      if (countCache.has(cacheKey) && typeof countCache.get(cacheKey) === 'number') {
-        countCache.set(cacheKey, Math.max(0, countCache.get(cacheKey) - 1));
-      }
+      attendanceRows = attendanceRows.filter((row) => row.id !== existing.id);
     }
 
-    async function buildAttendRow(container, figureIdValue, figureName, enabled) {
-      const wrap = document.createElement('div');
-      wrap.className = 'attend-row';
+    function createTabButton(label, active, locked, onClick) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `tab-btn${active ? ' active' : ''}${locked ? ' locked' : ''}`;
+      button.textContent = label;
 
-      const countPill = document.createElement('span');
-      countPill.className = 'count-pill';
-      countPill.textContent = 'Attending today: ...';
-      wrap.appendChild(countPill);
-
-      const count = await getAttendanceCountForFigure(figureIdValue);
-      countPill.textContent = count === null
-        ? 'Attending today: unavailable'
-        : `Attending today: ${count}`;
-
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'attend-btn';
-
-      function syncAttendButton(state) {
-        const isAttending = state === 'attending';
-        const isBusy = state === 'saving' || state === 'undoing';
-
-        btn.classList.toggle('primary', enabled && !isAttending);
-        btn.classList.toggle('is-attending', enabled && isAttending);
-        btn.disabled = !enabled || isBusy;
-
-        if (!enabled) {
-          btn.textContent = 'Review Only';
-          return;
-        }
-        btn.textContent = isAttending ? 'Attending' : 'Attend';
+      if (locked) {
+        button.title = 'Locked for this style';
+      } else {
+        button.addEventListener('click', onClick);
       }
 
-      const alreadyAttending = studentAttendingTodaySet().has(figureIdValue);
-      syncAttendButton(alreadyAttending ? 'attending' : 'idle');
-
-      if (enabled) {
-        btn.addEventListener('click', async () => {
-          const currentlyAttending = studentAttendingTodaySet().has(figureIdValue);
-          btn.disabled = true;
-          clearError();
-
-          try {
-            if (currentlyAttending) {
-              await removeAttendanceRow(figureIdValue);
-            } else {
-              await insertAttendanceRow(figureIdValue, figureName);
-            }
-
-            const updated = await getAttendanceCountForFigure(figureIdValue);
-            countPill.textContent = updated === null
-              ? 'Attending today: unavailable'
-              : `Attending today: ${updated}`;
-
-            syncAttendButton(currentlyAttending ? 'idle' : 'attending');
-          } catch (err) {
-            syncAttendButton(currentlyAttending ? 'attending' : 'idle');
-            showError(err.message || 'Could not update attendance.');
-          }
-        });
-      }
-
-      wrap.appendChild(btn);
-      container.appendChild(wrap);
+      return button;
     }
 
-    async function buildSessionAttendButton(container, figureIdValue, figureName, sessionDay, sessionTime, enabled, weekOffset = 0) {
-      const label = `${sessionDay} ${sessionTime}`;
-      const classDateISO = classDateForDayWithWeekOffset(sessionDay, weekOffset);
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'attend-btn primary';
+    function buildFigureCard(figureIndex) {
+      const style = selectedStyle;
+      const levelSlug = selectedLevel;
+      const id = figureId(style, levelSlug, figureIndex);
+      const name = figureName(style, levelSlug, figureIndex);
+      const videoId = VIDEO_IDS[figureIndex - 1] || VIDEO_IDS[0];
+      const currentlyAttending = isAttending(id);
 
-      function syncState(isAttending) {
-        btn.classList.toggle('primary', enabled && !isAttending);
-        btn.classList.toggle('is-attending', enabled && isAttending);
-        btn.disabled = !enabled;
+      const card = document.createElement('article');
+      card.className = 'figure-card';
 
-        if (!enabled) {
-          btn.textContent = `Attend ${label}`;
-          return;
-        }
-        btn.textContent = isAttending ? `Attending ${label}` : `Attend ${label}`;
-      }
+      const attendLabel = currentlyAttending ? 'Attending today' : 'Not marked yet';
+      const attendClass = currentlyAttending ? 'figure-status attend-active' : 'figure-status';
 
-      syncState(
-        attendanceRows.some(
-          (row) => row.figure_id === figureIdValue
-            && row.class_date === classDateISO
-            && row.student_id === authUser.id
-        )
-      );
-
-      if (enabled) {
-        btn.addEventListener('click', async () => {
-          const currentlyAttending = attendanceRows.some(
-            (row) => row.figure_id === figureIdValue
-              && row.class_date === classDateISO
-              && row.student_id === authUser.id
-          );
-          btn.disabled = true;
-          clearError();
-
-          try {
-            if (currentlyAttending) {
-              await removeAttendanceRow(figureIdValue, classDateISO);
-            } else {
-              await insertAttendanceRow(figureIdValue, `${figureName} (${label})`, classDateISO);
-            }
-            syncState(!currentlyAttending);
-          } catch (err) {
-            syncState(currentlyAttending);
-            showError(err.message || 'Could not update attendance.');
-          }
-        });
-      }
-
-      container.appendChild(btn);
-    }
-
-    async function renderLevelPanel() {
-      const levelMeta = LEVELS.find((l) => l.slug === selectedLevelSlug);
-      const unlocked = canAccessLevel(selectedLevelSlug);
-
-      if (!unlocked) {
-        levelPanelEl.innerHTML = `
-          <div class="locked-panel">
-            <strong>Locked Level</strong>
-            This level is not unlocked yet for your account.<br />
-            ${lockMessageFor(selectedLevelSlug)}
-          </div>
-        `;
-        return;
-      }
-
-      const currentFigure = currentFigureForLevel(selectedLevelSlug);
-      const nextFigure = currentFigure < 6 ? currentFigure + 1 : null;
-      const recapEnd = Math.max(1, currentFigure - 1);
-      const progressRatio = Math.max(0, Math.min(1, currentFigure / 6));
-      const arcRadius = 18;
-      const arcCircumference = 2 * Math.PI * arcRadius;
-      const arcOffset = Number((arcCircumference * (1 - progressRatio)).toFixed(6));
-
-      const wrapper = document.createElement('div');
-
-      const panelHead = document.createElement('div');
-      panelHead.className = 'panel-head';
-      panelHead.innerHTML = `
-        <div>
-          <h3>${levelMeta.label}</h3>
-          <p>${levelMeta.subtitle}</p>
+      card.innerHTML = `
+        <div class="figure-head">
+          <p class="figure-index">Figure ${figureIndex}</p>
+          <h3 class="figure-name">${name}</h3>
         </div>
-        <div class="progress-widget">
-          <div class="progress-top">
-            <svg class="arc" viewBox="0 0 44 44" aria-hidden="true">
-              <circle class="arc-track" cx="22" cy="22" r="18"></circle>
-              <circle class="arc-fill" cx="22" cy="22" r="18" style="stroke-dasharray:${arcCircumference};stroke-dashoffset:${arcOffset};"></circle>
-            </svg>
-            <span class="arc-label">Figure ${currentFigure} / 6</span>
+        <div class="figure-body">
+          <div class="figure-video">
+            <iframe
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              src="https://www.youtube.com/embed/${videoId}"
+              title="${name} video"
+            ></iframe>
           </div>
-          <p class="progress-note">This week: recap previous figures, new today: figure ${currentFigure}</p>
+          <div class="figure-actions"></div>
+          <p class="${attendClass}">${attendLabel}</p>
         </div>
       `;
 
-      wrapper.appendChild(panelHead);
+      const actions = card.querySelector('.figure-actions');
 
-      const grid = document.createElement('div');
-      grid.className = 'figure-grid';
+      const attendButton = document.createElement('button');
+      attendButton.type = 'button';
+      attendButton.className = currentlyAttending ? 'button secondary' : 'button';
+      attendButton.textContent = currentlyAttending ? 'Undo Attend' : 'Attend';
+      attendButton.addEventListener('click', async () => {
+        attendButton.disabled = true;
+        clearError();
 
-      const figures = FIGURE_DATA[selectedLevelSlug] || [];
-      for (const figure of figures) {
-        const thisWeek = figure.index === currentFigure;
-        const nextWeek = nextFigure !== null && figure.index === nextFigure;
-        const card = document.createElement('article');
-        card.className = `figure-card${thisWeek ? ' is-current' : ''}`;
-        card.innerHTML = `
-          <div class="figure-head">
-            <p class="figure-kicker">Figure ${figure.index}</p>
-            <h4 class="figure-name">${figure.name}</h4>
-            ${thisWeek ? '<span class="badge-week">This week</span>' : ''}
-            ${nextWeek ? '<span class="badge-next-week">Next week</span>' : ''}
-          </div>
-          <div class="figure-body">
-            <p>${figure.description}</p>
-            <ul class="tips">
-              ${figure.tips.map((t) => `<li>${t}</li>`).join('')}
-            </ul>
-            <div class="video-wrap"></div>
-          </div>
-        `;
-
-        const videoWrap = card.querySelector('.video-wrap');
-        const canSeeVideo = videoUnlocked(selectedLevelSlug, figure.index);
-
-        if (canSeeVideo) {
-          const iframe = document.createElement('iframe');
-          iframe.loading = 'lazy';
-          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-          iframe.allowFullscreen = true;
-          iframe.src = `https://www.youtube.com/embed/${figure.videoId}`;
-          videoWrap.appendChild(iframe);
-        } else {
-          videoWrap.innerHTML = `
-            <div class="video-locked">
-              <div>
-                <span class="video-lock-label">Preview Locked</span>
-                Unlocks at ${levelTitle(selectedLevelSlug)}
-              </div>
-            </div>
-          `;
+        try {
+          if (isAttending(id)) {
+            await unmarkAttendance(id);
+          } else {
+            await markAttendance(id, name);
+          }
+          renderCards();
+        } catch (err) {
+          showError(err.message || 'Could not update attendance.');
+        } finally {
+          attendButton.disabled = false;
         }
+      });
 
-        const figureBody = card.querySelector('.figure-body');
-        const attendEnabled = selectedLevelSlug === profile.level;
-        const salsaSessions = recurringSessionsForStyle('Salsa');
-        const weekOffset = Math.max(0, figure.index - currentFigure);
+      const resourceButton = document.createElement('a');
+      resourceButton.className = 'button secondary';
+      resourceButton.href = `https://www.youtube.com/watch?v=${videoId}`;
+      resourceButton.target = '_blank';
+      resourceButton.rel = 'noopener noreferrer';
+      resourceButton.textContent = 'Open Video';
 
-        if (salsaSessions.length > 0) {
-          const weeklyWrap = document.createElement('div');
-          weeklyWrap.className = 'weekly-attend';
+      actions.appendChild(attendButton);
+      actions.appendChild(resourceButton);
 
-          const weeklyLabel = document.createElement('p');
-          weeklyLabel.className = 'weekly-attend-label';
-          weeklyLabel.textContent = 'This week attendance';
-          weeklyWrap.appendChild(weeklyLabel);
+      return card;
+    }
 
-          const buttonRow = document.createElement('div');
-          buttonRow.className = 'weekly-attend-buttons';
-          weeklyWrap.appendChild(buttonRow);
+    function renderStyleTabs() {
+      styleTabsEl.innerHTML = '';
 
-          for (const session of salsaSessions) {
-            await buildSessionAttendButton(
-              buttonRow,
-              figureId(selectedLevelSlug, figure.index),
-              figure.name,
-              session.day,
-              session.time,
-              attendEnabled,
-              weekOffset
-            );
+      STYLE_ORDER.forEach((style) => {
+        const button = createTabButton(style, selectedStyle === style, false, () => {
+          selectedStyle = style;
+
+          if (levelLocked(selectedLevel)) {
+            selectedLevel = styleMaxLevelSlug(selectedStyle);
           }
 
-          figureBody.appendChild(weeklyWrap);
-        } else {
-          await buildAttendRow(
-            figureBody,
-            figureId(selectedLevelSlug, figure.index),
-            figure.name,
-            attendEnabled
-          );
-        }
+          renderAll();
+        });
+        styleTabsEl.appendChild(button);
+      });
+    }
 
-        grid.appendChild(card);
+    function renderLevelTabs() {
+      levelTabsEl.innerHTML = '';
+
+      LEVELS.forEach((level) => {
+        const locked = levelLocked(level.slug);
+        const button = createTabButton(level.label, selectedLevel === level.slug, locked, () => {
+          selectedLevel = level.slug;
+          renderAll();
+        });
+        levelTabsEl.appendChild(button);
+      });
+    }
+
+    function renderCards() {
+      cardsGridEl.innerHTML = '';
+      comboTitleEl.textContent = `${selectedStyle} · ${levelLabel(selectedLevel)}`;
+
+      const maxLevel = styleMaxLevelSlug(selectedStyle);
+      comboSubEl.textContent = `6 cards for this combination. Max unlocked for ${selectedStyle}: ${levelLabel(maxLevel)}.`;
+
+      for (let index = 1; index <= 6; index += 1) {
+        cardsGridEl.appendChild(buildFigureCard(index));
       }
-
-      wrapper.appendChild(grid);
-      levelPanelEl.innerHTML = '';
-      levelPanelEl.appendChild(wrapper);
     }
 
-    async function renderCurriculum() {
+    function renderAll() {
+      renderStyleTabs();
       renderLevelTabs();
-      await renderLevelPanel();
+      renderCards();
     }
 
-    async function loadData() {
-      const { data: profileData, error: profileError } = await sbClient
+    async function loadProfile() {
+      const { data, error } = await sbClient
         .from('profiles')
-        .select('id, full_name, level')
+        .select('id, full_name, level, style_levels')
         .eq('id', authUser.id)
         .single();
 
-      if (profileError || !profileData) {
+      if (error || !data) {
         throw new Error('Could not load your profile.');
       }
 
-      profile = profileData;
+      profile = data;
+      studentNameEl.textContent = normalizeText(profile.full_name) || 'Member';
 
-      const { data: scheduleData, error: scheduleError } = await sbClient
-        .from('class_schedule')
-        .select('id, day, time, dance_style, level_slug, current_figure_index, current_week');
-
-      if (scheduleError) {
-        throw new Error('Could not load class schedule.');
+      if (!(profile.level in LEVEL_INDEX)) {
+        profile.level = 'beginner';
       }
 
-      classScheduleRows = mergeScheduleWithFallback(scheduleData || []);
-
-      const { data: attendData, error: attendError } = await sbClient
-        .from('attendance')
-        .select('id, student_id, figure_id, figure_name, class_date, created_at')
-        .eq('student_id', authUser.id);
-
-      if (attendError) {
-        throw new Error('Could not load attendance records.');
-      }
-
-      attendanceRows = attendData || [];
+      selectedLevel = profile.level;
     }
 
     async function boot() {
@@ -1627,6 +718,7 @@
       sbClient = window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
 
       const { data: sessionData, error: sessionError } = await sbClient.auth.getSession();
+
       if (sessionError) {
         showError('Session check failed. Please sign in again.');
         window.location.href = 'index.html';
@@ -1647,26 +739,9 @@
       });
 
       try {
-        await loadData();
-
-        studentStyleEntries = deriveStudentStyleEntries();
-        const salsaEntry = studentStyleEntries.find((entry) => entry.key === 'Salsa');
-        selectedStyleKey = (salsaEntry || studentStyleEntries[0])?.key || null;
-
-        studentNameEl.textContent = profile.full_name;
-
-        sessionStorage.setItem(
-          'sbk_profile',
-          JSON.stringify({
-            name: profile.full_name,
-            level: profile.level,
-          })
-        );
-
-          selectedLevelSlug = DEMO_STUDENT_STYLE_LEVELS.Salsa || 'beginner';
-          applyStyleLevelContext();
-          renderStyleTabs();
-        await renderCurriculum();
+        await loadProfile();
+        await loadAttendance();
+        renderAll();
       } catch (err) {
         showError(err.message || 'Could not initialize dashboard.');
       }
