@@ -505,7 +505,7 @@
     }
 
     function figureId(style, levelSlug, figureIndex) {
-      return `${style}|${levelSlug}|${figureIndex}`;
+      return `${levelSlug}:${figureIndex}`;
     }
 
     function figureName(style, levelSlug, figureIndex) {
@@ -532,9 +532,13 @@
       return `${hh}:${mm}:${ss}`;
     }
 
-    function isAttending(figureIdValue) {
+    function isAttending(figureIdValue, figureNameValue) {
       const today = todayIso();
-      return attendanceRows.some((row) => row.figure_id === figureIdValue && row.class_date === today);
+      return attendanceRows.some(
+        (row) => row.figure_id === figureIdValue
+          && row.figure_name === figureNameValue
+          && row.class_date === today
+      );
     }
 
     async function loadAttendance() {
@@ -597,9 +601,13 @@
       attendanceRows.push(insertData);
     }
 
-    async function unmarkAttendance(figureIdValue) {
+    async function unmarkAttendance(figureIdValue, figureNameValue) {
       const today = todayIso();
-      const existing = attendanceRows.find((row) => row.figure_id === figureIdValue && row.class_date === today);
+      const existing = attendanceRows.find(
+        (row) => row.figure_id === figureIdValue
+          && row.figure_name === figureNameValue
+          && row.class_date === today
+      );
       if (!existing) {
         return;
       }
@@ -637,7 +645,7 @@
       const id = figureId(style, levelSlug, figureIndex);
       const name = figureName(style, levelSlug, figureIndex);
       const videoId = VIDEO_IDS[figureIndex - 1] || VIDEO_IDS[0];
-      const currentlyAttending = isAttending(id);
+      const currentlyAttending = isAttending(id, name);
 
       const card = document.createElement('article');
       card.className = 'figure-card';
@@ -677,8 +685,8 @@
         clearError();
 
         try {
-          if (isAttending(id)) {
-            await unmarkAttendance(id);
+          if (isAttending(id, name)) {
+            await unmarkAttendance(id, name);
           } else {
             await markAttendance(id, name);
           }
