@@ -171,6 +171,13 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
+    .tab-btn.available {
+      color: #fff3e4;
+      border-color: rgba(255, 209, 154, 0.62);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.2), rgba(255, 125, 104, 0.12));
+      box-shadow: 0 6px 14px rgba(242, 167, 76, 0.18);
+    }
+
     .tab-btn.active {
       color: #2b190b;
       border-color: rgba(255, 209, 154, 0.8);
@@ -259,6 +266,32 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.55rem;
+    }
+
+    .session-btn {
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff4e9;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .session-btn:hover {
+      border-color: rgba(255, 209, 154, 0.65);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .session-btn.is-attending {
+      color: #143222;
+      border-color: rgba(184, 239, 207, 0.85);
+      background: linear-gradient(135deg, #8de3ad, #c3f5d8);
+      box-shadow: 0 8px 18px rgba(126, 223, 166, 0.28);
     }
 
     .figure-status {
@@ -520,6 +553,43 @@
       return `${y}-${m}-${d}`;
     }
 
+    function classDateForDayWithWeekOffset(dayName, weekOffset) {
+      const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
+      if (dayIndex < 0) {
+        return todayIso();
+      }
+
+      const base = new Date();
+      const todayIdx = base.getDay();
+      let delta = dayIndex - todayIdx;
+      if (delta < 0) {
+        delta += 7;
+      }
+
+      const safeOffset = Math.max(0, Number(weekOffset) || 0);
+      delta += safeOffset * 7;
+      base.setDate(base.getDate() + delta);
+
+      const y = base.getFullYear();
+      const m = String(base.getMonth() + 1).padStart(2, '0');
+      const d = String(base.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function sessionsForStyle(style) {
+      const defaults = [{ day: 'Monday', time: '19:00' }, { day: 'Thursday', time: '20:00' }];
+      const plan = {
+        Salsa: [{ day: 'Monday', time: '19:00' }, { day: 'Thursday', time: '20:00' }],
+        Bachata: [{ day: 'Tuesday', time: '19:00' }, { day: 'Friday', time: '20:00' }],
+        Kizomba: [{ day: 'Wednesday', time: '19:00' }, { day: 'Saturday', time: '19:00' }],
+        Tango: [{ day: 'Thursday', time: '19:00' }, { day: 'Sunday', time: '19:00' }],
+        Zouk: [{ day: 'Wednesday', time: '20:00' }, { day: 'Saturday', time: '20:00' }],
+        Forro: [{ day: 'Friday', time: '19:00' }, { day: 'Sunday', time: '20:00' }],
+      };
+
+      return plan[style] || defaults;
+    }
+
     function todayDayName() {
       return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()];
     }
@@ -532,12 +602,11 @@
       return `${hh}:${mm}:${ss}`;
     }
 
-    function isAttending(figureIdValue, figureNameValue) {
-      const today = todayIso();
+    function isAttending(figureIdValue, figureNameValue, classDateISO) {
       return attendanceRows.some(
         (row) => row.figure_id === figureIdValue
           && row.figure_name === figureNameValue
-          && row.class_date === today
+          && row.class_date === classDateISO
       );
     }
 
@@ -554,24 +623,24 @@
       attendanceRows = data || [];
     }
 
-    async function markAttendance(figureIdValue, name) {
+    async function markAttendance(figureIdValue, name, classDateISO, sessionDay, sessionTime) {
       const payloadBase = {
         student_id: authUser.id,
         figure_id: figureIdValue,
         figure_name: name,
-        class_date: todayIso(),
+        class_date: classDateISO,
       };
 
       const payloadVariants = [
         {
           ...payloadBase,
-          class_day: todayDayName(),
-          class_time: nowTimeHHMMSS(),
+          class_day: sessionDay || todayDayName(),
+          class_time: sessionTime || nowTimeHHMMSS(),
         },
         {
           ...payloadBase,
-          session_day: todayDayName(),
-          session_time: nowTimeHHMMSS(),
+          session_day: sessionDay || todayDayName(),
+          session_time: sessionTime || nowTimeHHMMSS(),
         },
         payloadBase,
       ];
@@ -601,12 +670,11 @@
       attendanceRows.push(insertData);
     }
 
-    async function unmarkAttendance(figureIdValue, figureNameValue) {
-      const today = todayIso();
+    async function unmarkAttendance(figureIdValue, figureNameValue, classDateISO) {
       const existing = attendanceRows.find(
         (row) => row.figure_id === figureIdValue
           && row.figure_name === figureNameValue
-          && row.class_date === today
+          && row.class_date === classDateISO
       );
       if (!existing) {
         return;
@@ -627,7 +695,7 @@
     function createTabButton(label, active, locked, onClick) {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = `tab-btn${active ? ' active' : ''}${locked ? ' locked' : ''}`;
+      button.className = `tab-btn${active ? ' active' : ''}${locked ? ' locked' : ''}${!active && !locked ? ' available' : ''}`;
       button.textContent = label;
 
       if (locked) {
@@ -645,13 +713,11 @@
       const id = figureId(style, levelSlug, figureIndex);
       const name = figureName(style, levelSlug, figureIndex);
       const videoId = VIDEO_IDS[figureIndex - 1] || VIDEO_IDS[0];
-      const currentlyAttending = isAttending(id, name);
+      const weekOffset = Math.max(0, figureIndex - 1);
+      const sessions = sessionsForStyle(style);
 
       const card = document.createElement('article');
       card.className = 'figure-card';
-
-      const attendLabel = currentlyAttending ? 'Attending today' : 'Not marked yet';
-      const attendClass = currentlyAttending ? 'figure-status attend-active' : 'figure-status';
 
       card.innerHTML = `
         <div class="figure-head">
@@ -670,43 +736,40 @@
             ></iframe>
           </div>
           <div class="figure-actions"></div>
-          <p class="${attendClass}">${attendLabel}</p>
         </div>
       `;
 
       const actions = card.querySelector('.figure-actions');
 
-      const attendButton = document.createElement('button');
-      attendButton.type = 'button';
-      attendButton.className = currentlyAttending ? 'button secondary' : 'button';
-      attendButton.textContent = currentlyAttending ? 'Undo Attend' : 'Attend';
-      attendButton.addEventListener('click', async () => {
-        attendButton.disabled = true;
-        clearError();
+      sessions.forEach((session) => {
+        const classDateISO = classDateForDayWithWeekOffset(session.day, weekOffset);
+        const attendingThisSession = isAttending(id, name, classDateISO);
 
-        try {
-          if (isAttending(id, name)) {
-            await unmarkAttendance(id, name);
-          } else {
-            await markAttendance(id, name);
+        const sessionButton = document.createElement('button');
+        sessionButton.type = 'button';
+        sessionButton.className = `session-btn${attendingThisSession ? ' is-attending' : ''}`;
+        sessionButton.textContent = `${attendingThisSession ? 'Attending' : 'Attend'} · ${session.day} ${session.time}`;
+
+        sessionButton.addEventListener('click', async () => {
+          sessionButton.disabled = true;
+          clearError();
+
+          try {
+            if (isAttending(id, name, classDateISO)) {
+              await unmarkAttendance(id, name, classDateISO);
+            } else {
+              await markAttendance(id, name, classDateISO, session.day, session.time);
+            }
+            renderCards();
+          } catch (err) {
+            showError(err.message || 'Could not update attendance.');
+          } finally {
+            sessionButton.disabled = false;
           }
-          renderCards();
-        } catch (err) {
-          showError(err.message || 'Could not update attendance.');
-        } finally {
-          attendButton.disabled = false;
-        }
+        });
+
+        actions.appendChild(sessionButton);
       });
-
-      const resourceButton = document.createElement('a');
-      resourceButton.className = 'button secondary';
-      resourceButton.href = `https://www.youtube.com/watch?v=${videoId}`;
-      resourceButton.target = '_blank';
-      resourceButton.rel = 'noopener noreferrer';
-      resourceButton.textContent = 'Open Video';
-
-      actions.appendChild(attendButton);
-      actions.appendChild(resourceButton);
 
       return card;
     }
