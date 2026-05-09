@@ -427,6 +427,7 @@
     let sbClient = null;
     let authUser = null;
     let profile = null;
+    let studentStyleLevels = {};
     let attendanceRows = [];
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
@@ -460,16 +461,42 @@
 
     function styleMaxLevelSlug(style) {
       const profileLevel = profile?.level || 'beginner';
+      const styleKey = style.toLowerCase();
+
+      const tableLevel = studentStyleLevels[styleKey];
+      if (tableLevel && tableLevel in LEVEL_INDEX) {
+        return tableLevel;
+      }
 
       if (profile && profile.style_levels && typeof profile.style_levels === 'object') {
-        const styleKey = style.toLowerCase();
         const styleSpecificLevel = profile.style_levels[styleKey];
         if (styleSpecificLevel && styleSpecificLevel in LEVEL_INDEX) {
           return styleSpecificLevel;
         }
       }
 
+      if (styleKey !== 'salsa') {
+        return 'beginner';
+      }
+
       return profileLevel in LEVEL_INDEX ? profileLevel : 'beginner';
+    }
+
+    function styleAssigned(style) {
+      const styleKey = style.toLowerCase();
+
+      if (studentStyleLevels[styleKey]) {
+        return true;
+      }
+
+      if (profile && profile.style_levels && typeof profile.style_levels === 'object') {
+        const styleSpecificLevel = profile.style_levels[styleKey];
+        if (styleSpecificLevel && styleSpecificLevel in LEVEL_INDEX) {
+          return true;
+        }
+      }
+
+      return styleKey === 'salsa';
     }
 
     function levelLocked(levelSlug) {
@@ -642,7 +669,8 @@
       styleTabsEl.innerHTML = '';
 
       STYLE_ORDER.forEach((style) => {
-        const button = createTabButton(style, selectedStyle === style, false, () => {
+        const isAssigned = styleAssigned(style);
+        const button = createTabButton(style, selectedStyle === style, !isAssigned, () => {
           selectedStyle = style;
 
           if (levelLocked(selectedLevel)) {
@@ -704,7 +732,35 @@
         profile.level = 'beginner';
       }
 
-      selectedLevel = profile.level;
+      const { data: styleRows, error: styleRowsError } = await sbClient
+        .from('student_style_levels')
+        .select('style_key, level_slug')
+        .eq('student_id', authUser.id);
+
+      if (styleRowsError && styleRowsError.code !== '42P01') {
+        throw new Error('Could not load style levels.');
+      }
+
+      studentStyleLevels = {};
+      (styleRows || []).forEach((row) => {
+        const styleKey = String(row.style_key || '').toLowerCase();
+        const levelSlug = String(row.level_slug || '').trim();
+
+        if (!(levelSlug in LEVEL_INDEX)) {
+          return;
+        }
+
+        if (!STYLE_ORDER.some((style) => style.toLowerCase() === styleKey)) {
+          return;
+        }
+
+        studentStyleLevels[styleKey] = levelSlug;
+      });
+
+      const firstAssignedStyle = STYLE_ORDER.find((style) => styleAssigned(style)) || 'Salsa';
+      selectedStyle = firstAssignedStyle;
+
+      selectedLevel = styleMaxLevelSlug(selectedStyle);
     }
 
     async function boot() {
