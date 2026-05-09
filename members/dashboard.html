@@ -520,6 +520,18 @@
       return `${y}-${m}-${d}`;
     }
 
+    function todayDayName() {
+      return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()];
+    }
+
+    function nowTimeHHMMSS() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      return `${hh}:${mm}:${ss}`;
+    }
+
     function isAttending(figureIdValue) {
       const today = todayIso();
       return attendanceRows.some((row) => row.figure_id === figureIdValue && row.class_date === today);
@@ -539,24 +551,50 @@
     }
 
     async function markAttendance(figureIdValue, name) {
-      const payload = {
+      const payloadBase = {
         student_id: authUser.id,
         figure_id: figureIdValue,
         figure_name: name,
         class_date: todayIso(),
       };
 
-      const { data, error } = await sbClient
-        .from('attendance')
-        .insert(payload)
-        .select('id, student_id, figure_id, figure_name, class_date, created_at')
-        .single();
+      const payloadVariants = [
+        {
+          ...payloadBase,
+          class_day: todayDayName(),
+          class_time: nowTimeHHMMSS(),
+        },
+        {
+          ...payloadBase,
+          session_day: todayDayName(),
+          session_time: nowTimeHHMMSS(),
+        },
+        payloadBase,
+      ];
 
-      if (error) {
-        throw error;
+      let insertData = null;
+      let lastError = null;
+
+      for (const payload of payloadVariants) {
+        const { data, error } = await sbClient
+          .from('attendance')
+          .insert(payload)
+          .select('id, student_id, figure_id, figure_name, class_date, created_at')
+          .single();
+
+        if (!error && data) {
+          insertData = data;
+          break;
+        }
+
+        lastError = error;
       }
 
-      attendanceRows.push(data);
+      if (!insertData) {
+        throw lastError || new Error('Could not write attendance.');
+      }
+
+      attendanceRows.push(insertData);
     }
 
     async function unmarkAttendance(figureIdValue) {
