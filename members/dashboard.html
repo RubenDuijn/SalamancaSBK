@@ -715,14 +715,29 @@
     }
 
     async function loadProfile() {
-      const { data, error } = await sbClient
+      let data = null;
+      let error = null;
+
+      ({ data, error } = await sbClient
         .from('profiles')
         .select('id, full_name, level, style_levels')
         .eq('id', authUser.id)
-        .single();
+        .single());
+
+      const missingStyleLevelsColumn = error
+        && (error.code === '42703' || String(error.message || '').toLowerCase().includes('style_levels'));
+
+      if (missingStyleLevelsColumn) {
+        ({ data, error } = await sbClient
+          .from('profiles')
+          .select('id, full_name, level')
+          .eq('id', authUser.id)
+          .single());
+      }
 
       if (error || !data) {
-        throw new Error('Could not load your profile.');
+        const detail = String(error?.message || '').trim();
+        throw new Error(detail ? `Could not load your profile: ${detail}` : 'Could not load your profile.');
       }
 
       profile = data;
