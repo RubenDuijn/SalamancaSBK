@@ -360,16 +360,38 @@
           return;
         }
 
-        const { data: profile, error: profileError } = await supabaseClient
-          .from('profiles')
-          .select('full_name, level')
-          .eq('id', userId)
-          .single();
+        const profileSelectVariants = [
+          'full_name, level, role',
+          'full_name, level',
+        ];
 
-        if (profileError) {
+        let profile = null;
+        let profileError = null;
+
+        for (const selectFields of profileSelectVariants) {
+          ({ data: profile, error: profileError } = await supabaseClient
+            .from('profiles')
+            .select(selectFields)
+            .eq('id', userId)
+            .single());
+
+          if (!profileError && profile) {
+            break;
+          }
+
+          const missingColumn = profileError
+            && (profileError.code === '42703' || /role/i.test(String(profileError.message || '')));
+          if (!missingColumn) {
+            break;
+          }
+        }
+
+        if (profileError || !profile) {
           setMessage('Has iniciado sesion, pero no se pudo cargar tu perfil.', 'error');
           return;
         }
+
+        profile.role = profile.role || 'member';
 
         sessionStorage.setItem(
           'sbk_profile',
@@ -379,7 +401,9 @@
           })
         );
 
-        window.location.href = '/members/dashboard.html';
+        window.location.href = profile.role === 'admin'
+          ? '/members/admin.html'
+          : '/members/dashboard.html';
       } catch (err) {
         setMessage('Error inesperado al iniciar sesion. Intentalo de nuevo.', 'error');
       } finally {

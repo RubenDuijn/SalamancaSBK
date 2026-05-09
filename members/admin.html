@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Console | Salamanca SBK Dance Academy</title>
+  <meta name="description" content="Admin console for creating students and assigning style levels." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#130d11" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .admin-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-main {
+      flex: 1;
+      padding: 1.2rem 0 2.2rem;
+    }
+
+    .admin-shell {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .admin-hero,
+    .admin-panel {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at top left, rgba(242, 167, 76, 0.14), transparent 46%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+      box-shadow: var(--shadow);
+    }
+
+    .admin-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .admin-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .admin-sub {
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .admin-meta {
+      display: grid;
+      justify-items: end;
+      gap: 0.45rem;
+      text-align: right;
+    }
+
+    .admin-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .admin-actions {
+      display: inline-flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .panel-title {
+      margin: 0 0 0.35rem;
+      font-size: 1.15rem;
+    }
+
+    .panel-sub {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .field {
+      margin-bottom: 0.85rem;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.24);
+      color: var(--text);
+      padding: 0.68rem 0.85rem;
+      font: inherit;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: rgba(242, 167, 76, 0.86);
+      box-shadow: 0 0 0 3px rgba(242, 167, 76, 0.2);
+    }
+
+    .styles-grid {
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .style-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0.7rem;
+      align-items: center;
+    }
+
+    .style-name {
+      margin: 0;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .style-row select {
+      min-height: 42px;
+    }
+
+    .student-list {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 0.65rem;
+    }
+
+    .student-card {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.7rem 0.85rem;
+      display: grid;
+      gap: 0.15rem;
+    }
+
+    .student-card strong {
+      font-size: 0.95rem;
+    }
+
+    .student-card span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .student-card.is-selected {
+      border-color: rgba(255, 209, 154, 0.7);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.12), rgba(255, 255, 255, 0.04));
+    }
+
+    .error-banner {
+      display: none;
+      border: 1px solid rgba(255, 125, 104, 0.55);
+      background: rgba(255, 125, 104, 0.14);
+      color: #ffd8bf;
+      border-radius: 12px;
+      padding: 0.65rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .error-banner.show {
+      display: block;
+    }
+
+    .save-row {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      margin-top: 0.85rem;
+    }
+
+    .notice {
+      margin: 0.7rem 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .admin-footer {
+      border-top: 1px solid var(--line);
+      background: rgba(10, 8, 12, 0.36);
+      padding: 1rem 0 1.2rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .admin-footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid,
+      .admin-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-meta {
+        justify-items: start;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .style-row {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body class="admin-page" id="top">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Salamanca SBK Dance Academy">
+        <span class="brand-mark">S</span>
+        <span>Salamanca SBK Dance Academy</span>
+      </a>
+      <div class="members-head-actions" aria-label="Admin actions">
+        <div class="members-lang-group">
+          <a class="nav-lang nav-lang-active" href="/members/admin.html" aria-current="page">EN</a>
+          <a class="nav-lang" href="/members/dashboard.html">Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="container admin-shell">
+      <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
+
+      <section class="admin-hero" aria-labelledby="admin-title">
+        <div>
+          <h1 id="admin-title" class="admin-title">Admin Console</h1>
+          <p class="admin-sub">Create students, assign style-level combos, and keep the member table in sync.</p>
+        </div>
+        <div class="admin-meta">
+          <span id="admin-name" class="admin-pill">Loading...</span>
+          <div class="admin-actions">
+            <button id="refresh-btn" class="button secondary" type="button">Refresh</button>
+            <button id="signout-btn" class="button secondary" type="button">Sign out</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="admin-panel">
+          <h2 class="panel-title">Add Student</h2>
+          <p class="panel-sub">Create the student auth account and their default style-level assignments.</p>
+
+          <form id="create-student-form" novalidate>
+            <div class="field">
+              <label for="new-full-name">Full name</label>
+              <input id="new-full-name" type="text" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="new-email">Email</label>
+              <input id="new-email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="new-password">Temporary password</label>
+              <input id="new-password" type="password" autocomplete="new-password" required />
+            </div>
+            <div class="field">
+              <label for="new-level">Default level</label>
+              <select id="new-level"></select>
+            </div>
+            <div class="styles-grid" id="new-style-grid"></div>
+            <div class="save-row">
+              <button class="button" id="create-student-btn" type="submit">Create student</button>
+            </div>
+          </form>
+          <p class="notice">If Supabase policies block creation, the console will show the exact error so we can tighten the backend next.</p>
+        </article>
+
+        <article class="admin-panel">
+          <h2 class="panel-title">Students</h2>
+          <p class="panel-sub">Select an existing student to update their profile or combo assignments.</p>
+          <div class="field">
+            <label for="student-select">Student</label>
+            <select id="student-select"></select>
+          </div>
+          <div id="student-list" class="student-list"></div>
+        </article>
+      </section>
+
+      <section class="admin-panel">
+        <h2 class="panel-title">Selected Student</h2>
+        <p class="panel-sub">Update name, level, and per-style assignments for the chosen student.</p>
+
+        <form id="update-student-form" novalidate>
+          <div class="grid">
+            <div>
+              <div class="field">
+                <label for="selected-full-name">Full name</label>
+                <input id="selected-full-name" type="text" required />
+              </div>
+              <div class="field">
+                <label for="selected-level">Level</label>
+                <select id="selected-level"></select>
+              </div>
+            </div>
+            <div>
+              <div class="styles-grid" id="selected-style-grid"></div>
+            </div>
+          </div>
+          <div class="save-row">
+            <button class="button" id="save-student-btn" type="submit">Save student</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="admin-footer" role="contentinfo">
+    <div class="container">
+      <span>© <span id="year"></span> Salamanca SBK Dance Academy</span>
+      <span>Admin console for student and combo management.</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://txansvfngkjtbbdmvgtw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4YW5zdmZuZ2tqdGJiZG12Z3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDM5MzIsImV4cCI6MjA5MzQ3OTkzMn0.X8eXfZDlORDKzAbr2fsulaRw4vi_4VG4vhV1sPujYCo';
+
+    const LEVELS = [
+      { slug: 'beginner', label: 'Beginner' },
+      { slug: 'intermediate_1', label: 'Intermediate 1' },
+      { slug: 'intermediate_2', label: 'Intermediate 2' },
+      { slug: 'intermediate_3', label: 'Intermediate 3' },
+      { slug: 'advanced_1', label: 'Advanced 1' },
+      { slug: 'advanced_2', label: 'Advanced 2' },
+      { slug: 'advanced_3', label: 'Advanced 3' },
+    ];
+
+    const STYLE_ORDER = ['salsa', 'bachata', 'kizomba', 'tango', 'zouk', 'forro'];
+    const STYLE_LABELS = {
+      salsa: 'Salsa',
+      bachata: 'Bachata',
+      kizomba: 'Kizomba',
+      tango: 'Tango',
+      zouk: 'Zouk',
+      forro: 'Forro',
+    };
+
+    const LEVEL_INDEX = Object.fromEntries(LEVELS.map((level, index) => [level.slug, index]));
+
+    const errorBanner = document.getElementById('error-banner');
+    const adminNameEl = document.getElementById('admin-name');
+    const signoutBtn = document.getElementById('signout-btn');
+    const refreshBtn = document.getElementById('refresh-btn');
+    const studentSelect = document.getElementById('student-select');
+    const studentListEl = document.getElementById('student-list');
+    const selectedFullNameEl = document.getElementById('selected-full-name');
+    const selectedLevelEl = document.getElementById('selected-level');
+    const selectedStyleGridEl = document.getElementById('selected-style-grid');
+    const createStudentForm = document.getElementById('create-student-form');
+    const updateStudentForm = document.getElementById('update-student-form');
+    const createStudentBtn = document.getElementById('create-student-btn');
+    const saveStudentBtn = document.getElementById('save-student-btn');
+    const newFullNameEl = document.getElementById('new-full-name');
+    const newEmailEl = document.getElementById('new-email');
+    const newPasswordEl = document.getElementById('new-password');
+    const newLevelEl = document.getElementById('new-level');
+    const newStyleGridEl = document.getElementById('new-style-grid');
+
+    let sbClient = null;
+    let authUser = null;
+    let adminProfile = null;
+    let students = [];
+    let selectedStudent = null;
+    let selectedStudentLevels = {};
+    let currentStudentRoles = {};
+
+    function showError(message) {
+      errorBanner.textContent = message;
+      errorBanner.classList.add('show');
+    }
+
+    function clearError() {
+      errorBanner.textContent = '';
+      errorBanner.classList.remove('show');
+    }
+
+    function validHttpUrl(value) {
+      try {
+        const url = new URL((value || '').trim());
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function levelLabel(levelSlug) {
+      return LEVELS.find((level) => level.slug === levelSlug)?.label || 'Unknown';
+    }
+
+    function levelOptionsHtml(selected) {
+      return LEVELS.map((level) => `<option value="${level.slug}"${level.slug === selected ? ' selected' : ''}>${level.label}</option>`).join('');
+    }
+
+    function blankStyleLevelValue(styleKey) {
+      return selectedStudentLevels[styleKey] || 'beginner';
+    }
+
+    function studentRoleLabel(student) {
+      return student.role || 'member';
+    }
+
+    function buildStyleDropdowns(containerEl, prefix, valueMap = {}) {
+      containerEl.innerHTML = '';
+      STYLE_ORDER.forEach((styleKey) => {
+        const row = document.createElement('div');
+        row.className = 'style-row';
+        row.innerHTML = `
+          <p class="style-name">${STYLE_LABELS[styleKey]}</p>
+          <select id="${prefix}-${styleKey}">${levelOptionsHtml(valueMap[styleKey] || 'beginner')}</select>
+        `;
+        containerEl.appendChild(row);
+      });
+    }
+
+    function getStyleValuesFromGrid(prefix) {
+      const values = {};
+      STYLE_ORDER.forEach((styleKey) => {
+        const select = document.getElementById(`${prefix}-${styleKey}`);
+        if (select) {
+          values[styleKey] = select.value;
+        }
+      });
+      return values;
+    }
+
+    function renderNewStudentForm() {
+      newLevelEl.innerHTML = levelOptionsHtml('beginner');
+      buildStyleDropdowns(newStyleGridEl, 'new-style', {
+        salsa: 'beginner',
+        bachata: 'beginner',
+        kizomba: 'beginner',
+        tango: 'beginner',
+        zouk: 'beginner',
+        forro: 'beginner',
+      });
+    }
+
+    function renderSelectedStudentForm() {
+      selectedLevelEl.innerHTML = levelOptionsHtml(selectedStudent?.level || 'beginner');
+      selectedFullNameEl.value = selectedStudent?.full_name || '';
+      buildStyleDropdowns(selectedStyleGridEl, 'selected-style', selectedStudentLevels);
+    }
+
+    function renderStudentList() {
+      studentListEl.innerHTML = '';
+      studentSelect.innerHTML = '';
+
+      if (!students.length) {
+        studentListEl.innerHTML = '<div class="student-card"><strong>No students yet</strong><span>Refresh after creating the first one.</span></div>';
+        studentSelect.innerHTML = '<option value="">No students</option>';
+        return;
+      }
+
+      students.forEach((student) => {
+        const option = document.createElement('option');
+        option.value = student.id;
+        option.textContent = student.full_name || student.id;
+        studentSelect.appendChild(option);
+
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = `student-card${selectedStudent?.id === student.id ? ' is-selected' : ''}`;
+        card.innerHTML = `
+          <strong>${student.full_name || 'Unnamed student'}</strong>
+          <span>${levelLabel(student.level)} · ${studentRoleLabel(student)}</span>
+        `;
+        card.addEventListener('click', async () => {
+          studentSelect.value = student.id;
+          await selectStudent(student.id);
+        });
+        studentListEl.appendChild(card);
+      });
+
+      if (!studentSelect.value && students[0]) {
+        studentSelect.value = students[0].id;
+      }
+    }
+
+    async function loadAdminProfile() {
+      const profileSelectVariants = [
+        'id, full_name, level, role',
+        'id, full_name, level',
+      ];
+
+      let data = null;
+      let error = null;
+
+      for (const selectFields of profileSelectVariants) {
+        ({ data, error } = await sbClient
+          .from('profiles')
+          .select(selectFields)
+          .eq('id', authUser.id)
+          .single());
+
+        if (!error && data) {
+          break;
+        }
+
+        const missingColumn = error
+          && (error.code === '42703' || /role/i.test(String(error.message || '')));
+        if (!missingColumn) {
+          break;
+        }
+      }
+
+      if (error || !data) {
+        throw new Error('Could not load your admin profile.');
+      }
+
+      adminProfile = data;
+      adminProfile.role = adminProfile.role || 'member';
+
+      if (adminProfile.role !== 'admin') {
+        window.location.href = '/members/dashboard.html';
+        return;
+      }
+
+      adminNameEl.textContent = adminProfile.full_name || 'Admin';
+    }
+
+    async function loadStudents() {
+      const profileSelectVariants = [
+        'id, full_name, level, role',
+        'id, full_name, level',
+      ];
+
+      let data = null;
+      let error = null;
+
+      for (const selectFields of profileSelectVariants) {
+        ({ data, error } = await sbClient
+          .from('profiles')
+          .select(selectFields));
+
+        if (!error && data) {
+          break;
+        }
+
+        const missingColumn = error
+          && (error.code === '42703' || /role/i.test(String(error.message || '')));
+        if (!missingColumn) {
+          break;
+        }
+      }
+
+      if (error) {
+        throw new Error(error.message || 'Could not load students.');
+      }
+
+      students = (data || []).sort((a, b) => String(a.full_name || '').localeCompare(String(b.full_name || '')));
+      currentStudentRoles = Object.fromEntries(students.map((student) => [student.id, student.role || 'member']));
+      renderStudentList();
+    }
+
+    async function loadStudentLevels(studentId) {
+      const { data, error } = await sbClient
+        .from('student_style_levels')
+        .select('style_key, level_slug')
+        .eq('student_id', studentId);
+
+      if (error && error.code !== '42P01') {
+        throw new Error(error.message || 'Could not load student style levels.');
+      }
+
+      selectedStudentLevels = {};
+      (data || []).forEach((row) => {
+        const styleKey = String(row.style_key || '').toLowerCase();
+        const levelSlug = String(row.level_slug || '').trim();
+        if (STYLE_ORDER.includes(styleKey) && levelSlug in LEVEL_INDEX) {
+          selectedStudentLevels[styleKey] = levelSlug;
+        }
+      });
+    }
+
+    async function selectStudent(studentId) {
+      selectedStudent = students.find((student) => student.id === studentId) || null;
+      if (!selectedStudent) {
+        return;
+      }
+
+      await loadStudentLevels(studentId);
+      renderStudentList();
+      renderSelectedStudentForm();
+    }
+
+    async function upsertStudentProfile(studentId, fullName, levelSlug) {
+      const profilePayloads = [
+        {
+          id: studentId,
+          full_name: fullName,
+          level: levelSlug,
+          role: currentStudentRoles[studentId] || 'member',
+        },
+        {
+          id: studentId,
+          full_name: fullName,
+          level: levelSlug,
+        },
+      ];
+
+      let lastError = null;
+      for (const payload of profilePayloads) {
+        const { error } = await sbClient
+          .from('profiles')
+          .upsert(payload, { onConflict: 'id' });
+
+        if (!error) {
+          return;
+        }
+        lastError = error;
+      }
+
+      throw lastError || new Error('Could not save student profile.');
+    }
+
+    async function upsertStudentLevels(studentId, styleLevels) {
+      const rows = STYLE_ORDER.map((styleKey) => ({
+        student_id: studentId,
+        style_key: styleKey,
+        level_slug: styleLevels[styleKey] || 'beginner',
+      }));
+
+      const { error } = await sbClient
+        .from('student_style_levels')
+        .upsert(rows, { onConflict: 'student_id,style_key' });
+
+      if (error) {
+        throw new Error(error.message || 'Could not save style levels.');
+      }
+    }
+
+    async function createStudentFromForm(event) {
+      event.preventDefault();
+      clearError();
+      createStudentBtn.disabled = true;
+      createStudentBtn.textContent = 'Creating...';
+
+      try {
+        const fullName = newFullNameEl.value.trim();
+        const email = newEmailEl.value.trim();
+        const password = newPasswordEl.value;
+        const levelSlug = newLevelEl.value;
+        const styleLevels = getStyleValuesFromGrid('new-style');
+
+        if (!fullName || !email || !password) {
+          throw new Error('Please complete the new student form.');
+        }
+
+        const { data: authData, error: authError } = await sbClient.auth.signUp({
+          email,
+          password,
+          options: { data: { full_name: fullName } },
+        });
+
+        if (authError) {
+          throw authError;
+        }
+
+        const newUserId = authData?.user?.id;
+        if (!newUserId) {
+          throw new Error('Student auth account was created but no user id was returned.');
+        }
+
+        await upsertStudentProfile(newUserId, fullName, levelSlug);
+        await upsertStudentLevels(newUserId, styleLevels);
+
+        newFullNameEl.value = '';
+        newEmailEl.value = '';
+        newPasswordEl.value = '';
+
+        await refreshAll();
+      } catch (err) {
+        showError(err.message || 'Could not create student.');
+      } finally {
+        createStudentBtn.disabled = false;
+        createStudentBtn.textContent = 'Create student';
+      }
+    }
+
+    async function saveSelectedStudent(event) {
+      event.preventDefault();
+      if (!selectedStudent) {
+        showError('Select a student first.');
+        return;
+      }
+
+      clearError();
+      saveStudentBtn.disabled = true;
+      saveStudentBtn.textContent = 'Saving...';
+
+      try {
+        const fullName = selectedFullNameEl.value.trim();
+        const levelSlug = selectedLevelEl.value;
+        const styleLevels = getStyleValuesFromGrid('selected-style');
+
+        if (!fullName) {
+          throw new Error('Full name is required.');
+        }
+
+        await upsertStudentProfile(selectedStudent.id, fullName, levelSlug);
+        await upsertStudentLevels(selectedStudent.id, styleLevels);
+
+        await refreshAll();
+      } catch (err) {
+        showError(err.message || 'Could not save student.');
+      } finally {
+        saveStudentBtn.disabled = false;
+        saveStudentBtn.textContent = 'Save student';
+      }
+    }
+
+    async function refreshAll() {
+      await loadStudents();
+      if (!selectedStudent && students[0]) {
+        await selectStudent(students[0].id);
+      } else if (selectedStudent) {
+        await selectStudent(selectedStudent.id);
+      }
+    }
+
+    async function boot() {
+      clearError();
+
+      if (!validHttpUrl(SUPABASE_URL) || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === 'YOUR_ANON_KEY') {
+        showError('Supabase is not configured. Update the admin page constants first.');
+        return;
+      }
+
+      sbClient = window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
+
+      const { data: sessionData, error: sessionError } = await sbClient.auth.getSession();
+      if (sessionError) {
+        showError('Session check failed. Please sign in again.');
+        window.location.href = '/members/';
+        return;
+      }
+
+      const session = sessionData?.session;
+      if (!session) {
+        window.location.href = '/members/';
+        return;
+      }
+
+      authUser = session.user;
+
+      signoutBtn.addEventListener('click', async () => {
+        await sbClient.auth.signOut();
+        window.location.href = '/members/';
+      });
+
+      refreshBtn.addEventListener('click', async () => {
+        await refreshAll();
+      });
+
+      studentSelect.addEventListener('change', async () => {
+        await selectStudent(studentSelect.value);
+      });
+
+      createStudentForm.addEventListener('submit', createStudentFromForm);
+      updateStudentForm.addEventListener('submit', saveSelectedStudent);
+
+      LEVELS.forEach((level) => {
+        const option = document.createElement('option');
+        option.value = level.slug;
+        option.textContent = level.label;
+        newLevelEl.appendChild(option);
+      });
+
+      renderNewStudentForm();
+
+      try {
+        await loadAdminProfile();
+        await refreshAll();
+      } catch (err) {
+        showError(err.message || 'Could not initialize admin console.');
+      }
+    }
+
+    boot();
+
+    const yearEl = document.getElementById('year');
+    if (yearEl) {
+      yearEl.textContent = String(new Date().getFullYear());
+    }
+  </script>
+</body>
+</html>
