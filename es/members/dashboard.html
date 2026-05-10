@@ -935,6 +935,25 @@
         display: none;
       }
 
+      #style-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 0.2rem;
+        scroll-snap-type: x proximity;
+      }
+
+      #style-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      #style-tabs .tab-btn {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+      }
+
       .dashboard-hero {
         grid-template-columns: 1fr;
       }
