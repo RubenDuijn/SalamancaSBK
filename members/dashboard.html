@@ -1033,7 +1033,7 @@
     ];
 
     const STYLE_ORDER = ['Salsa', 'Bachata', 'Kizomba', 'Tango', 'Zouk', 'Forro'];
-    const VIDEO_IDS = ['J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4'];
+    const CARD_VIDEO_URL = 'https://www.instagram.com/reel/DWbwJ-CjJZU/embed';
 
     const LEVEL_INDEX = Object.fromEntries(LEVELS.map((level, index) => [level.slug, index]));
 
@@ -1567,7 +1567,6 @@
       const name = figureName(style, levelSlug, figureIndex);
       const levelCategory = getLevelCategory(levelSlug);
       const levelText = levelLabel(levelSlug);
-      const videoId = VIDEO_IDS[figureIndex - 1] || VIDEO_IDS[0];
       const weekOffset = figureIndex - CURRENT_WEEK_FIGURE;
       const sessions = sessionsForStyle(style, levelSlug);
       const isThisWeek = figureIndex === CURRENT_WEEK_FIGURE;
@@ -1593,7 +1592,7 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen
-              src="https://www.youtube.com/embed/${videoId}"
+              src="${CARD_VIDEO_URL}"
               title="${name} video"
             ></iframe>
           </div>
