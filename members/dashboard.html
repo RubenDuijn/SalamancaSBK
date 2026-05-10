@@ -287,8 +287,12 @@
     }
 
     .tab-btn.locked {
-      opacity: 0.6;
-      cursor: default;
+      opacity: 0.38;
+      cursor: not-allowed;
+      border-style: dashed;
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 247, 239, 0.56);
+      box-shadow: none;
     }
 
     .combo-title {
@@ -922,10 +926,6 @@
         display: none;
       }
 
-      .tab-btn.locked {
-        display: none;
-      }
-
       #style-tabs,
       #level-tabs {
         flex-wrap: nowrap;
@@ -1142,6 +1142,7 @@
     const signoutBtn = document.getElementById('signout-btn');
     const styleTabsEl = document.getElementById('style-tabs');
     const levelTabsEl = document.getElementById('level-tabs');
+    const levelTabsTitleEl = document.getElementById('level-tabs-title');
     const styleScrollHintEl = document.getElementById('style-scroll-hint');
     const levelScrollHintEl = document.getElementById('level-scroll-hint');
     const cardsScrollHintEl = document.getElementById('cards-scroll-hint');
@@ -1216,6 +1217,14 @@
 
       const targetLeft = activeLevelTab.offsetLeft - ((levelTabsEl.clientWidth - activeLevelTab.clientWidth) / 2);
       levelTabsEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'auto' });
+    }
+
+    function updateLevelTabsTitle() {
+      if (!levelTabsTitleEl) {
+        return;
+      }
+
+      levelTabsTitleEl.textContent = `Levels for ${selectedStyle}`;
     }
 
     function updateScrollHint(scrollerEl, hintEl) {
@@ -1708,6 +1717,8 @@
 
       if (locked) {
         button.title = 'Locked for this style';
+        button.disabled = true;
+        button.setAttribute('aria-disabled', 'true');
       } else {
         button.addEventListener('click', onClick);
       }
@@ -2094,6 +2105,7 @@
       renderCards();
       renderUpcomingHighlight();
       renderAttendanceOverview();
+      updateLevelTabsTitle();
       requestAnimationFrame(refreshScrollHints);
     }
 
