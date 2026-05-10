@@ -800,7 +800,8 @@
 
       const now = new Date();
       const weekStart = new Date(now);
-      const offsetToMonday = (weekStart.getDay() + 6) % 7;
+      const isSunday = weekStart.getDay() === 0;
+      const offsetToMonday = isSunday ? -1 : (weekStart.getDay() + 6) % 7;
       weekStart.setHours(0, 0, 0, 0);
       weekStart.setDate(weekStart.getDate() - offsetToMonday);
 

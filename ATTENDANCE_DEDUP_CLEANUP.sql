@@ -58,5 +58,15 @@ begin
   $sql$, time_expr);
 end $$;
 
+-- Optional: remove old attendance rows for everyone
+-- delete from public.attendance
+-- where class_date < current_date;
+
+-- Optional: remove old attendance rows for one student only
+-- replace <STUDENT_UUID> with the student's id
+-- delete from public.attendance
+-- where student_id = '<STUDENT_UUID>'
+--   and class_date < current_date;
+
 -- Optional: quick check after cleanup
 -- select count(*) as remaining_rows from public.attendance;
