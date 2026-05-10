@@ -1772,6 +1772,41 @@
       attendanceRows = attendanceRows.filter((row) => !idSet.has(row.id));
     }
 
+    async function unmarkAttendanceLoose(figureIdValue, figureNameValue, classDateISO) {
+      const deleteVariants = [
+        () => sbClient
+          .from('attendance')
+          .delete()
+          .eq('student_id', authUser.id)
+          .eq('figure_id', figureIdValue)
+          .eq('figure_name', figureNameValue)
+          .eq('class_date', classDateISO),
+        () => sbClient
+          .from('attendance')
+          .delete()
+          .eq('student_id', authUser.id)
+          .eq('figure_name', figureNameValue)
+          .eq('class_date', classDateISO),
+      ];
+
+      let lastError = null;
+      for (const runDelete of deleteVariants) {
+        const { error } = await runDelete();
+        if (!error) {
+          attendanceRows = attendanceRows.filter(
+            (row) => !(rowsMatchAttendanceFallback(row, figureIdValue, figureNameValue, classDateISO) && row.student_id === authUser.id)
+          );
+          return;
+        }
+
+        lastError = error;
+      }
+
+      if (lastError) {
+        throw lastError;
+      }
+    }
+
     function createTabButton(label, active, locked, onClick) {
       const button = document.createElement('button');
       button.type = 'button';
@@ -1865,8 +1900,16 @@
 
             const isNowAttending = isAttending(id, name, classDateISO, session.time)
               || isAttendingFallback(id, name, classDateISO);
-            if (wasAttending === isNowAttending) {
-              throw new Error('La actualizacion de asistencia no se guardo. Intentalo otra vez.');
+
+            if (wasAttending && isNowAttending) {
+              await unmarkAttendanceLoose(id, name, classDateISO);
+              await loadAttendance();
+            }
+
+            const isNowAttendingAfterFallback = isAttending(id, name, classDateISO, session.time)
+              || isAttendingFallback(id, name, classDateISO);
+            if (wasAttending === isNowAttendingAfterFallback) {
+              throw new Error('No se pudo quitar la asistencia. Probablemente es una politica de permisos en la base de datos.');
             }
 
             renderAll();
