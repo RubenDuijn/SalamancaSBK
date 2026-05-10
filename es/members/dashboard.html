@@ -130,6 +130,7 @@
         0 12px 28px rgba(242, 167, 76, 0.34),
         0 0 18px rgba(255, 233, 166, 0.35),
         0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      animation: pill-aura 8.5s ease-in-out infinite;
     }
 
     .member-pill::before {
@@ -141,7 +142,8 @@
       width: 220%;
       background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.88) 20%, rgba(255, 255, 255, 0.06) 38%, transparent 58%);
       transform: translateX(-125%);
-      animation: pill-sheen 11s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      opacity: 0;
+      animation: pill-sheen 12s linear infinite;
       pointer-events: none;
     }
 
@@ -163,14 +165,35 @@
     }
 
     @keyframes pill-sheen {
-      0%, 58% {
-        transform: translateX(-125%);
+      0%, 56% {
+        transform: translateX(-130%);
+        opacity: 0;
       }
-      78% {
-        transform: translateX(125%);
+      62% {
+        opacity: 0.92;
       }
-      100% {
-        transform: translateX(125%);
+      82% {
+        transform: translateX(130%);
+        opacity: 0.9;
+      }
+      90%, 100% {
+        transform: translateX(165%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pill-aura {
+      0%, 100% {
+        box-shadow:
+          0 12px 28px rgba(242, 167, 76, 0.34),
+          0 0 18px rgba(255, 233, 166, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+      }
+      50% {
+        box-shadow:
+          0 14px 30px rgba(242, 167, 76, 0.44),
+          0 0 24px rgba(255, 240, 184, 0.48),
+          0 0 0 1px rgba(255, 255, 255, 0.26) inset;
       }
     }
 
