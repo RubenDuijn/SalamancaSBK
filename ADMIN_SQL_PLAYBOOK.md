@@ -131,4 +131,113 @@ commit;
 
 ## 3) Long-Term Setup Recommendation
 Use SQL quick unblock now for speed.
-Then move student creation to a server-side function (service role) and tighten policies back to admin-only writes.
+Then deploy the Edge Function and tighten policies back to admin-only writes.
+
+### 3a) Tighten to admin-only writes (copy/paste)
+
+```sql
+begin;
+
+create or replace function public.is_admin_user()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+  );
+$$;
+
+alter table public.profiles enable row level security;
+
+drop policy if exists profiles_select_own_or_admin on public.profiles;
+create policy profiles_select_own_or_admin
+  on public.profiles
+  for select
+  to authenticated
+  using (auth.uid() = id or public.is_admin_user());
+
+drop policy if exists profiles_insert_admin_or_owner_member on public.profiles;
+drop policy if exists profiles_insert_admin_only on public.profiles;
+create policy profiles_insert_admin_only
+  on public.profiles
+  for insert
+  to authenticated
+  with check (public.is_admin_user());
+
+drop policy if exists profiles_update_own_or_admin on public.profiles;
+create policy profiles_update_own_or_admin
+  on public.profiles
+  for update
+  to authenticated
+  using (auth.uid() = id or public.is_admin_user())
+  with check (auth.uid() = id or public.is_admin_user());
+
+drop policy if exists profiles_delete_admin_only on public.profiles;
+create policy profiles_delete_admin_only
+  on public.profiles
+  for delete
+  to authenticated
+  using (public.is_admin_user());
+
+alter table public.student_style_levels enable row level security;
+
+drop policy if exists student_style_levels_select_own_or_admin on public.student_style_levels;
+create policy student_style_levels_select_own_or_admin
+  on public.student_style_levels
+  for select
+  to authenticated
+  using (auth.uid() = student_id or public.is_admin_user());
+
+drop policy if exists student_style_levels_insert_admin_or_owner on public.student_style_levels;
+drop policy if exists student_style_levels_insert_admin_only on public.student_style_levels;
+create policy student_style_levels_insert_admin_only
+  on public.student_style_levels
+  for insert
+  to authenticated
+  with check (public.is_admin_user());
+
+drop policy if exists student_style_levels_update_admin_or_owner on public.student_style_levels;
+drop policy if exists student_style_levels_update_admin_only on public.student_style_levels;
+create policy student_style_levels_update_admin_only
+  on public.student_style_levels
+  for update
+  to authenticated
+  using (public.is_admin_user())
+  with check (public.is_admin_user());
+
+drop policy if exists student_style_levels_delete_admin_only on public.student_style_levels;
+create policy student_style_levels_delete_admin_only
+  on public.student_style_levels
+  for delete
+  to authenticated
+  using (public.is_admin_user());
+
+commit;
+```
+
+### 3b) Deploy Edge Function
+
+Function file in repo:
+- `supabase/functions/create-student-admin/index.ts`
+
+Deploy commands:
+
+```bash
+supabase login
+supabase link --project-ref txansvfngkjtbbdmvgtw
+supabase functions deploy create-student-admin --no-verify-jwt=false
+```
+
+Required function secrets:
+
+```bash
+supabase secrets set SUPABASE_URL=https://txansvfngkjtbbdmvgtw.supabase.co
+supabase secrets set SUPABASE_ANON_KEY=YOUR_ANON_KEY
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+```
