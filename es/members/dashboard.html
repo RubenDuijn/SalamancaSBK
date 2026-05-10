@@ -297,41 +297,6 @@
       font-size: 0.9rem;
     }
 
-    .mobile-figure-switcher {
-      display: none;
-      gap: 0.45rem;
-      flex-wrap: wrap;
-      margin: 0.75rem 0 0.85rem;
-    }
-
-    .mobile-figure-btn {
-      min-height: 34px;
-      padding: 0.32rem 0.72rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--muted);
-      font: inherit;
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
-    .mobile-figure-btn:hover {
-      color: var(--text);
-      border-color: rgba(255, 209, 154, 0.5);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .mobile-figure-btn.is-active {
-      color: #2b190b;
-      border-color: rgba(255, 209, 154, 0.82);
-      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
-      box-shadow: 0 8px 18px rgba(242, 167, 76, 0.24);
-    }
-
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -418,10 +383,6 @@
       gap: 0.42rem;
       font-size: 1rem;
       line-height: 1.3;
-    }
-
-    .figure-card.is-mobile-active {
-      display: grid;
     }
 
     .figure-level-badge {
@@ -968,7 +929,26 @@
       }
 
       .cards-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 0.75rem;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 1rem;
+        scroll-padding-right: 1rem;
+      }
+
+      .cards-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      .figure-card {
+        flex: 0 0 calc(100vw - 2rem);
+        max-width: calc(100vw - 2rem);
+        scroll-snap-align: center;
       }
 
       .members-footer .container {
@@ -1057,7 +1037,6 @@
       <section class="tabs-wrap" aria-labelledby="combo-title">
         <h2 id="combo-title" class="combo-title">Cargando recorrido...</h2>
         <p id="combo-sub" class="combo-sub"></p>
-        <div id="mobile-figure-switcher" class="mobile-figure-switcher" aria-label="Elegir semana"></div>
         <div id="cards-grid" class="cards-grid"></div>
       </section>
 
@@ -1117,7 +1096,6 @@
     const levelTabsEl = document.getElementById('level-tabs');
     const comboTitleEl = document.getElementById('combo-title');
     const comboSubEl = document.getElementById('combo-sub');
-    const mobileFigureSwitcherEl = document.getElementById('mobile-figure-switcher');
     const cardsGridEl = document.getElementById('cards-grid');
     const overviewCountEl = document.getElementById('overview-count');
     const overviewEmptyEl = document.getElementById('overview-empty');
@@ -1146,10 +1124,6 @@
 
     const CURRENT_WEEK_FIGURE = weekFigureIndexForDate(new Date());
     const NEXT_WEEK_FIGURE = CURRENT_WEEK_FIGURE < 6 ? CURRENT_WEEK_FIGURE + 1 : null;
-    const mobileFigureQuery = window.matchMedia('(max-width: 760px)');
-
-    let mobileFigureIndex = CURRENT_WEEK_FIGURE;
-
     function showError(message) {
       errorBanner.textContent = message;
       errorBanner.classList.add('show');
@@ -1161,48 +1135,16 @@
     }
 
     function isMobileFigureLayout() {
-      return mobileFigureQuery.matches;
+      return window.matchMedia('(max-width: 760px)').matches;
     }
 
-    function getMobileFigureOptions() {
-      const options = [];
-
-      if (CURRENT_WEEK_FIGURE > 1) {
-        options.push({ label: 'Semana pasada', figureIndex: CURRENT_WEEK_FIGURE - 1 });
-      }
-
-      options.push({ label: 'Esta semana', figureIndex: CURRENT_WEEK_FIGURE });
-
-      if (NEXT_WEEK_FIGURE !== null) {
-        options.push({ label: 'Próxima semana', figureIndex: NEXT_WEEK_FIGURE });
-      }
-
-      return options;
-    }
-
-    function renderMobileFigureSwitcher() {
-      if (!mobileFigureSwitcherEl) return;
-
+    function focusCurrentWeekFigureCard() {
       if (!isMobileFigureLayout()) {
-        mobileFigureSwitcherEl.innerHTML = '';
-        mobileFigureSwitcherEl.style.display = 'none';
         return;
       }
 
-      mobileFigureSwitcherEl.style.display = 'flex';
-      mobileFigureSwitcherEl.innerHTML = '';
-
-      getMobileFigureOptions().forEach((option) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = `mobile-figure-btn${mobileFigureIndex === option.figureIndex ? ' is-active' : ''}`;
-        button.textContent = option.label;
-        button.addEventListener('click', () => {
-          mobileFigureIndex = option.figureIndex;
-          renderCards();
-        });
-        mobileFigureSwitcherEl.appendChild(button);
-      });
+      const currentCard = cardsGridEl.querySelector('.figure-card.is-this-week');
+      currentCard?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
     }
 
     function validHttpUrl(value) {
@@ -1901,16 +1843,11 @@
 
       comboSubEl.textContent = `Empieza con ${firstFigureText} esta semana. Concéntrate especialmente en la Figura ${CURRENT_WEEK_FIGURE}, y la próxima semana empezaremos con la Figura ${CURRENT_WEEK_FIGURE + 1}.`;
 
-      renderMobileFigureSwitcher();
-
-      if (isMobileFigureLayout()) {
-        cardsGridEl.appendChild(buildFigureCard(mobileFigureIndex));
-        return;
-      }
-
       for (let index = 1; index <= 6; index += 1) {
         cardsGridEl.appendChild(buildFigureCard(index));
       }
+
+      focusCurrentWeekFigureCard();
     }
 
     function renderAttendanceOverview() {
@@ -2209,7 +2146,7 @@
         });
       }
 
-      mobileFigureQuery.addEventListener('change', () => {
+      window.matchMedia('(max-width: 760px)').addEventListener('change', () => {
         renderAll();
       });
 
