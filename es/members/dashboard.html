@@ -16,6 +16,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     .dashboard-main {
@@ -26,6 +27,11 @@
     .dashboard-shell {
       display: grid;
       gap: 1rem;
+      overflow-x: clip;
+    }
+
+    .dashboard-shell > * {
+      min-width: 0;
     }
 
     .members-head-actions {
@@ -943,6 +949,7 @@
         flex-wrap: nowrap;
         width: 100%;
         max-width: 100%;
+        min-width: 0;
         overflow-x: auto;
         overflow-y: hidden;
         gap: 0.75rem;
@@ -962,6 +969,7 @@
       .figure-card {
         flex: 0 0 100%;
         max-width: 100%;
+        min-width: 0;
         scroll-snap-align: center;
       }
 
