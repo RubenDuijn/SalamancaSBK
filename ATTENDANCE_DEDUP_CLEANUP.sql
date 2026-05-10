@@ -68,5 +68,13 @@ end $$;
 -- where student_id = '<STUDENT_UUID>'
 --   and class_date < current_date;
 
+-- Optional: remove ALL attendance rows for everyone (full reset)
+-- delete from public.attendance;
+
+-- Optional: remove ALL attendance rows for one student (full reset)
+-- replace <STUDENT_UUID> with the student's id
+-- delete from public.attendance
+-- where student_id = '<STUDENT_UUID>';
+
 -- Optional: quick check after cleanup
 -- select count(*) as remaining_rows from public.attendance;

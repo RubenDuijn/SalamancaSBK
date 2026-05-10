@@ -812,6 +812,12 @@
       return day >= weekStart && day <= weekEnd;
     }
 
+    function thisWeekCountLabel() {
+      return new Date().getDay() === 0
+        ? 'Attending %COUNT% classes (next schedule week)'
+        : 'Attending %COUNT% classes (this week)';
+    }
+
     function classDateForDayWithWeekOffset(dayName, weekOffset) {
       const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
       if (dayIndex < 0) {
@@ -1226,7 +1232,7 @@
       } else if (attendanceOverviewFilter === 'overlaps') {
         overviewCountEl.textContent = `Overlap alerts ${filteredRows.length}`;
       } else {
-        overviewCountEl.textContent = `Attending ${thisWeekCount} classes (this week)`;
+        overviewCountEl.textContent = thisWeekCountLabel().replace('%COUNT%', String(thisWeekCount));
       }
       overviewListEl.innerHTML = '';
 
