@@ -788,8 +788,81 @@
       return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
     }
 
+    function dayNameFromIso(isoDate) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
+    }
+
+    function parseFigureMetaFromName(figureNameValue) {
+      const safeName = normalizeText(figureNameValue);
+      if (!safeName) {
+        return null;
+      }
+
+      const levelsByLabelLength = [...LEVELS].sort((a, b) => b.label.length - a.label.length);
+
+      for (const style of STYLE_ORDER) {
+        const prefix = `${style} `;
+        if (!safeName.startsWith(prefix)) {
+          continue;
+        }
+
+        const remainder = safeName.slice(prefix.length);
+
+        for (const level of levelsByLabelLength) {
+          const levelPrefix = `${level.label} Figure `;
+          if (!remainder.startsWith(levelPrefix)) {
+            continue;
+          }
+
+          const figureIndex = Number.parseInt(remainder.slice(levelPrefix.length), 10);
+          if (!Number.isFinite(figureIndex)) {
+            return null;
+          }
+
+          return {
+            style,
+            levelSlug: level.slug,
+            figureIndex,
+          };
+        }
+      }
+
+      return null;
+    }
+
+    function inferAttendanceTimeLabel(row) {
+      const dayName = dayNameFromIso(row.class_date || '');
+      if (!dayName) {
+        return '';
+      }
+
+      const meta = parseFigureMetaFromName(row.figure_name || '');
+      if (!meta) {
+        return '';
+      }
+
+      const sessions = sessionsForStyle(meta.style, meta.levelSlug);
+      const matchingSession = sessions.find((session) => session.day === dayName);
+
+      if (matchingSession) {
+        return formatTimeLabel(matchingSession.time);
+      }
+
+      return formatTimeLabel(sessions[0]?.time || '');
+    }
+
     function attendanceTimeLabel(row) {
-      return formatTimeLabel(row.class_time || row.session_time || row.display_time || '');
+      const explicitTime = formatTimeLabel(row.class_time || row.session_time || row.display_time || '');
+      if (explicitTime) {
+        return explicitTime;
+      }
+
+      return inferAttendanceTimeLabel(row);
     }
 
     function isInCurrentWeek(isoDate) {
