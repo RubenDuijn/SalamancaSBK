@@ -502,9 +502,282 @@
       gap: 1rem;
     }
 
+    /* Weekly Stats Card */
+    .weekly-stats-card {
+      margin: 1.6rem 0;
+      padding: 1.2rem 1.4rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(242, 167, 76, 0.45);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.08), rgba(255, 125, 104, 0.04));
+      box-shadow: 0 12px 32px rgba(242, 167, 76, 0.12);
+    }
+
+    .stats-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.32rem;
+    }
+
+    .stat-label {
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat-next {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    /* Upcoming Highlight */
+    .upcoming-highlight {
+      margin: 1.6rem 0;
+    }
+
+    .upcoming-title {
+      margin: 0 0 0.8rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+
+    .upcoming-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .upcoming-item {
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 209, 154, 0.55);
+      background: linear-gradient(135deg, rgba(255, 214, 163, 0.12), rgba(255, 140, 112, 0.08));
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .upcoming-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 140, 112, 0.9));
+      color: #2c1909;
+    }
+
+    .upcoming-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .upcoming-class-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .upcoming-time {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .upcoming-room {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .upcoming-room.fuego {
+      background: rgba(255, 125, 104, 0.25);
+      color: #ffb88c;
+      border: 1px solid rgba(255, 125, 104, 0.45);
+    }
+
+    .upcoming-room.pasion {
+      background: rgba(180, 100, 180, 0.25);
+      color: #e8b0d4;
+      border: 1px solid rgba(180, 100, 180, 0.45);
+    }
+
+    /* Room Color Badges in Overview */
+    .schedule-room {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .schedule-room::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .schedule-room.fuego {
+      background: rgba(255, 125, 104, 0.2);
+      color: #ffb88c;
+      border: 1px solid rgba(255, 125, 104, 0.4);
+    }
+
+    .schedule-room.fuego::before {
+      background: #ff7d68;
+    }
+
+    .schedule-room.pasion {
+      background: rgba(180, 100, 180, 0.2);
+      color: #e8b0d4;
+      border: 1px solid rgba(180, 100, 180, 0.4);
+    }
+
+    .schedule-room.pasion::before {
+      background: #b46db4;
+    }
+
+    /* Attendance Overview Updates */
+    .overview-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin: 0.8rem 0;
+      flex-wrap: wrap;
+    }
+
+    .overview-filters {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .overview-actions {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+
+    .hide-past-label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hide-past-toggle {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+
+    .button.small {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    /* Level Badges in Overview */
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-left: 0.4rem;
+    }
+
+    .level-badge.beginner {
+      background: rgba(106, 174, 255, 0.24);
+      color: #84c2ff;
+      border: 1px solid rgba(106, 174, 255, 0.4);
+    }
+
+    .level-badge.intermediate {
+      background: rgba(242, 167, 76, 0.24);
+      color: #ffd19a;
+      border: 1px solid rgba(242, 167, 76, 0.4);
+    }
+
+    .level-badge.advanced {
+      background: rgba(255, 125, 104, 0.24);
+      color: #ffb88c;
+      border: 1px solid rgba(255, 125, 104, 0.4);
+    }
+
+    /* Enhanced Overlap Indicator */
+    .conflict-pill {
+      margin-left: 0.34rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      border-radius: 999px;
+      padding: 0.05rem 0.36rem;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff7ef;
+      border: 1px solid rgba(255, 125, 104, 0.72);
+      background: rgba(255, 125, 104, 0.24);
+    }
+
+    .conflict-pill::before {
+      content: '⚠️';
+    }
+
     @media (max-width: 980px) {
       .cards-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stats-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .overview-actions {
+        margin-left: 0;
+        width: 100%;
       }
     }
 
@@ -580,15 +853,50 @@
         <div id="level-tabs" class="tab-row"></div>
       </section>
 
+      <section class="weekly-stats-card" aria-labelledby="weekly-stats-title">
+        <div class="stats-content">
+          <div class="stat-item">
+            <span class="stat-label">This Week</span>
+            <div class="stat-value" id="stat-classes">0 classes</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Hours</span>
+            <div class="stat-value" id="stat-hours">0h</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">🔥 Streak</span>
+            <div class="stat-value" id="stat-streak">0</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Next Up</span>
+            <div class="stat-value stat-next" id="stat-next">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="upcoming-highlight" aria-labelledby="upcoming-title">
+        <h3 id="upcoming-title" class="upcoming-title">Your Next 3 Bookings</h3>
+        <ul id="upcoming-list" class="upcoming-list" aria-live="polite"></ul>
+      </section>
+
       <section class="attendance-overview" aria-labelledby="attendance-overview-title">
         <div class="overview-head">
           <h2 id="attendance-overview-title" class="overview-title">Your Attended Courses</h2>
           <span id="overview-count" class="overview-count">Attending 0 classes (this week)</span>
         </div>
-        <div class="overview-filters" role="tablist" aria-label="Attendance overview filters">
-          <button type="button" class="overview-filter-btn is-active" data-filter="this-week">This week</button>
-          <button type="button" class="overview-filter-btn" data-filter="all">All</button>
-          <button type="button" class="overview-filter-btn" data-filter="overlaps">Overlaps</button>
+        <div class="overview-controls">
+          <div class="overview-filters" role="tablist" aria-label="Attendance overview filters">
+            <button type="button" class="overview-filter-btn is-active" data-filter="this-week">This week</button>
+            <button type="button" class="overview-filter-btn" data-filter="all">All</button>
+            <button type="button" class="overview-filter-btn" data-filter="overlaps">⚠️ Overlaps</button>
+          </div>
+          <div class="overview-actions">
+            <label class="hide-past-label">
+              <input type="checkbox" id="hide-past-toggle" class="hide-past-toggle">
+              Hide past
+            </label>
+            <button type="button" id="export-csv-btn" class="button secondary small" title="Download CSV of your attendance">↓ Export</button>
+          </div>
         </div>
         <p id="overview-empty" class="overview-empty">No attendance marked yet. Tap Attend on any session to add it here.</p>
         <ul id="overview-list" class="overview-list" aria-live="polite"></ul>
@@ -642,6 +950,15 @@
     const overviewListEl = document.getElementById('overview-list');
     const overviewFilterButtons = Array.from(document.querySelectorAll('.overview-filter-btn'));
 
+    // New elements for enhanced dashboard
+    const statClassesEl = document.getElementById('stat-classes');
+    const statHoursEl = document.getElementById('stat-hours');
+    const statStreakEl = document.getElementById('stat-streak');
+    const statNextEl = document.getElementById('stat-next');
+    const upcomingListEl = document.getElementById('upcoming-list');
+    const hidePastToggle = document.getElementById('hide-past-toggle');
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+
     let sbClient = null;
     let authUser = null;
     let profile = null;
@@ -650,6 +967,7 @@
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
     let attendanceOverviewFilter = 'this-week';
+    let hidePastFilter = false;
 
     function weekFigureIndexForDate(date) {
       const dayOfMonth = date.getDate();
@@ -1201,6 +1519,137 @@
       return card;
     }
 
+    // Stat and Enhancement Helpers
+    function getLevelCategory(levelSlug) {
+      if (levelSlug?.includes('beginner')) return 'beginner';
+      if (levelSlug?.includes('advanced')) return 'advanced';
+      return 'intermediate';
+    }
+
+    function getRoomLabel(index) {
+      return index === 0 ? 'fuego' : 'pasion';
+    }
+
+    function getDateIndex(dateString, baseList) {
+      return baseList.findIndex(row => row.class_date === dateString);
+    }
+
+    function calculateAttendanceStats() {
+      const thisWeekRows = attendanceRows.filter(row => isInCurrentWeek(row.class_date));
+      const classCount = thisWeekRows.length;
+      const hoursPerClass = 1.5;
+      const totalHours = (classCount * hoursPerClass).toFixed(1);
+
+      // Calculate streak (consecutive weeks)
+      const uniqueWeeks = new Set();
+      attendanceRows.forEach(row => {
+        const date = new Date(`${row.class_date}T00:00:00`);
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay());
+        uniqueWeeks.add(weekStart.toISOString().split('T')[0]);
+      });
+      const streak = uniqueWeeks.size;
+
+      // Get next class (soonest future attendance)
+      const today = todayIso();
+      const futureRows = attendanceRows
+        .filter(row => row.class_date >= today)
+        .sort((a, b) => {
+          if (a.class_date !== b.class_date) return a.class_date.localeCompare(b.class_date);
+          return (attendanceTimeLabel(a) || '').localeCompare(attendanceTimeLabel(b) || '');
+        });
+      const nextClass = futureRows[0];
+      const nextClassLabel = nextClass
+        ? `${normalizeText(nextClass.figure_name)?.split(' ')[0]} ${formatDateLabel(nextClass.class_date)}`
+        : '—';
+
+      return { classCount, totalHours, streak, nextClassLabel };
+    }
+
+    function renderWeeklyStatsCard() {
+      const stats = calculateAttendanceStats();
+      if (statClassesEl) statClassesEl.textContent = `${stats.classCount} classes`;
+      if (statHoursEl) statHoursEl.textContent = `${stats.totalHours}h`;
+      if (statStreakEl) statStreakEl.textContent = `${stats.streak}`;
+      if (statNextEl) statNextEl.textContent = stats.nextClassLabel;
+    }
+
+    function getNextUpcomingClasses(limit = 3) {
+      const today = todayIso();
+      const futureRows = attendanceRows
+        .filter(row => row.class_date >= today)
+        .sort((a, b) => {
+          if (a.class_date !== b.class_date) return a.class_date.localeCompare(b.class_date);
+          return (attendanceTimeLabel(a) || '').localeCompare(attendanceTimeLabel(b) || '');
+        })
+        .slice(0, limit);
+
+      return futureRows.map((row, index) => ({
+        ...row,
+        sequence: index + 1,
+        time: attendanceTimeLabel(row),
+        originalDate: new Date(`${row.class_date}T00:00:00`),
+      }));
+    }
+
+    function renderUpcomingHighlight() {
+      if (!upcomingListEl) return;
+      upcomingListEl.innerHTML = '';
+
+      const upcoming = getNextUpcomingClasses(3);
+      if (upcoming.length === 0) {
+        upcomingListEl.innerHTML = '<li style="text-align: center; color: var(--muted); padding: 1rem; font-size: 0.9rem;">No upcoming bookings. Mark classes to see them here!</li>';
+        return;
+      }
+
+      upcoming.forEach(row => {
+        const item = document.createElement('li');
+        item.className = 'upcoming-item';
+
+        const roomIndex = row.sequence % 2;
+        const roomClass = getRoomLabel(roomIndex);
+        const roomLabel = roomClass === 'fuego' ? 'Room Fuego' : 'Room Pasión';
+
+        const figureNameShort = normalizeText(row.figure_name)?.split(' ').slice(0, 2).join(' ') || 'Class';
+        const dateLabel = formatDateLabel(row.class_date || todayIso());
+
+        item.innerHTML = `
+          <div class="upcoming-badge">#{row.sequence}</div>
+          <div class="upcoming-details">
+            <div class="upcoming-class-name">${figureNameShort}</div>
+            <div class="upcoming-time">${dateLabel}${row.time ? ` · ${row.time}` : ''}</div>
+          </div>
+          <span class="upcoming-room ${roomClass}">${roomLabel}</span>
+        `;
+        upcomingListEl.appendChild(item);
+      });
+    }
+
+    function exportAttendanceCSV() {
+      const headers = ['Date', 'Class', 'Time', 'Level'];
+      const rows = attendanceRows
+        .map(row => {
+          const date = formatDateLabel(row.class_date || todayIso());
+          const className = normalizeText(row.figure_name) || 'Class';
+          const time = attendanceTimeLabel(row) || '—';
+          const meta = parseFigureMetaFromName(row.figure_name) || {};
+          const level = meta.levelSlug ? LEVELS.find(l => l.slug === meta.levelSlug)?.label : '—';
+          return [date, className, time, level];
+        })
+        .sort((a, b) => a[0].localeCompare(b[0]));
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')),
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `attendance-${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+    }
+
     function renderStyleTabs() {
       styleTabsEl.innerHTML = '';
 
@@ -1278,7 +1727,8 @@
         slotCounter[slotKey] = (slotCounter[slotKey] || 0) + 1;
       });
 
-      const filteredRows = sortedRows.filter((row) => {
+      const today = todayIso();
+      let filteredRows = sortedRows.filter((row) => {
         if (attendanceOverviewFilter === 'all') {
           return true;
         }
@@ -1299,6 +1749,11 @@
         return true;
       });
 
+      // Apply hide past filter
+      if (hidePastFilter) {
+        filteredRows = filteredRows.filter(row => row.class_date >= today);
+      }
+
       const thisWeekCount = sortedRows.filter((row) => isInCurrentWeek(row.class_date)).length;
       if (attendanceOverviewFilter === 'all') {
         overviewCountEl.textContent = `Attending ${sortedRows.length} classes (all)`;
@@ -1315,7 +1770,7 @@
         } else if (attendanceOverviewFilter === 'all') {
           overviewEmptyEl.textContent = 'No attendance marked yet. Tap Attend on any session to add it here.';
         } else {
-          overviewEmptyEl.textContent = 'No classes marked for this week yet.';
+          overviewEmptyEl.textContent = hidePastFilter ? 'No upcoming classes for this filter.' : 'No classes marked for this week yet.';
         }
         overviewEmptyEl.style.display = 'block';
         return;
@@ -1323,16 +1778,24 @@
 
       overviewEmptyEl.style.display = 'none';
 
-      filteredRows.forEach((row) => {
+      filteredRows.forEach((row, index) => {
         const time = attendanceTimeLabel(row);
         const slotKey = time ? `${row.class_date}|${time}` : '';
         const hasConflict = slotKey && slotCounter[slotKey] > 1;
+        const roomIndex = index % 2;
+        const roomClass = getRoomLabel(roomIndex);
+        const roomLabel = roomClass === 'fuego' ? 'Fuego' : 'Pasión';
+
+        // Get level category for badge
+        const meta = parseFigureMetaFromName(row.figure_name) || {};
+        const levelCategory = meta.levelSlug ? getLevelCategory(meta.levelSlug) : '';
+        const levelAbbr = meta.levelSlug?.split('_')[0]?.charAt(0).toUpperCase() || '–';
 
         const item = document.createElement('li');
         item.className = `overview-item${hasConflict ? ' is-conflict' : ''}`;
         item.innerHTML = `
-          <strong>${normalizeText(row.figure_name) || 'Course'}${hasConflict ? ' <span class="conflict-pill">Overlap</span>' : ''}</strong>
-          <span>${formatDateLabel(row.class_date || todayIso())}${time ? ` · ${time}` : ''}</span>
+          <strong>${normalizeText(row.figure_name) || 'Course'}${levelCategory ? ` <span class="level-badge ${levelCategory}">${levelAbbr}</span>` : ''}${hasConflict ? ' <span class="conflict-pill">Overlap</span>' : ''}</strong>
+          <span>${formatDateLabel(row.class_date || todayIso())}${time ? ` · ${time}` : ''} · <span class="schedule-room ${roomClass}">${roomLabel}</span></span>
         `;
         overviewListEl.appendChild(item);
       });
@@ -1356,6 +1819,8 @@
       renderStyleTabs();
       renderLevelTabs();
       renderCards();
+      renderWeeklyStatsCard();
+      renderUpcomingHighlight();
       renderAttendanceOverview();
     }
 
@@ -1463,6 +1928,24 @@
       });
 
       setupOverviewFilters();
+
+      // Setup new feature event listeners
+      if (hidePastToggle) {
+        hidePastToggle.addEventListener('change', () => {
+          hidePastFilter = hidePastToggle.checked;
+          renderAttendanceOverview();
+        });
+      }
+
+      if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', () => {
+          if (attendanceRows.length === 0) {
+            alert('No attendance data to export.');
+            return;
+          }
+          exportAttendanceCSV();
+        });
+      }
 
       try {
         await loadProfile();
