@@ -135,9 +135,12 @@
     .member-pill::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.85) 18%, rgba(255, 255, 255, 0.05) 34%, transparent 52%);
-      transform: translateX(-120%);
+      top: -18%;
+      bottom: -18%;
+      left: -65%;
+      width: 220%;
+      background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.88) 20%, rgba(255, 255, 255, 0.06) 38%, transparent 58%);
+      transform: translateX(-125%);
       animation: pill-sheen 6s ease-in-out infinite;
       pointer-events: none;
     }
@@ -161,13 +164,13 @@
 
     @keyframes pill-sheen {
       0%, 42% {
-        transform: translateX(-120%);
+        transform: translateX(-125%);
       }
       65% {
-        transform: translateX(120%);
+        transform: translateX(125%);
       }
       100% {
-        transform: translateX(120%);
+        transform: translateX(125%);
       }
     }
 
