@@ -1156,7 +1156,12 @@
       }
 
       const currentCard = cardsGridEl.querySelector('.figure-card.is-this-week');
-      currentCard?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
+      if (!currentCard) {
+        return;
+      }
+
+      const targetLeft = currentCard.offsetLeft - ((cardsGridEl.clientWidth - currentCard.clientWidth) / 2);
+      cardsGridEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'auto' });
     }
 
     function validHttpUrl(value) {
