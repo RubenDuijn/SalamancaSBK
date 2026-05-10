@@ -860,10 +860,6 @@
             <div class="stat-value" id="stat-classes">0 classes</div>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Hours</span>
-            <div class="stat-value" id="stat-hours">0h</div>
-          </div>
-          <div class="stat-item">
             <span class="stat-label">Streak</span>
             <div class="stat-value" id="stat-streak">0</div>
           </div>
@@ -945,7 +941,6 @@
 
     // New elements for enhanced dashboard
     const statClassesEl = document.getElementById('stat-classes');
-    const statHoursEl = document.getElementById('stat-hours');
     const statStreakEl = document.getElementById('stat-streak');
     const upcomingListEl = document.getElementById('upcoming-list');
     const hidePastToggle = document.getElementById('hide-past-toggle');
@@ -1520,7 +1515,6 @@
     function calculateAttendanceStats() {
       const thisWeekRows = attendanceRows.filter(row => isInCurrentWeek(row.class_date));
       const classCount = thisWeekRows.length;
-      const totalHours = classCount.toFixed(0);
 
       const uniqueWeeks = new Set();
       attendanceRows.forEach(row => {
@@ -1531,13 +1525,12 @@
       });
       const streak = uniqueWeeks.size;
 
-      return { classCount, totalHours, streak };
+      return { classCount, streak };
     }
 
     function renderWeeklyStatsCard() {
       const stats = calculateAttendanceStats();
       if (statClassesEl) statClassesEl.textContent = `${stats.classCount} classes`;
-      if (statHoursEl) statHoursEl.textContent = `${stats.totalHours}h`;
       if (statStreakEl) statStreakEl.textContent = `${stats.streak}`;
     }
 
