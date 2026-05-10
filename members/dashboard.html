@@ -381,6 +381,41 @@
       margin-bottom: 0.7rem;
     }
 
+    .overview-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0 0 0.58rem;
+    }
+
+    .overview-filter-btn {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      border-radius: 999px;
+      min-height: 30px;
+      padding: 0.22rem 0.58rem;
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .overview-filter-btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 209, 154, 0.56);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .overview-filter-btn.is-active {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      box-shadow: 0 7px 15px rgba(242, 167, 76, 0.24);
+    }
+
     .overview-title {
       margin: 0;
       font-size: 1.05rem;
@@ -550,6 +585,11 @@
           <h2 id="attendance-overview-title" class="overview-title">Your Attended Courses</h2>
           <span id="overview-count" class="overview-count">Attending 0 classes (this week)</span>
         </div>
+        <div class="overview-filters" role="tablist" aria-label="Attendance overview filters">
+          <button type="button" class="overview-filter-btn is-active" data-filter="this-week">This week</button>
+          <button type="button" class="overview-filter-btn" data-filter="all">All</button>
+          <button type="button" class="overview-filter-btn" data-filter="overlaps">Overlaps</button>
+        </div>
         <p id="overview-empty" class="overview-empty">No attendance marked yet. Tap Attend on any session to add it here.</p>
         <ul id="overview-list" class="overview-list" aria-live="polite"></ul>
       </section>
@@ -600,6 +640,7 @@
     const overviewCountEl = document.getElementById('overview-count');
     const overviewEmptyEl = document.getElementById('overview-empty');
     const overviewListEl = document.getElementById('overview-list');
+    const overviewFilterButtons = Array.from(document.querySelectorAll('.overview-filter-btn'));
 
     let sbClient = null;
     let authUser = null;
@@ -608,6 +649,7 @@
     let attendanceRows = [];
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
+    let attendanceOverviewFilter = 'this-week';
 
     function weekFigureIndexForDate(date) {
       const dayOfMonth = date.getDate();
@@ -1110,17 +1152,6 @@
         return String(a.class_date || '').localeCompare(String(b.class_date || ''));
       });
 
-      const thisWeekCount = sortedRows.filter((row) => isInCurrentWeek(row.class_date)).length;
-      overviewCountEl.textContent = `Attending ${thisWeekCount} classes (this week)`;
-      overviewListEl.innerHTML = '';
-
-      if (sortedRows.length === 0) {
-        overviewEmptyEl.style.display = 'block';
-        return;
-      }
-
-      overviewEmptyEl.style.display = 'none';
-
       const slotCounter = {};
       sortedRows.forEach((row) => {
         const time = attendanceTimeLabel(row);
@@ -1131,7 +1162,52 @@
         slotCounter[slotKey] = (slotCounter[slotKey] || 0) + 1;
       });
 
-      sortedRows.forEach((row) => {
+      const filteredRows = sortedRows.filter((row) => {
+        if (attendanceOverviewFilter === 'all') {
+          return true;
+        }
+
+        if (attendanceOverviewFilter === 'this-week') {
+          return isInCurrentWeek(row.class_date);
+        }
+
+        if (attendanceOverviewFilter === 'overlaps') {
+          const time = attendanceTimeLabel(row);
+          if (!time) {
+            return false;
+          }
+          const slotKey = `${row.class_date}|${time}`;
+          return slotCounter[slotKey] > 1;
+        }
+
+        return true;
+      });
+
+      const thisWeekCount = sortedRows.filter((row) => isInCurrentWeek(row.class_date)).length;
+      if (attendanceOverviewFilter === 'all') {
+        overviewCountEl.textContent = `Attending ${sortedRows.length} classes (all)`;
+      } else if (attendanceOverviewFilter === 'overlaps') {
+        overviewCountEl.textContent = `Overlap alerts ${filteredRows.length}`;
+      } else {
+        overviewCountEl.textContent = `Attending ${thisWeekCount} classes (this week)`;
+      }
+      overviewListEl.innerHTML = '';
+
+      if (filteredRows.length === 0) {
+        if (attendanceOverviewFilter === 'overlaps') {
+          overviewEmptyEl.textContent = 'No overlapping bookings detected.';
+        } else if (attendanceOverviewFilter === 'all') {
+          overviewEmptyEl.textContent = 'No attendance marked yet. Tap Attend on any session to add it here.';
+        } else {
+          overviewEmptyEl.textContent = 'No classes marked for this week yet.';
+        }
+        overviewEmptyEl.style.display = 'block';
+        return;
+      }
+
+      overviewEmptyEl.style.display = 'none';
+
+      filteredRows.forEach((row) => {
         const time = attendanceTimeLabel(row);
         const slotKey = time ? `${row.class_date}|${time}` : '';
         const hasConflict = slotKey && slotCounter[slotKey] > 1;
@@ -1143,6 +1219,20 @@
           <span>${formatDateLabel(row.class_date || todayIso())}${time ? ` · ${time}` : ''}</span>
         `;
         overviewListEl.appendChild(item);
+      });
+    }
+
+    function setupOverviewFilters() {
+      overviewFilterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          attendanceOverviewFilter = button.dataset.filter || 'this-week';
+
+          overviewFilterButtons.forEach((btn) => {
+            btn.classList.toggle('is-active', btn === button);
+          });
+
+          renderAttendanceOverview();
+        });
       });
     }
 
@@ -1255,6 +1345,8 @@
         await sbClient.auth.signOut();
         window.location.href = 'index.html';
       });
+
+      setupOverviewFilters();
 
       try {
         await loadProfile();
