@@ -955,6 +955,7 @@
               await markAttendance(id, name, classDateISO, session.day, session.time);
             }
             renderCards();
+            renderAttendanceOverview();
           } catch (err) {
             showError(err.message || 'Could not update attendance.');
           } finally {
