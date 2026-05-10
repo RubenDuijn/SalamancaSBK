@@ -355,6 +355,26 @@
           </div>
         </form>
       </section>
+
+      <section class="admin-panel">
+        <h2 class="panel-title">⚙️ Database Maintenance</h2>
+        <p class="panel-sub">Clean up old or duplicate attendance records. Use with caution—these actions cannot be undone.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem;">
+          <div>
+            <button type="button" id="cleanup-duplicates-btn" class="button secondary" style="width: 100%;">Remove duplicates</button>
+            <small style="display: block; color: var(--muted); margin-top: 0.4rem; font-size: 0.75rem;">Keeps oldest record per class</small>
+          </div>
+          <div>
+            <button type="button" id="cleanup-old-btn" class="button secondary" style="width: 100%;">Remove past entries</button>
+            <small style="display: block; color: var(--muted); margin-top: 0.4rem; font-size: 0.75rem;">Deletes class_date &lt; today</small>
+          </div>
+          <div>
+            <button type="button" id="cleanup-all-btn" class="button secondary danger" style="width: 100%; opacity: 0.7;">Clear all data</button>
+            <small style="display: block; color: var(--muted); margin-top: 0.4rem; font-size: 0.75rem;">⚠️ Full reset (confirm required)</small>
+          </div>
+        </div>
+        <div id="cleanup-status" style="margin-top: 1rem; padding: 0.8rem; border-radius: 8px; background: transparent; display: none;"></div>
+      </section>
     </div>
   </main>
 
@@ -807,6 +827,89 @@
       }
     }
 
+    // Cleanup Functions
+    async function cleanupDuplicates() {
+      if (!confirm('Remove duplicate attendance records? This keeps the oldest entry per class and cannot be undone.')) {
+        return;
+      }
+
+      const statusEl = document.getElementById('cleanup-status');
+      const btn = document.getElementById('cleanup-duplicates-btn');
+      btn.disabled = true;
+
+      try {
+        const { data: result, error } = await sbClient.rpc('attendance_dedup_cleanup');
+        if (error) throw error;
+        statusEl.innerHTML = '✅ Duplicate records removed successfully.';
+        statusEl.style.background = 'rgba(106, 174, 255, 0.15)';
+        statusEl.style.display = 'block';
+      } catch (err) {
+        statusEl.innerHTML = `⚠️ Error: ${err.message || 'Could not clean duplicates. Please run the SQL script manually.'}`;
+        statusEl.style.background = 'rgba(255, 125, 104, 0.2)';
+        statusEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function cleanupOldEntries() {
+      if (!confirm('Delete all attendance records with past dates (before today)? This cannot be undone.')) {
+        return;
+      }
+
+      const statusEl = document.getElementById('cleanup-status');
+      const btn = document.getElementById('cleanup-old-btn');
+      btn.disabled = true;
+
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const { data, error } = await sbClient
+          .from('attendance')
+          .delete()
+          .lt('class_date', today);
+        if (error) throw error;
+        statusEl.innerHTML = `✅ Old records removed (${data?.length || 0} entries deleted).`;
+        statusEl.style.background = 'rgba(106, 174, 255, 0.15)';
+        statusEl.style.display = 'block';
+      } catch (err) {
+        statusEl.innerHTML = `⚠️ Error: ${err.message || 'Could not delete old entries.'}`;
+        statusEl.style.background = 'rgba(255, 125, 104, 0.2)';
+        statusEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function cleanupAll() {
+      if (!confirm('⚠️ CONFIRM: Delete ALL attendance records for ALL students? This cannot be undone!')) {
+        return;
+      }
+      if (!confirm('⚠️ FINAL CONFIRMATION: Delete all attendance data? Type "yes" in the next prompt to proceed.')) {
+        return;
+      }
+
+      const statusEl = document.getElementById('cleanup-status');
+      const btn = document.getElementById('cleanup-all-btn');
+      btn.disabled = true;
+
+      try {
+        const { error } = await sbClient
+          .from('attendance')
+          .delete()
+          .gte('id', '00000000-0000-0000-0000-000000000000'); // Match all rows
+        if (error) throw error;
+        statusEl.innerHTML = '✅ All attendance records deleted successfully.';
+        statusEl.style.background = 'rgba(255, 125, 104, 0.2)';
+        statusEl.style.display = 'block';
+      } catch (err) {
+        statusEl.innerHTML = `⚠️ Error: ${err.message || 'Could not delete all entries.'}`;
+        statusEl.style.background = 'rgba(255, 125, 104, 0.2)';
+        statusEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     async function boot() {
       clearError();
 
@@ -847,6 +950,15 @@
 
       createStudentForm.addEventListener('submit', createStudentFromForm);
       updateStudentForm.addEventListener('submit', saveSelectedStudent);
+
+      // Setup cleanup button listeners
+      const cleanupDuplicatesBtn = document.getElementById('cleanup-duplicates-btn');
+      const cleanupOldBtn = document.getElementById('cleanup-old-btn');
+      const cleanupAllBtn = document.getElementById('cleanup-all-btn');
+
+      if (cleanupDuplicatesBtn) cleanupDuplicatesBtn.addEventListener('click', cleanupDuplicates);
+      if (cleanupOldBtn) cleanupOldBtn.addEventListener('click', cleanupOldEntries);
+      if (cleanupAllBtn) cleanupAllBtn.addEventListener('click', cleanupAll);
 
       LEVELS.forEach((level) => {
         const option = document.createElement('option');
