@@ -892,11 +892,17 @@
         font-size: 0.68rem;
       }
 
+      .overview-filters,
+      #hide-past-toggle {
+        display: none;
+      }
+
       .tab-btn.locked {
         display: none;
       }
 
-      #style-tabs {
+      #style-tabs,
+      #level-tabs {
         flex-wrap: nowrap;
         overflow-x: auto;
         overflow-y: hidden;
@@ -904,13 +910,17 @@
         scrollbar-width: none;
         padding-bottom: 0.2rem;
         scroll-snap-type: x proximity;
+        mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
       }
 
-      #style-tabs::-webkit-scrollbar {
+      #style-tabs::-webkit-scrollbar,
+      #level-tabs::-webkit-scrollbar {
         display: none;
       }
 
-      #style-tabs .tab-btn {
+      #style-tabs .tab-btn,
+      #level-tabs .tab-btn {
         flex: 0 0 auto;
         scroll-snap-align: start;
       }
@@ -939,6 +949,8 @@
         scroll-snap-type: x mandatory;
         scroll-padding-left: 1rem;
         scroll-padding-right: 1rem;
+        mask-image: linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
       }
 
       .cards-grid::-webkit-scrollbar {
@@ -1113,7 +1125,7 @@
     let attendanceRows = [];
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
-    let attendanceOverviewFilter = 'all';
+    let attendanceOverviewFilter = window.matchMedia('(max-width: 760px)').matches ? 'this-week' : 'all';
     let hidePastFilter = true;
 
     function weekFigureIndexForDate(date) {
@@ -2146,7 +2158,11 @@
         });
       }
 
-      window.matchMedia('(max-width: 760px)').addEventListener('change', () => {
+      window.matchMedia('(max-width: 760px)').addEventListener('change', (event) => {
+        attendanceOverviewFilter = event.matches ? 'this-week' : 'all';
+        overviewFilterButtons.forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.filter === attendanceOverviewFilter);
+        });
         renderAll();
       });
 
