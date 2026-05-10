@@ -366,6 +366,68 @@
       display: block;
     }
 
+    .attendance-overview {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .overview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .overview-title {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .overview-count {
+      color: var(--accent-2);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .overview-list {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .overview-item {
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.58rem 0.68rem;
+      display: grid;
+      gap: 0.12rem;
+    }
+
+    .overview-item strong {
+      font-size: 0.9rem;
+      color: #fff4e9;
+      font-weight: 700;
+    }
+
+    .overview-item span {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .overview-empty {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
     .members-footer {
       border-top: 1px solid var(--line);
       background: rgba(10, 8, 12, 0.36);
@@ -459,6 +521,15 @@
         <div id="level-tabs" class="tab-row"></div>
       </section>
 
+      <section class="attendance-overview" aria-labelledby="attendance-overview-title">
+        <div class="overview-head">
+          <h2 id="attendance-overview-title" class="overview-title">Your Attended Courses</h2>
+          <span id="overview-count" class="overview-count">0 attended</span>
+        </div>
+        <p id="overview-empty" class="overview-empty">No attendance marked yet. Tap Attend on any session to add it here.</p>
+        <ul id="overview-list" class="overview-list" aria-live="polite"></ul>
+      </section>
+
       <section class="tabs-wrap" aria-labelledby="combo-title">
         <h2 id="combo-title" class="combo-title">Loading curriculum...</h2>
         <p id="combo-sub" class="combo-sub"></p>
@@ -502,6 +573,9 @@
     const comboTitleEl = document.getElementById('combo-title');
     const comboSubEl = document.getElementById('combo-sub');
     const cardsGridEl = document.getElementById('cards-grid');
+    const overviewCountEl = document.getElementById('overview-count');
+    const overviewEmptyEl = document.getElementById('overview-empty');
+    const overviewListEl = document.getElementById('overview-list');
 
     let sbClient = null;
     let authUser = null;
@@ -619,6 +693,19 @@
       const m = String(now.getMonth() + 1).padStart(2, '0');
       const d = String(now.getDate()).padStart(2, '0');
       return `${y}-${m}-${d}`;
+    }
+
+    function formatDateLabel(isoDate) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return isoDate;
+      }
+
+      return date.toLocaleDateString('en-GB', {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+      });
     }
 
     function classDateForDayWithWeekOffset(dayName, weekOffset) {
@@ -924,10 +1011,40 @@
       }
     }
 
+    function renderAttendanceOverview() {
+      const sortedRows = [...attendanceRows].sort((a, b) => {
+        if (a.class_date === b.class_date) {
+          return String(a.figure_name || '').localeCompare(String(b.figure_name || ''));
+        }
+        return String(a.class_date || '').localeCompare(String(b.class_date || ''));
+      });
+
+      overviewCountEl.textContent = `${sortedRows.length} attended`;
+      overviewListEl.innerHTML = '';
+
+      if (sortedRows.length === 0) {
+        overviewEmptyEl.style.display = 'block';
+        return;
+      }
+
+      overviewEmptyEl.style.display = 'none';
+
+      sortedRows.forEach((row) => {
+        const item = document.createElement('li');
+        item.className = 'overview-item';
+        item.innerHTML = `
+          <strong>${normalizeText(row.figure_name) || 'Course'}</strong>
+          <span>${formatDateLabel(row.class_date || todayIso())}</span>
+        `;
+        overviewListEl.appendChild(item);
+      });
+    }
+
     function renderAll() {
       renderStyleTabs();
       renderLevelTabs();
       renderCards();
+      renderAttendanceOverview();
     }
 
     async function loadProfile() {
