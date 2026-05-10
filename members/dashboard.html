@@ -1871,10 +1871,7 @@
         const isAssigned = styleAssigned(style);
         const button = createTabButton(style, selectedStyle === style, !isAssigned, () => {
           selectedStyle = style;
-
-          if (levelLocked(selectedLevel)) {
-            selectedLevel = styleMaxLevelSlug(selectedStyle);
-          }
+          selectedLevel = styleMaxLevelSlug(selectedStyle);
 
           renderAll();
         });
