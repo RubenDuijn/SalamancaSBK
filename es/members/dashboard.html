@@ -1810,11 +1810,21 @@
           clearError();
 
           try {
-            if (isAttending(id, name, classDateISO, session.time)) {
+            const wasAttending = isAttending(id, name, classDateISO, session.time);
+
+            if (wasAttending) {
               await unmarkAttendance(id, name, classDateISO, session.time);
             } else {
               await markAttendance(id, name, classDateISO, session.day, session.time);
             }
+
+            await loadAttendance();
+
+            const isNowAttending = isAttending(id, name, classDateISO, session.time);
+            if (wasAttending === isNowAttending) {
+              throw new Error('La actualizacion de asistencia no se guardo. Intentalo otra vez.');
+            }
+
             renderAll();
           } catch (err) {
             showError(err.message || 'No se pudo actualizar la asistencia.');

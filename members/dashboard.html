@@ -1796,11 +1796,21 @@
           clearError();
 
           try {
-            if (isAttending(id, name, classDateISO, session.time)) {
+            const wasAttending = isAttending(id, name, classDateISO, session.time);
+
+            if (wasAttending) {
               await unmarkAttendance(id, name, classDateISO, session.time);
             } else {
               await markAttendance(id, name, classDateISO, session.day, session.time);
             }
+
+            await loadAttendance();
+
+            const isNowAttending = isAttending(id, name, classDateISO, session.time);
+            if (wasAttending === isNowAttending) {
+              throw new Error('Attendance update did not persist. Please try again.');
+            }
+
             renderAll();
           } catch (err) {
             showError(err.message || 'Could not update attendance.');
