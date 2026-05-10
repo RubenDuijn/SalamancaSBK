@@ -136,19 +136,19 @@ const dayPanelEl = document.getElementById('schedule-day-panel');
 const scheduleDataEn = [
   {
     day: 'Monday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Open Level Floor (Free Slot)', time: '16:00' },
       { title: 'Bachata Fusion Level 1-2', time: '17:00' },
       { title: 'Salsa Cubana Level 0', time: '20:00' },
       { title: 'Bachata Fusion Flow Level 1-2', time: '21:00' },
-      { title: 'Salsa en Linea On1 Level 1-2 · Sol Room', time: '22:00' },
-      { title: 'Rueda Casino Level 1-2 · Sombra Room', time: '22:00' },
+      { title: 'Salsa en Linea On1 Level 1-2 · Fuego Room', time: '22:00' },
+      { title: 'Rueda Casino Level 1-2 · Pasión Room', time: '22:00' },
     ],
   },
   {
     day: 'Tuesday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Bachata Moderna Level 0-1', time: '16:00' },
       { title: 'Bachata Moderna Level 1', time: '17:00' },
@@ -160,45 +160,45 @@ const scheduleDataEn = [
   },
   {
     day: 'Wednesday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Zouk Foundations (Free Slot)', time: '17:00' },
-      { title: 'Salsa Cubana Level 1 · Sol Room', time: '20:00' },
-      { title: 'Rueda Casino Level 1 · Sombra Room', time: '20:00' },
-      { title: 'Salsa en Linea On1 · Sol Room', time: '21:00' },
-      { title: 'Shines On2 · Sombra Room', time: '21:00' },
-      { title: 'Salsa Cubana Level 1-2 · Sol Room', time: '22:00' },
-      { title: 'Rueda Casino Level 1-2 · Sombra Room', time: '22:00' },
+      { title: 'Salsa Cubana Level 1 · Fuego Room', time: '20:00' },
+      { title: 'Rueda Casino Level 1 · Pasión Room', time: '20:00' },
+      { title: 'Salsa en Linea On1 · Fuego Room', time: '21:00' },
+      { title: 'Shines On2 · Pasión Room', time: '21:00' },
+      { title: 'Salsa Cubana Level 1-2 · Fuego Room', time: '22:00' },
+      { title: 'Rueda Casino Level 1-2 · Pasión Room', time: '22:00' },
     ],
   },
   {
     day: 'Thursday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Salsa Cubana Level 0-1', time: '16:00' },
-      { title: 'Salsa Cubana Level 1 · Sol Room', time: '17:00' },
-      { title: 'Rueda Casino Level 1 · Sombra Room', time: '17:00' },
+      { title: 'Salsa Cubana Level 1 · Fuego Room', time: '17:00' },
+      { title: 'Rueda Casino Level 1 · Pasión Room', time: '17:00' },
       { title: 'Tango Argentino Level 0-1', time: '18:00' },
       { title: 'Bachata Moderna Level 0-1', time: '20:00' },
-      { title: 'Kizomba Level 1-2 · Sol Room', time: '21:00' },
-      { title: 'Bachata Dominicana Level 1-2 · Sombra Room', time: '21:00' },
+      { title: 'Kizomba Level 1-2 · Fuego Room', time: '21:00' },
+      { title: 'Bachata Dominicana Level 1-2 · Pasión Room', time: '21:00' },
       { title: 'Kizomba Flow Fusion Level 1-2', time: '22:00' },
     ],
   },
   {
     day: 'Friday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Bachata Moderna Level 0', time: '18:00' },
-      { title: 'Bachata Dominicana Level 1 · Sol Room', time: '20:00' },
-      { title: 'Rueda Casino Level 1 · Sombra Room', time: '20:00' },
+      { title: 'Bachata Dominicana Level 1 · Fuego Room', time: '20:00' },
+      { title: 'Rueda Casino Level 1 · Pasión Room', time: '20:00' },
       { title: 'Bachata Moderna Level 0-1', time: '21:00' },
       { title: 'Forro Starter Session (Free Slot)', time: '22:00' },
     ],
   },
   {
     day: 'Saturday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Pre-Social Workshop', time: '19:00' },
       { title: 'SBK Social Lab', time: '20:00' },
@@ -208,7 +208,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Sunday',
-    focus: 'Sol Room / Sombra Room',
+    focus: 'Fuego Room / Pasión Room',
     classes: [
       { title: 'Open Technique Lab', time: '19:00' },
       { title: 'Musicality + Styling Session', time: '20:00' },
@@ -220,19 +220,19 @@ const scheduleDataEn = [
 const scheduleDataEs = [
   {
     day: 'Lunes',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Pista Open Level (Hueco libre)', time: '16:00' },
       { title: 'Bachata Fusion Nivel 1-2', time: '17:00' },
       { title: 'Salsa Cubana Nivel 0', time: '20:00' },
       { title: 'Bachata Fusion Flow Nivel 1-2', time: '21:00' },
-      { title: 'Salsa en Linea On1 Nivel 1-2 · Sala Sol', time: '22:00' },
-      { title: 'Rueda Casino Nivel 1-2 · Sala Sombra', time: '22:00' },
+      { title: 'Salsa en Linea On1 Nivel 1-2 · Sala Fuego', time: '22:00' },
+      { title: 'Rueda Casino Nivel 1-2 · Sala Pasión', time: '22:00' },
     ],
   },
   {
     day: 'Martes',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Bachata Moderna Nivel 0-1', time: '16:00' },
       { title: 'Bachata Moderna Nivel 1', time: '17:00' },
@@ -244,45 +244,45 @@ const scheduleDataEs = [
   },
   {
     day: 'Miercoles',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Zouk Foundations (Hueco libre)', time: '17:00' },
-      { title: 'Salsa Cubana Nivel 1 · Sala Sol', time: '20:00' },
-      { title: 'Rueda Casino Nivel 1 · Sala Sombra', time: '20:00' },
-      { title: 'Salsa en Linea On1 · Sala Sol', time: '21:00' },
-      { title: 'Shines On2 · Sala Sombra', time: '21:00' },
-      { title: 'Salsa Cubana Nivel 1-2 · Sala Sol', time: '22:00' },
-      { title: 'Rueda Casino Nivel 1-2 · Sala Sombra', time: '22:00' },
+      { title: 'Salsa Cubana Nivel 1 · Sala Fuego', time: '20:00' },
+      { title: 'Rueda Casino Nivel 1 · Sala Pasión', time: '20:00' },
+      { title: 'Salsa en Linea On1 · Sala Fuego', time: '21:00' },
+      { title: 'Shines On2 · Sala Pasión', time: '21:00' },
+      { title: 'Salsa Cubana Nivel 1-2 · Sala Fuego', time: '22:00' },
+      { title: 'Rueda Casino Nivel 1-2 · Sala Pasión', time: '22:00' },
     ],
   },
   {
     day: 'Jueves',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Salsa Cubana Nivel 0-1', time: '16:00' },
-      { title: 'Salsa Cubana Nivel 1 · Sala Sol', time: '17:00' },
-      { title: 'Rueda Casino Nivel 1 · Sala Sombra', time: '17:00' },
+      { title: 'Salsa Cubana Nivel 1 · Sala Fuego', time: '17:00' },
+      { title: 'Rueda Casino Nivel 1 · Sala Pasión', time: '17:00' },
       { title: 'Tango Argentino Nivel 0-1', time: '18:00' },
       { title: 'Bachata Moderna Nivel 0-1', time: '20:00' },
-      { title: 'Kizomba Nivel 1-2 · Sala Sol', time: '21:00' },
-      { title: 'Bachata Dominicana Nivel 1-2 · Sala Sombra', time: '21:00' },
+      { title: 'Kizomba Nivel 1-2 · Sala Fuego', time: '21:00' },
+      { title: 'Bachata Dominicana Nivel 1-2 · Sala Pasión', time: '21:00' },
       { title: 'Kizomba Flow Fusion Nivel 1-2', time: '22:00' },
     ],
   },
   {
     day: 'Viernes',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Bachata Moderna Nivel 0', time: '18:00' },
-      { title: 'Bachata Dominicana Nivel 1 · Sala Sol', time: '20:00' },
-      { title: 'Rueda Casino Nivel 1 · Sala Sombra', time: '20:00' },
+      { title: 'Bachata Dominicana Nivel 1 · Sala Fuego', time: '20:00' },
+      { title: 'Rueda Casino Nivel 1 · Sala Pasión', time: '20:00' },
       { title: 'Bachata Moderna Nivel 0-1', time: '21:00' },
       { title: 'Forro Starter Session (Hueco libre)', time: '22:00' },
     ],
   },
   {
     day: 'Sabado',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Taller pre-social', time: '19:00' },
       { title: 'Laboratorio social SBK', time: '20:00' },
@@ -292,7 +292,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Domingo',
-    focus: 'Sala Sol / Sala Sombra',
+    focus: 'Sala Fuego / Sala Pasión',
     classes: [
       { title: 'Laboratorio tecnico abierto', time: '19:00' },
       { title: 'Sesion de musicalidad + estilo', time: '20:00' },
@@ -311,18 +311,18 @@ const scheduleNewbieHref = isSpanishPage
 
 function cleanScheduleTitle(title) {
   return String(title || '')
-    .replace(/\s*·\s*Sol Room$/i, '')
-    .replace(/\s*·\s*Sombra Room$/i, '')
-    .replace(/\s*·\s*Sala Sol$/i, '')
-    .replace(/\s*·\s*Sala Sombra$/i, '')
+    .replace(/\s*·\s*Fuego Room$/i, '')
+    .replace(/\s*·\s*Pasión Room$/i, '')
+    .replace(/\s*·\s*Sala Fuego$/i, '')
+    .replace(/\s*·\s*Sala Pasión$/i, '')
     .trim();
 }
 
 function roomLabelForParallelIndex(index) {
   if (isSpanishPage) {
-    return index === 0 ? 'SALA SOL' : 'SALA SOMBRA';
+    return index === 0 ? 'SALA FUEGO' : 'SALA PASIÓN';
   }
-  return index === 0 ? 'ROOM SOL' : 'ROOM SOMBRA';
+  return index === 0 ? 'ROOM FUEGO' : 'ROOM PASIÓN';
 }
 
 function groupScheduleEntriesByTime(classes) {
