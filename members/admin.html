@@ -511,7 +511,7 @@
         card.className = `student-card${selectedStudent?.id === student.id ? ' is-selected' : ''}`;
         card.innerHTML = `
           <strong>${student.full_name || 'Unnamed student'}</strong>
-          <span>${levelLabel(student.level)} · ${studentRoleLabel(student)}</span>
+          <span>${student.email || 'No email'} · ${levelLabel(student.level)} · ${studentRoleLabel(student)}</span>
         `;
         card.addEventListener('click', async () => {
           studentSelect.value = student.id;
@@ -569,8 +569,8 @@
 
     async function loadStudents() {
       const profileSelectVariants = [
-        'id, full_name, level, role',
-        'id, full_name, level',
+        'id, full_name, email, level, role',
+        'id, full_name, email, level',
       ];
 
       let data = null;
@@ -632,17 +632,24 @@
       renderSelectedStudentForm();
     }
 
-    async function upsertStudentProfile(studentId, fullName, levelSlug) {
+    async function upsertStudentProfile(studentId, fullName, emailValue, levelSlug) {
+      const safeEmail = String(emailValue || '').trim().toLowerCase();
+      if (!safeEmail) {
+        throw new Error('Student email is required to save profile.');
+      }
+
       const profilePayloads = [
         {
           id: studentId,
           full_name: fullName,
+          email: safeEmail,
           level: levelSlug,
           role: currentStudentRoles[studentId] || 'member',
         },
         {
           id: studentId,
           full_name: fullName,
+          email: safeEmail,
           level: levelSlug,
         },
       ];
@@ -779,7 +786,7 @@
           throw new Error('Full name is required.');
         }
 
-        await upsertStudentProfile(selectedStudent.id, fullName, levelSlug);
+        await upsertStudentProfile(selectedStudent.id, fullName, selectedStudent.email, levelSlug);
         await upsertStudentLevels(selectedStudent.id, styleLevels);
 
         await refreshAll();
