@@ -110,16 +110,17 @@
     .member-pill {
       display: inline-flex;
       align-items: center;
-      min-height: 32px;
-      padding: 0.28rem 0.7rem;
+      min-height: 34px;
+      padding: 0.34rem 0.82rem;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      border: 1px solid rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.88));
+      color: #2b190b;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      box-shadow: 0 10px 24px rgba(242, 167, 76, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     }
 
     .dashboard-actions {
@@ -562,6 +563,12 @@
       gap: 0.35rem;
     }
 
+    .upcoming-card.is-empty {
+      border-color: rgba(255, 255, 255, 0.14);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--shadow);
+    }
+
     .upcoming-kicker {
       display: inline-flex;
       align-items: center;
@@ -901,7 +908,7 @@
             <button type="button" class="overview-filter-btn" data-filter="overlaps">Overlaps</button>
           </div>
           <div class="overview-actions">
-            <button type="button" id="hide-past-toggle" class="button secondary small hide-past-toggle-btn" aria-pressed="false">Hide past</button>
+            <button type="button" id="hide-past-toggle" class="button secondary small hide-past-toggle-btn is-active" aria-pressed="true">Show past</button>
             <button type="button" id="export-csv-btn" class="button secondary small" title="Download CSV of your attendance">↓ Export</button>
           </div>
         </div>
@@ -963,7 +970,7 @@
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
     let attendanceOverviewFilter = 'all';
-    let hidePastFilter = false;
+    let hidePastFilter = true;
 
     function weekFigureIndexForDate(date) {
       const dayOfMonth = date.getDate();
@@ -1515,7 +1522,7 @@
         sessionButton.type = 'button';
         sessionButton.className = `session-btn${attendingThisSession ? ' is-attending' : ''}`;
         sessionButton.innerHTML = `
-          <span class="session-btn-main">${attendingThisSession ? 'Attending' : 'Attend'} ${weekdayShort} -</span>
+          <span class="session-btn-main">${attendingThisSession ? 'Attending' : 'Attend'} ${weekdayShort}</span>
           <span class="session-btn-sub">${dayMonthLabel} ${timeLabel}</span>
         `;
 
@@ -1529,8 +1536,7 @@
             } else {
               await markAttendance(id, name, classDateISO, session.day, session.time);
             }
-            renderCards();
-            renderAttendanceOverview();
+            renderAll();
           } catch (err) {
             showError(err.message || 'Could not update attendance.');
           } finally {
@@ -1574,7 +1580,13 @@
 
       const upcoming = getNextUpcomingClasses(1);
       if (upcoming.length === 0) {
-        upcomingListEl.innerHTML = '<li style="text-align: center; color: var(--muted); padding: 0.9rem; font-size: 0.9rem;">No upcoming bookings yet.</li>';
+        upcomingListEl.innerHTML = `
+          <li class="upcoming-card is-empty">
+            <span class="upcoming-kicker">Next</span>
+            <p class="upcoming-class-name">No booking yet</p>
+            <p class="upcoming-time">Your next booking will appear here automatically.</p>
+          </li>
+        `;
         return;
       }
 
@@ -1803,8 +1815,7 @@
               deleteBtn.dataset.classDate || '',
               deleteBtn.dataset.time || ''
             );
-            renderCards();
-            renderAttendanceOverview();
+            renderAll();
           } catch (err) {
             showError(err.message || 'Could not remove attendance.');
           } finally {
