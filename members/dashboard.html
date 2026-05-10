@@ -502,46 +502,9 @@
       gap: 1rem;
     }
 
-    /* Weekly Stats Card */
-    .weekly-stats-card {
-      margin: 1.6rem 0;
-      padding: 1.2rem 1.4rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(242, 167, 76, 0.45);
-      background: linear-gradient(135deg, rgba(242, 167, 76, 0.08), rgba(255, 125, 104, 0.04));
-      box-shadow: 0 12px 32px rgba(242, 167, 76, 0.12);
-    }
-
-    .stats-content {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.32rem;
-    }
-
-    .stat-label {
-      font-size: 0.76rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--accent);
-    }
-
     /* Upcoming Highlight */
     .upcoming-highlight {
-      margin: 1.6rem 0 0.4rem;
+      margin: 1rem 0 0.4rem;
     }
 
     .upcoming-title {
@@ -727,13 +690,42 @@
       background: rgba(255, 125, 104, 0.24);
     }
 
+    .overview-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .overview-jump {
+      flex: 1;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .overview-jump strong {
+      display: block;
+      margin-bottom: 0.16rem;
+    }
+
+    .overview-delete {
+      min-height: 28px;
+      min-width: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 125, 104, 0.5);
+      background: rgba(255, 125, 104, 0.12);
+      color: #ffd8cf;
+      cursor: pointer;
+      font-weight: 800;
+      line-height: 1;
+    }
+
     @media (max-width: 980px) {
       .cards-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .stats-content {
-        grid-template-columns: repeat(2, 1fr);
       }
 
       .overview-actions {
@@ -769,16 +761,6 @@
         align-items: flex-start;
       }
 
-      /* Mobile: stats card compact layout */
-      .stats-content {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-      }
-
-      .stat-value {
-        font-size: 1.1rem;
-      }
-
       /* Mobile: overview controls stack */
       .overview-controls {
         flex-direction: column;
@@ -799,14 +781,6 @@
     }
 
     @media (max-width: 420px) {
-      .weekly-stats-card {
-        padding: 1rem;
-      }
-
-      .stat-label {
-        font-size: 0.68rem;
-      }
-
     }
   </style>
 </head>
@@ -820,7 +794,7 @@
       <div class="members-head-actions" aria-label="Language selector">
         <div class="members-lang-group">
           <a class="nav-lang nav-lang-active" href="/members/dashboard.html" aria-current="page">EN</a>
-          <a class="nav-lang" href="/es/dashboard.html">ES</a>
+          <a class="nav-lang" href="/es/members/dashboard.html">ES</a>
         </div>
       </div>
     </div>
@@ -851,19 +825,6 @@
       <section class="tabs-wrap" aria-labelledby="level-tabs-title">
         <p id="level-tabs-title" class="tabs-label">Level</p>
         <div id="level-tabs" class="tab-row"></div>
-      </section>
-
-      <section class="weekly-stats-card" aria-labelledby="weekly-stats-title">
-        <div class="stats-content">
-          <div class="stat-item">
-            <span class="stat-label">This Week</span>
-            <div class="stat-value" id="stat-classes">0 classes</div>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Streak</span>
-            <div class="stat-value" id="stat-streak">0</div>
-          </div>
-        </div>
       </section>
 
       <section class="upcoming-highlight" aria-labelledby="upcoming-title">
@@ -939,9 +900,6 @@
     const overviewListEl = document.getElementById('overview-list');
     const overviewFilterButtons = Array.from(document.querySelectorAll('.overview-filter-btn'));
 
-    // New elements for enhanced dashboard
-    const statClassesEl = document.getElementById('stat-classes');
-    const statStreakEl = document.getElementById('stat-streak');
     const upcomingListEl = document.getElementById('upcoming-list');
     const hidePastToggle = document.getElementById('hide-past-toggle');
     const exportCsvBtn = document.getElementById('export-csv-btn');
@@ -1512,28 +1470,6 @@
       return 'intermediate';
     }
 
-    function calculateAttendanceStats() {
-      const thisWeekRows = attendanceRows.filter(row => isInCurrentWeek(row.class_date));
-      const classCount = thisWeekRows.length;
-
-      const uniqueWeeks = new Set();
-      attendanceRows.forEach(row => {
-        const date = new Date(`${row.class_date}T00:00:00`);
-        const weekStart = new Date(date);
-        weekStart.setDate(date.getDate() - date.getDay());
-        uniqueWeeks.add(weekStart.toISOString().split('T')[0]);
-      });
-      const streak = uniqueWeeks.size;
-
-      return { classCount, streak };
-    }
-
-    function renderWeeklyStatsCard() {
-      const stats = calculateAttendanceStats();
-      if (statClassesEl) statClassesEl.textContent = `${stats.classCount} classes`;
-      if (statStreakEl) statStreakEl.textContent = `${stats.streak}`;
-    }
-
     function getNextUpcomingClasses(limit = 3) {
       const today = todayIso();
       const futureRows = attendanceRows
@@ -1746,9 +1682,53 @@
         const item = document.createElement('li');
         item.className = `overview-item${hasConflict ? ' is-conflict' : ''}`;
         item.innerHTML = `
-          <strong>${courseName}${levelText ? ` <span class="level-badge ${levelCategory}">${levelText}</span>` : ''}${hasConflict ? ' <span class="conflict-pill">Overlap</span>' : ''}</strong>
-          <span>${formatDateLabel(row.class_date || todayIso())}${time ? ` · ${time}` : ''}</span>
+          <div class="overview-row">
+            <button type="button" class="overview-jump" data-style="${meta.style || ''}" data-level="${meta.levelSlug || ''}">
+              <strong>${courseName}${levelText ? ` <span class="level-badge ${levelCategory}">${levelText}</span>` : ''}${hasConflict ? ' <span class="conflict-pill">Overlap</span>' : ''}</strong>
+              <span>${formatDateLabel(row.class_date || todayIso())}${time ? ` · ${time}` : ''}</span>
+            </button>
+            <button type="button" class="overview-delete" data-figure-id="${row.figure_id || ''}" data-figure-name="${normalizeText(row.figure_name)}" data-class-date="${row.class_date || ''}" data-time="${time || ''}" aria-label="Remove attendance">×</button>
+          </div>
         `;
+
+        const jumpBtn = item.querySelector('.overview-jump');
+        jumpBtn?.addEventListener('click', () => {
+          const style = jumpBtn.dataset.style || '';
+          const level = jumpBtn.dataset.level || '';
+
+          if (style && STYLE_ORDER.includes(style)) {
+            selectedStyle = style;
+          }
+
+          if (level && LEVEL_INDEX[level] !== undefined && !levelLocked(level)) {
+            selectedLevel = level;
+          }
+
+          renderAll();
+          document.getElementById('combo-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        const deleteBtn = item.querySelector('.overview-delete');
+        deleteBtn?.addEventListener('click', async (event) => {
+          event.stopPropagation();
+          deleteBtn.disabled = true;
+
+          try {
+            await unmarkAttendance(
+              deleteBtn.dataset.figureId || '',
+              deleteBtn.dataset.figureName || '',
+              deleteBtn.dataset.classDate || '',
+              deleteBtn.dataset.time || ''
+            );
+            renderCards();
+            renderAttendanceOverview();
+          } catch (err) {
+            showError(err.message || 'Could not remove attendance.');
+          } finally {
+            deleteBtn.disabled = false;
+          }
+        });
+
         overviewListEl.appendChild(item);
       });
     }
@@ -1771,7 +1751,6 @@
       renderStyleTabs();
       renderLevelTabs();
       renderCards();
-      renderWeeklyStatsCard();
       renderUpcomingHighlight();
       renderAttendanceOverview();
     }
