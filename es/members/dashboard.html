@@ -1611,9 +1611,19 @@
       return expectedTime === rowTime;
     }
 
+    function rowsMatchAttendanceFallback(row, figureIdValue, figureNameValue, classDateISO) {
+      return row.figure_id === figureIdValue && row.figure_name === figureNameValue && row.class_date === classDateISO;
+    }
+
     function isAttending(figureIdValue, figureNameValue, classDateISO, sessionTime) {
       return attendanceRows.some(
         (row) => rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime)
+      );
+    }
+
+    function isAttendingFallback(figureIdValue, figureNameValue, classDateISO) {
+      return attendanceRows.some(
+        (row) => rowsMatchAttendanceFallback(row, figureIdValue, figureNameValue, classDateISO)
       );
     }
 
@@ -1705,16 +1715,47 @@
     }
 
     async function unmarkAttendance(figureIdValue, figureNameValue, classDateISO, sessionTime) {
-      const existingRows = attendanceRows.filter(
+      let existingRows = attendanceRows.filter(
         (row) => rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime)
       );
+
       if (existingRows.length === 0) {
+        existingRows = attendanceRows.filter(
+          (row) => rowsMatchAttendanceFallback(row, figureIdValue, figureNameValue, classDateISO)
+        );
+      }
+
+      if (existingRows.length === 0) {
+        const { error: fallbackError } = await sbClient
+          .from('attendance')
+          .delete()
+          .eq('student_id', authUser.id)
+          .eq('figure_id', figureIdValue)
+          .eq('figure_name', figureNameValue)
+          .eq('class_date', classDateISO);
+
+        if (fallbackError) {
+          throw fallbackError;
+        }
+
         return;
       }
 
       const ids = existingRows.map((row) => row.id).filter(Boolean);
 
       if (ids.length === 0) {
+        const { error: fallbackError } = await sbClient
+          .from('attendance')
+          .delete()
+          .eq('student_id', authUser.id)
+          .eq('figure_id', figureIdValue)
+          .eq('figure_name', figureNameValue)
+          .eq('class_date', classDateISO);
+
+        if (fallbackError) {
+          throw fallbackError;
+        }
+
         return;
       }
 
@@ -1792,7 +1833,8 @@
 
       sessions.forEach((session) => {
         const classDateISO = classDateForDayWithWeekOffset(session.day, weekOffset);
-        const attendingThisSession = isAttending(id, name, classDateISO, session.time);
+        const attendingThisSession = isAttending(id, name, classDateISO, session.time)
+          || isAttendingFallback(id, name, classDateISO);
         const weekdayShort = formatWeekdayShort(classDateISO, 'es-ES') || session.day.slice(0, 3);
         const dayMonthLabel = formatDayMonthLabel(classDateISO, 'es-ES');
         const timeLabel = formatTimeLabel(session.time);
@@ -1810,7 +1852,8 @@
           clearError();
 
           try {
-            const wasAttending = isAttending(id, name, classDateISO, session.time);
+            const wasAttending = isAttending(id, name, classDateISO, session.time)
+              || isAttendingFallback(id, name, classDateISO);
 
             if (wasAttending) {
               await unmarkAttendance(id, name, classDateISO, session.time);
@@ -1820,7 +1863,8 @@
 
             await loadAttendance();
 
-            const isNowAttending = isAttending(id, name, classDateISO, session.time);
+            const isNowAttending = isAttending(id, name, classDateISO, session.time)
+              || isAttendingFallback(id, name, classDateISO);
             if (wasAttending === isNowAttending) {
               throw new Error('La actualizacion de asistencia no se guardo. Intentalo otra vez.');
             }
