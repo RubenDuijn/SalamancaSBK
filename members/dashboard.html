@@ -209,6 +209,7 @@
     }
 
     .figure-card {
+      position: relative;
       border-radius: var(--radius-sm);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
@@ -218,11 +219,56 @@
       min-height: 100%;
     }
 
+    .figure-card.is-this-week {
+      border-color: rgba(255, 209, 154, 0.85);
+      box-shadow: 0 12px 28px rgba(242, 167, 76, 0.26);
+      background:
+        radial-gradient(circle at top right, rgba(242, 167, 76, 0.2), transparent 52%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    }
+
+    .figure-card.is-next-week {
+      border-color: rgba(150, 205, 255, 0.52);
+      box-shadow: 0 10px 24px rgba(106, 174, 255, 0.2);
+    }
+
     .figure-head {
       padding: 0.72rem 0.78rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: grid;
       gap: 0.18rem;
+      position: relative;
+    }
+
+    .week-pill {
+      position: absolute;
+      top: 0.42rem;
+      right: 0.42rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      min-height: 24px;
+      padding: 0.14rem 0.52rem;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .week-pill.this-week {
+      color: #2c1909;
+      border-color: rgba(255, 209, 154, 0.9);
+      background: linear-gradient(135deg, rgba(255, 214, 163, 0.95), rgba(255, 140, 112, 0.9));
+      box-shadow: 0 8px 16px rgba(242, 167, 76, 0.28);
+    }
+
+    .week-pill.next-week {
+      color: #0e2440;
+      border-color: rgba(172, 220, 255, 0.88);
+      background: linear-gradient(135deg, rgba(191, 232, 255, 0.95), rgba(132, 194, 255, 0.92));
+      box-shadow: 0 8px 16px rgba(115, 181, 255, 0.24);
     }
 
     .figure-index {
@@ -465,6 +511,15 @@
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
 
+    function weekFigureIndexForDate(date) {
+      const dayOfMonth = date.getDate();
+      const weekOfMonth = Math.ceil(dayOfMonth / 7);
+      return Math.min(6, Math.max(1, weekOfMonth));
+    }
+
+    const CURRENT_WEEK_FIGURE = weekFigureIndexForDate(new Date());
+    const NEXT_WEEK_FIGURE = CURRENT_WEEK_FIGURE < 6 ? CURRENT_WEEK_FIGURE + 1 : null;
+
     function showError(message) {
       errorBanner.textContent = message;
       errorBanner.classList.add('show');
@@ -490,6 +545,19 @@
 
     function levelLabel(levelSlug) {
       return LEVELS.find((level) => level.slug === levelSlug)?.label || 'Unknown';
+    }
+
+    function levelBand(levelSlug) {
+      if (levelSlug === 'beginner') {
+        return 'inicio';
+      }
+      if (levelSlug === 'intermediate_1') {
+        return 'inicio_medio';
+      }
+      if (levelSlug === 'intermediate_2' || levelSlug === 'intermediate_3') {
+        return 'medio';
+      }
+      return 'avanzado';
     }
 
     function styleMaxLevelSlug(style) {
@@ -576,18 +644,50 @@
       return `${y}-${m}-${d}`;
     }
 
-    function sessionsForStyle(style) {
-      const defaults = [{ day: 'Monday', time: '19:00' }, { day: 'Thursday', time: '20:00' }];
+    function sessionsForStyle(style, levelSlug) {
+      const band = levelBand(levelSlug);
+      const defaults = [{ day: 'Monday', time: '20:00' }, { day: 'Thursday', time: '20:00' }];
+
       const plan = {
-        Salsa: [{ day: 'Monday', time: '19:00' }, { day: 'Thursday', time: '20:00' }],
-        Bachata: [{ day: 'Tuesday', time: '19:00' }, { day: 'Friday', time: '20:00' }],
-        Kizomba: [{ day: 'Wednesday', time: '19:00' }, { day: 'Saturday', time: '19:00' }],
-        Tango: [{ day: 'Thursday', time: '19:00' }, { day: 'Sunday', time: '19:00' }],
-        Zouk: [{ day: 'Wednesday', time: '20:00' }, { day: 'Saturday', time: '20:00' }],
-        Forro: [{ day: 'Friday', time: '19:00' }, { day: 'Sunday', time: '20:00' }],
+        Salsa: {
+          inicio: [{ day: 'Tuesday', time: '20:00' }, { day: 'Thursday', time: '16:00' }],
+          inicio_medio: [{ day: 'Monday', time: '22:00' }, { day: 'Wednesday', time: '20:00' }],
+          medio: [{ day: 'Monday', time: '21:00' }, { day: 'Wednesday', time: '22:00' }],
+          avanzado: [{ day: 'Monday', time: '16:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Bachata: {
+          inicio: [{ day: 'Tuesday', time: '16:00' }, { day: 'Tuesday', time: '17:00' }],
+          inicio_medio: [{ day: 'Monday', time: '20:00' }, { day: 'Friday', time: '21:00' }],
+          medio: [{ day: 'Tuesday', time: '21:00' }, { day: 'Thursday', time: '21:00' }],
+          avanzado: [{ day: 'Monday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Kizomba: {
+          inicio: [{ day: 'Tuesday', time: '21:00' }, { day: 'Thursday', time: '21:00' }],
+          inicio_medio: [{ day: 'Thursday', time: '20:00' }, { day: 'Thursday', time: '22:00' }],
+          medio: [{ day: 'Thursday', time: '20:00' }, { day: 'Thursday', time: '22:00' }],
+          avanzado: [{ day: 'Wednesday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Tango: {
+          inicio: [{ day: 'Thursday', time: '18:00' }, { day: 'Monday', time: '17:00' }],
+          inicio_medio: [{ day: 'Thursday', time: '18:00' }, { day: 'Monday', time: '17:00' }],
+          medio: [{ day: 'Thursday', time: '18:00' }, { day: 'Monday', time: '16:00' }],
+          avanzado: [{ day: 'Thursday', time: '18:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Zouk: {
+          inicio: [{ day: 'Wednesday', time: '21:00' }, { day: 'Friday', time: '16:00' }],
+          inicio_medio: [{ day: 'Wednesday', time: '21:00' }, { day: 'Friday', time: '16:00' }],
+          medio: [{ day: 'Wednesday', time: '21:00' }, { day: 'Friday', time: '16:00' }],
+          avanzado: [{ day: 'Wednesday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Forro: {
+          inicio: [{ day: 'Monday', time: '16:00' }, { day: 'Friday', time: '22:00' }],
+          inicio_medio: [{ day: 'Monday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+          medio: [{ day: 'Wednesday', time: '16:00' }, { day: 'Friday', time: '22:00' }],
+          avanzado: [{ day: 'Wednesday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
       };
 
-      return plan[style] || defaults;
+      return plan[style]?.[band] || defaults;
     }
 
     function todayDayName() {
@@ -714,13 +814,20 @@
       const name = figureName(style, levelSlug, figureIndex);
       const videoId = VIDEO_IDS[figureIndex - 1] || VIDEO_IDS[0];
       const weekOffset = Math.max(0, figureIndex - 1);
-      const sessions = sessionsForStyle(style);
+      const sessions = sessionsForStyle(style, levelSlug);
+      const isThisWeek = figureIndex === CURRENT_WEEK_FIGURE;
+      const isNextWeek = NEXT_WEEK_FIGURE !== null && figureIndex === NEXT_WEEK_FIGURE;
 
       const card = document.createElement('article');
-      card.className = 'figure-card';
+      card.className = `figure-card${isThisWeek ? ' is-this-week' : ''}${isNextWeek ? ' is-next-week' : ''}`;
+
+      const weekPillHtml = isThisWeek
+        ? '<span class="week-pill this-week">This week</span>'
+        : (isNextWeek ? '<span class="week-pill next-week">Next week</span>' : '');
 
       card.innerHTML = `
         <div class="figure-head">
+          ${weekPillHtml}
           <p class="figure-index">Figure ${figureIndex}</p>
           <h3 class="figure-name">${name}</h3>
         </div>
@@ -810,7 +917,7 @@
       comboTitleEl.textContent = `${selectedStyle} · ${levelLabel(selectedLevel)}`;
 
       const maxLevel = styleMaxLevelSlug(selectedStyle);
-      comboSubEl.textContent = `6 cards for this combination. Max unlocked for ${selectedStyle}: ${levelLabel(maxLevel)}.`;
+      comboSubEl.textContent = `6 cards for this combination. Figure ${CURRENT_WEEK_FIGURE} is highlighted for this week. Max unlocked for ${selectedStyle}: ${levelLabel(maxLevel)}.`;
 
       for (let index = 1; index <= 6; index += 1) {
         cardsGridEl.appendChild(buildFigureCard(index));
