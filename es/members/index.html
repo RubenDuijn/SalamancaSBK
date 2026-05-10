@@ -403,7 +403,7 @@
 
         window.location.href = profile.role === 'admin'
           ? '/members/admin.html'
-          : '/members/dashboard.html';
+          : '/es/dashboard.html';
       } catch (err) {
         setMessage('Error inesperado al iniciar sesion. Intentalo de nuevo.', 'error');
       } finally {
@@ -432,7 +432,7 @@
 
       try {
         const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + '/members/dashboard.html',
+          redirectTo: window.location.origin + '/es/dashboard.html',
         });
 
         if (error) {

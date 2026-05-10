@@ -1,13 +1,38 @@
 -- Attendance duplicate cleanup (safe across schema variants)
 -- Run this once in Supabase SQL editor.
+-- Keeps the lowest id in each duplicate group and deletes the rest.
 
--- Optional: preview potential duplicates before deleting
--- (run this select first if you want a preview)
+-- Optional: preview potential duplicates before deleting.
+-- Run one of these blocks first if you want to inspect the exact rows.
+-- The preview uses the same duplicate key as the delete step.
+--
+-- If both time columns exist:
+-- select student_id, figure_id, figure_name, class_date, coalesce(class_time::text, session_time::text, '') as time_key, count(*)
+-- from public.attendance
+-- group by student_id, figure_id, figure_name, class_date, coalesce(class_time::text, session_time::text, '')
+-- having count(*) > 1
+-- order by count(*) desc, class_date desc;
+--
+-- If only class_time exists:
+-- select student_id, figure_id, figure_name, class_date, coalesce(class_time::text, '') as time_key, count(*)
+-- from public.attendance
+-- group by student_id, figure_id, figure_name, class_date, coalesce(class_time::text, '')
+-- having count(*) > 1
+-- order by count(*) desc, class_date desc;
+--
+-- If only session_time exists:
+-- select student_id, figure_id, figure_name, class_date, coalesce(session_time::text, '') as time_key, count(*)
+-- from public.attendance
+-- group by student_id, figure_id, figure_name, class_date, coalesce(session_time::text, '')
+-- having count(*) > 1
+-- order by count(*) desc, class_date desc;
+--
+-- If neither time column exists:
 -- select student_id, figure_id, figure_name, class_date, count(*)
 -- from public.attendance
 -- group by student_id, figure_id, figure_name, class_date
 -- having count(*) > 1
--- order by count(*) desc;
+-- order by count(*) desc, class_date desc;
 
 do $$
 declare
@@ -42,14 +67,24 @@ begin
   end if;
 
   execute format($sql$
-    with ranked as (
+    with source_rows as (
+      select
+        id,
+        student_id,
+        figure_id,
+        figure_name,
+        class_date,
+        %s as time_key
+      from public.attendance
+    ),
+    ranked as (
       select
         id,
         row_number() over (
-          partition by student_id, figure_id, figure_name, class_date, %s
+          partition by student_id, figure_id, figure_name, class_date, time_key
           order by id
         ) as rn
-      from public.attendance
+      from source_rows
     )
     delete from public.attendance a
     using ranked r
