@@ -822,7 +822,7 @@
       <div class="members-head-actions" aria-label="Language selector">
         <div class="members-lang-group">
           <a class="nav-lang nav-lang-active" href="/members/dashboard.html" aria-current="page">EN</a>
-          <a class="nav-lang" href="/es/members/">ES</a>
+          <a class="nav-lang" href="/es/members/dashboard.html">ES</a>
         </div>
       </div>
     </div>
@@ -1610,7 +1610,7 @@
         ? `Figures ${CURRENT_WEEK_FIGURE - 1} and ${CURRENT_WEEK_FIGURE}`
         : `Figure ${CURRENT_WEEK_FIGURE}`;
 
-      comboSubEl.textContent = `Start with ${firstFigureText} this week. Figure ${CURRENT_WEEK_FIGURE} is your focus, and next week opens Figure ${CURRENT_WEEK_FIGURE + 1}.`;
+      comboSubEl.textContent = `Start with ${firstFigureText} this week. Focus especially on Figure ${CURRENT_WEEK_FIGURE}, and next week we'll begin with Figure ${CURRENT_WEEK_FIGURE + 1}.`;
 
       for (let index = 1; index <= 6; index += 1) {
         cardsGridEl.appendChild(buildFigureCard(index));
