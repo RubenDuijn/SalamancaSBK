@@ -1203,6 +1203,21 @@
       cardsGridEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'auto' });
     }
 
+    function focusSelectedLevelTab() {
+      const activeLevelTab = levelTabsEl.querySelector('.tab-btn.active');
+      if (!activeLevelTab) {
+        return;
+      }
+
+      const hasOverflow = levelTabsEl.scrollWidth - levelTabsEl.clientWidth > 8;
+      if (!hasOverflow) {
+        return;
+      }
+
+      const targetLeft = activeLevelTab.offsetLeft - ((levelTabsEl.clientWidth - activeLevelTab.clientWidth) / 2);
+      levelTabsEl.scrollTo({ left: Math.max(0, targetLeft), behavior: 'auto' });
+    }
+
     function updateScrollHint(scrollerEl, hintEl) {
       if (!scrollerEl || !hintEl) {
         return;
@@ -1890,6 +1905,8 @@
         });
         levelTabsEl.appendChild(button);
       });
+
+      requestAnimationFrame(focusSelectedLevelTab);
     }
 
     function renderCards() {
