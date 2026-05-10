@@ -941,6 +941,8 @@
       .cards-grid {
         display: flex;
         flex-wrap: nowrap;
+        width: 100%;
+        max-width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
         gap: 0.75rem;
@@ -958,9 +960,13 @@
       }
 
       .figure-card {
-        flex: 0 0 calc(100vw - 2rem);
-        max-width: calc(100vw - 2rem);
+        flex: 0 0 100%;
+        max-width: 100%;
         scroll-snap-align: center;
+      }
+
+      .dashboard-shell {
+        overflow-x: hidden;
       }
 
       .members-footer .container {
