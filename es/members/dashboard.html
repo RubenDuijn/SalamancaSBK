@@ -324,16 +324,35 @@
 
     .session-btn {
       min-height: 42px;
+      padding: 0.42rem 0.55rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.1rem;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       background: rgba(255, 255, 255, 0.06);
       color: #fff4e9;
       font: inherit;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.01em;
+      text-align: center;
+      line-height: 1.15;
       cursor: pointer;
       transition: all 0.2s ease;
+    }
+
+    .session-btn-main {
+      font-size: 0.73rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .session-btn-sub {
+      font-size: 0.67rem;
+      font-weight: 600;
+      color: rgba(255, 244, 233, 0.86);
+      white-space: nowrap;
     }
 
     .session-btn:hover {
@@ -346,6 +365,10 @@
       border-color: rgba(184, 239, 207, 0.85);
       background: linear-gradient(135deg, #8de3ad, #c3f5d8);
       box-shadow: 0 8px 18px rgba(126, 223, 166, 0.28);
+    }
+
+    .session-btn.is-attending .session-btn-sub {
+      color: rgba(20, 50, 34, 0.86);
     }
 
     .figure-status {
@@ -1079,6 +1102,27 @@
       });
     }
 
+    function formatWeekdayShort(isoDate, locale) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return date.toLocaleDateString(locale, { weekday: 'short' });
+    }
+
+    function formatDayMonthLabel(isoDate, locale) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return isoDate;
+      }
+
+      return date.toLocaleDateString(locale, {
+        day: '2-digit',
+        month: 'short',
+      });
+    }
+
     function formatTimeLabel(rawTime) {
       const value = String(rawTime || '').trim();
       if (!value) {
@@ -1477,11 +1521,17 @@
       sessions.forEach((session) => {
         const classDateISO = classDateForDayWithWeekOffset(session.day, weekOffset);
         const attendingThisSession = isAttending(id, name, classDateISO, session.time);
+        const weekdayShort = formatWeekdayShort(classDateISO, 'es-ES') || session.day.slice(0, 3);
+        const dayMonthLabel = formatDayMonthLabel(classDateISO, 'es-ES');
+        const timeLabel = formatTimeLabel(session.time);
 
         const sessionButton = document.createElement('button');
         sessionButton.type = 'button';
         sessionButton.className = `session-btn${attendingThisSession ? ' is-attending' : ''}`;
-        sessionButton.textContent = `${attendingThisSession ? 'Asistiendo' : 'Asistir'} · ${formatDateLabel(classDateISO)} · ${formatTimeLabel(session.time)}`;
+        sessionButton.innerHTML = `
+          <span class="session-btn-main">${attendingThisSession ? 'Asistiendo' : 'Asistir'} ${weekdayShort} -</span>
+          <span class="session-btn-sub">${dayMonthLabel} ${timeLabel}</span>
+        `;
 
         sessionButton.addEventListener('click', async () => {
           sessionButton.disabled = true;
