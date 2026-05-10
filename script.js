@@ -378,7 +378,6 @@ function renderScheduleCards(dayData) {
         <div>
           <span class="schedule-time">${group.time}</span>
           <div class="schedule-course-stack">${courseLinesHtml}</div>
-          <small class="schedule-focus">${dayData.focus}</small>
         </div>
         <span class="schedule-expand">${isFirstOpen ? '−' : '+'}</span>
       </summary>
