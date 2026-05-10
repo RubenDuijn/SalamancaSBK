@@ -30,7 +30,16 @@
 
     .members-head-actions {
       display: inline-flex;
-      gap: 0;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .members-signout-btn {
+      min-height: 32px;
+      padding: 0.3rem 0.68rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
 
     .members-lang-group {
@@ -101,10 +110,10 @@
     }
 
     .dashboard-meta {
-      display: grid;
-      justify-items: end;
-      gap: 0.4rem;
-      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 100%;
     }
 
     .member-pill {
@@ -934,11 +943,12 @@
         <span class="brand-mark">S</span>
         <span>Salamanca SBK Dance Academy</span>
       </a>
-      <div class="members-head-actions" aria-label="Language selector">
+      <div class="members-head-actions" aria-label="Language and account actions">
         <div class="members-lang-group">
           <a class="nav-lang" href="/members/dashboard.html">EN</a>
           <a class="nav-lang nav-lang-active" href="/es/members/dashboard.html" aria-current="page">ES</a>
         </div>
+        <button id="signout-btn" class="button secondary members-signout-btn" type="button">Cerrar sesión</button>
       </div>
     </div>
   </header>
@@ -954,9 +964,6 @@
         </div>
         <div class="dashboard-meta">
           <span id="student-name" class="member-pill">Cargando...</span>
-          <div class="dashboard-actions">
-            <button id="signout-btn" class="button secondary" type="button">Cerrar sesión</button>
-          </div>
         </div>
       </section>
 
