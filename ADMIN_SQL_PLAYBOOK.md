@@ -234,10 +234,7 @@ supabase link --project-ref txansvfngkjtbbdmvgtw
 supabase functions deploy create-student-admin --no-verify-jwt=false
 ```
 
-Required function secrets:
-
-```bash
-supabase secrets set SUPABASE_URL=https://txansvfngkjtbbdmvgtw.supabase.co
-supabase secrets set SUPABASE_ANON_KEY=YOUR_ANON_KEY
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
-```
+Notes:
+- Do not run `supabase secrets set SUPABASE_*` for hosted Supabase projects.
+- Those names are reserved and injected automatically in Edge Functions.
+- The warning `Env name cannot start with SUPABASE_` is expected if you try to set them manually.
