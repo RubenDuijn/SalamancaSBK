@@ -807,6 +807,69 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
+      /* Mobile: stats card compact layout */
+      .stats-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+
+      .stat-value {
+        font-size: 1.1rem;
+      }
+
+      /* Mobile: upcoming items */
+      .upcoming-item {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      .upcoming-room {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 0.2rem;
+        align-self: start;
+      }
+
+      /* Mobile: overview controls stack */
+      .overview-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .overview-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      /* Mobile: overview items more compact */
+      .overview-item {
+        font-size: 0.88rem;
+      }
+
+      .overview-item .schedule-room {
+        font-size: 0.68rem;
+        padding: 0.15rem 0.38rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      /* Very small screens: stats in 2 cols */
+      .weekly-stats-card {
+        padding: 1rem;
+      }
+
+      .stat-label {
+        font-size: 0.68rem;
+      }
+
+      .upcoming-badge {
+        width: 26px;
+        height: 26px;
+        font-size: 0.78rem;
+      }
     }
   </style>
 </head>
