@@ -446,8 +446,9 @@
       return LEVELS.map((level) => `<option value="${level.slug}"${level.slug === selected ? ' selected' : ''}>${level.label}</option>`).join('');
     }
 
-    function blankStyleLevelValue(styleKey) {
-      return selectedStudentLevels[styleKey] || 'beginner';
+    function styleLevelOptionsHtml(selected) {
+      const noneSelected = !selected ? ' selected' : '';
+      return `<option value=""${noneSelected}>Not attending</option>${levelOptionsHtml(selected || '')}`;
     }
 
     function studentRoleLabel(student) {
@@ -461,7 +462,7 @@
         row.className = 'style-row';
         row.innerHTML = `
           <p class="style-name">${STYLE_LABELS[styleKey]}</p>
-          <select id="${prefix}-${styleKey}">${levelOptionsHtml(valueMap[styleKey] || 'beginner')}</select>
+          <select id="${prefix}-${styleKey}">${styleLevelOptionsHtml(valueMap[styleKey] || '')}</select>
         `;
         containerEl.appendChild(row);
       });
@@ -480,14 +481,7 @@
 
     function renderNewStudentForm() {
       newLevelEl.innerHTML = levelOptionsHtml('beginner');
-      buildStyleDropdowns(newStyleGridEl, 'new-style', {
-        salsa: 'beginner',
-        bachata: 'beginner',
-        kizomba: 'beginner',
-        tango: 'beginner',
-        zouk: 'beginner',
-        forro: 'beginner',
-      });
+      buildStyleDropdowns(newStyleGridEl, 'new-style', {});
     }
 
     function renderSelectedStudentForm() {
@@ -669,18 +663,35 @@
     }
 
     async function upsertStudentLevels(studentId, styleLevels) {
-      const rows = STYLE_ORDER.map((styleKey) => ({
+      const rows = STYLE_ORDER
+        .filter((styleKey) => styleLevels[styleKey])
+        .map((styleKey) => ({
         student_id: studentId,
         style_key: styleKey,
-        level_slug: styleLevels[styleKey] || 'beginner',
+        level_slug: styleLevels[styleKey],
       }));
 
-      const { error } = await sbClient
-        .from('student_style_levels')
-        .upsert(rows, { onConflict: 'student_id,style_key' });
+      if (rows.length) {
+        const { error } = await sbClient
+          .from('student_style_levels')
+          .upsert(rows, { onConflict: 'student_id,style_key' });
 
-      if (error) {
-        throw new Error(error.message || 'Could not save style levels.');
+        if (error) {
+          throw new Error(error.message || 'Could not save style levels.');
+        }
+      }
+
+      const styleKeysToDelete = STYLE_ORDER.filter((styleKey) => !styleLevels[styleKey]);
+      if (styleKeysToDelete.length) {
+        const { error: deleteError } = await sbClient
+          .from('student_style_levels')
+          .delete()
+          .eq('student_id', studentId)
+          .in('style_key', styleKeysToDelete);
+
+        if (deleteError) {
+          throw new Error(deleteError.message || 'Could not clear unassigned styles.');
+        }
       }
     }
 

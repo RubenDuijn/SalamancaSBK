@@ -398,7 +398,6 @@
         <div class="dashboard-meta">
           <span id="student-name" class="member-pill">Loading...</span>
           <div class="dashboard-actions">
-            <a id="admin-link" class="button secondary" href="/members/admin.html" hidden>Admin Console</a>
             <button id="signout-btn" class="button secondary" type="button">Sign out</button>
           </div>
         </div>
@@ -452,7 +451,6 @@
     const errorBanner = document.getElementById('error-banner');
     const studentNameEl = document.getElementById('student-name');
     const signoutBtn = document.getElementById('signout-btn');
-    const adminLink = document.getElementById('admin-link');
     const styleTabsEl = document.getElementById('style-tabs');
     const levelTabsEl = document.getElementById('level-tabs');
     const comboTitleEl = document.getElementById('combo-title');
@@ -861,11 +859,6 @@
 
       profile = data;
       studentNameEl.textContent = normalizeText(profile.full_name) || 'Member';
-      profile.role = profile.role || 'member';
-
-      if (adminLink) {
-        adminLink.hidden = profile.role !== 'admin';
-      }
 
       if (!(profile.level in LEVEL_INDEX)) {
         profile.level = 'beginner';
