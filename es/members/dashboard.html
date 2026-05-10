@@ -4,10 +4,1945 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel de Miembros | Salamanca SBK Dance Academy</title>
-  <meta http-equiv="refresh" content="0; url=/es/members/" />
-  <link rel="canonical" href="https://salamancasbk.es/es/members/" />
+  <meta name="description" content="Panel de miembros de Salamanca SBK con tarjetas de entrenamiento por estilo y nivel." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#130d11" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .dashboard-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-main {
+      flex: 1;
+      padding: 1.2rem 0 2.2rem;
+    }
+
+    .dashboard-shell {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .members-head-actions {
+      display: inline-flex;
+      gap: 0;
+    }
+
+    .members-lang-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.16rem;
+      min-height: 32px;
+      padding: 0.14rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .members-head-actions .nav-lang {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 29px;
+      min-width: 41px;
+      padding: 0.26rem 0.54rem;
+      border-radius: 999px;
+      border: 0;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .members-head-actions .nav-lang:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .members-head-actions .nav-lang.nav-lang-active {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      box-shadow: 0 6px 14px rgba(242, 167, 76, 0.28);
+    }
+
+    .dashboard-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at top left, rgba(242, 167, 76, 0.16), transparent 46%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+      box-shadow: var(--shadow);
+    }
+
+    .dashboard-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .dashboard-sub {
+      margin: 0.32rem 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .dashboard-meta {
+      display: grid;
+      justify-items: end;
+      gap: 0.4rem;
+      text-align: right;
+    }
+
+    .member-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .dashboard-actions {
+      display: inline-flex;
+      gap: 0.55rem;
+    }
+
+    .tabs-wrap {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tabs-label {
+      margin: 0 0 0.55rem;
+      color: var(--accent-2);
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .tab-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      border-radius: 999px;
+      min-height: 38px;
+      padding: 0.36rem 0.78rem;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 209, 154, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .tab-btn.available {
+      color: #fff3e4;
+      border-color: rgba(255, 209, 154, 0.62);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.2), rgba(255, 125, 104, 0.12));
+      box-shadow: 0 6px 14px rgba(242, 167, 76, 0.18);
+    }
+
+    .tab-btn.active {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      box-shadow: 0 8px 18px rgba(242, 167, 76, 0.28);
+    }
+
+    .tab-btn.locked {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .combo-title {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+      color: var(--text);
+    }
+
+    .combo-sub {
+      margin: 0.28rem 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .figure-card {
+      position: relative;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 100%;
+    }
+
+    .figure-card.is-this-week {
+      border-color: rgba(255, 209, 154, 0.85);
+      box-shadow: 0 12px 28px rgba(242, 167, 76, 0.26);
+      background:
+        radial-gradient(circle at top right, rgba(242, 167, 76, 0.2), transparent 52%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    }
+
+    .figure-card.is-next-week {
+      border-color: rgba(150, 205, 255, 0.52);
+      box-shadow: 0 10px 24px rgba(106, 174, 255, 0.2);
+    }
+
+    .figure-head {
+      padding: 0.72rem 0.78rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      gap: 0.18rem;
+      position: relative;
+    }
+
+    .week-pill {
+      position: absolute;
+      top: 0.42rem;
+      right: 0.42rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      min-height: 24px;
+      padding: 0.14rem 0.52rem;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .week-pill.this-week {
+      color: #2c1909;
+      border-color: rgba(255, 209, 154, 0.9);
+      background: linear-gradient(135deg, rgba(255, 214, 163, 0.95), rgba(255, 140, 112, 0.9));
+      box-shadow: 0 8px 16px rgba(242, 167, 76, 0.28);
+    }
+
+    .week-pill.next-week {
+      color: #0e2440;
+      border-color: rgba(172, 220, 255, 0.88);
+      background: linear-gradient(135deg, rgba(191, 232, 255, 0.95), rgba(132, 194, 255, 0.92));
+      box-shadow: 0 8px 16px rgba(115, 181, 255, 0.24);
+    }
+
+    .figure-index {
+      margin: 0;
+      color: var(--accent-2);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .figure-name {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.42rem;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    .figure-level-badge {
+      margin-left: 0;
+    }
+
+    .figure-body {
+      padding: 0.78rem;
+      display: grid;
+      align-content: start;
+      gap: 0.7rem;
+    }
+
+    .figure-video {
+      border: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 170px;
+      background: #09090e;
+    }
+
+    .figure-video iframe {
+      width: 100%;
+      min-height: 170px;
+      border: 0;
+      display: block;
+    }
+
+    .figure-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+
+    .session-btn {
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff4e9;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .session-btn:hover {
+      border-color: rgba(255, 209, 154, 0.65);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .session-btn.is-attending {
+      color: #143222;
+      border-color: rgba(184, 239, 207, 0.85);
+      background: linear-gradient(135deg, #8de3ad, #c3f5d8);
+      box-shadow: 0 8px 18px rgba(126, 223, 166, 0.28);
+    }
+
+    .figure-status {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.3;
+    }
+
+    .attend-active {
+      color: #bff1cb;
+      font-weight: 700;
+    }
+
+    .error-banner {
+      display: none;
+      border: 1px solid rgba(255, 125, 104, 0.55);
+      background: rgba(255, 125, 104, 0.14);
+      color: #ffd8bf;
+      border-radius: 12px;
+      padding: 0.65rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .error-banner.show {
+      display: block;
+    }
+
+    .attendance-overview {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .overview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .overview-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0 0 0.58rem;
+    }
+
+    .overview-filter-btn {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      border-radius: 999px;
+      min-height: 30px;
+      padding: 0.22rem 0.58rem;
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .overview-filter-btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 209, 154, 0.56);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .overview-filter-btn.is-active {
+      color: #2b190b;
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.95), rgba(255, 125, 104, 0.84));
+      box-shadow: 0 7px 15px rgba(242, 167, 76, 0.24);
+    }
+
+    .overview-title {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .overview-count {
+      color: var(--accent-2);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .overview-list {
+      display: grid;
+      gap: 0.38rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .overview-item {
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+      padding: 0.58rem 0.72rem;
+      display: block;
+    }
+
+    .overview-item strong {
+      font-size: 0.84rem;
+      color: #fff4e9;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .overview-item span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      white-space: normal;
+    }
+
+    .overview-item.is-conflict {
+      border-color: rgba(255, 186, 146, 0.48);
+      background: linear-gradient(135deg, rgba(255, 186, 120, 0.11), rgba(255, 255, 255, 0.035));
+    }
+
+    .conflict-pill {
+      margin-left: 0.34rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.05rem 0.36rem;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff7ef;
+      border: 1px solid rgba(255, 125, 104, 0.72);
+      background: rgba(255, 125, 104, 0.24);
+    }
+
+    .overview-empty {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .members-footer {
+      border-top: 1px solid var(--line);
+      background: rgba(10, 8, 12, 0.36);
+      padding: 1rem 0 1.2rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .members-footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    /* Upcoming Highlight */
+    .upcoming-highlight {
+      margin: 1rem 0 0.4rem;
+    }
+
+    .upcoming-title {
+      margin: 0 0 0.8rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+
+    .upcoming-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .upcoming-card {
+      padding: 0.95rem 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(242, 167, 76, 0.42);
+      background: linear-gradient(135deg, rgba(242, 167, 76, 0.14), rgba(255, 125, 104, 0.08));
+      box-shadow: 0 12px 28px rgba(242, 167, 76, 0.12);
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .upcoming-kicker {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 209, 154, 0.6);
+      color: #2c1909;
+      background: linear-gradient(135deg, rgba(255, 214, 163, 0.96), rgba(255, 140, 112, 0.88));
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .upcoming-class-name {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .upcoming-time {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* Room Color Badges in Overview */
+    .schedule-room {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .schedule-room::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .schedule-room.fuego {
+      background: rgba(255, 125, 104, 0.2);
+      color: #ffb88c;
+      border: 1px solid rgba(255, 125, 104, 0.4);
+    }
+
+    .schedule-room.fuego::before {
+      background: #ff7d68;
+    }
+
+    .schedule-room.pasion {
+      background: rgba(106, 174, 255, 0.2);
+      color: #9ad9ff;
+      border: 1px solid rgba(106, 174, 255, 0.4);
+    }
+
+    .schedule-room.pasion::before {
+      background: #6aaeff;
+    }
+
+    /* Attendance Overview Updates */
+    .overview-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin: 0.8rem 0;
+      flex-wrap: wrap;
+    }
+
+    .overview-filters {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .overview-actions {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+
+    .hide-past-toggle-btn {
+      border-color: rgba(150, 205, 255, 0.38);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .hide-past-toggle-btn.is-active {
+      border-color: rgba(255, 209, 154, 0.8);
+      background: linear-gradient(135deg, rgba(255, 214, 163, 0.9), rgba(255, 140, 112, 0.84));
+      color: #2c1909;
+    }
+
+    .button.small {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    /* Level Badges in Overview */
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 0.14rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: none;
+      margin-left: 0.4rem;
+    }
+
+    .level-badge.beginner {
+      background: rgba(106, 174, 255, 0.24);
+      color: #84c2ff;
+      border: 1px solid rgba(106, 174, 255, 0.4);
+    }
+
+    .level-badge.intermediate {
+      background: rgba(242, 167, 76, 0.24);
+      color: #ffd19a;
+      border: 1px solid rgba(242, 167, 76, 0.4);
+    }
+
+    .level-badge.advanced {
+      background: rgba(255, 125, 104, 0.24);
+      color: #ffb88c;
+      border: 1px solid rgba(255, 125, 104, 0.4);
+    }
+
+    /* Enhanced Overlap Indicator */
+    .conflict-pill {
+      margin-left: 0.34rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.05rem 0.36rem;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff7ef;
+      border: 1px solid rgba(255, 125, 104, 0.72);
+      background: rgba(255, 125, 104, 0.24);
+    }
+
+    .overview-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .overview-jump {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+      display: grid;
+      gap: 0.18rem;
+    }
+
+    .overview-jump strong {
+      display: block;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .overview-jump:hover strong {
+      color: var(--accent-2);
+    }
+
+    .overview-delete {
+      min-height: 30px;
+      min-width: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 125, 104, 0.5);
+      background: rgba(255, 125, 104, 0.12);
+      color: #ffd8cf;
+      cursor: pointer;
+      font-weight: 800;
+      line-height: 1;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .overview-delete:hover {
+      border-color: rgba(255, 125, 104, 0.74);
+      background: rgba(255, 125, 104, 0.2);
+    }
+
+    @media (max-width: 980px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .overview-actions {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .dashboard-main {
+        padding-top: 0.9rem;
+      }
+
+      .dashboard-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-meta {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .figure-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .members-footer .container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      /* Mobile: overview controls stack */
+      .overview-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+      }
+
+      .overview-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      /* Mobile: overview items more compact */
+      .overview-item {
+        font-size: 0.88rem;
+      }
+
+      .overview-row {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .overview-delete {
+        justify-self: end;
+      }
+    }
+
+    @media (max-width: 420px) {
+    }
+  </style>
 </head>
-<body>
-  <p>Redirigiendo al acceso de miembros en español. Si no ocurre automáticamente, abre <a href="/es/members/">/es/members/</a>.</p>
+<body class="dashboard-page" id="top">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Salamanca SBK Dance Academy">
+        <span class="brand-mark">S</span>
+        <span>Salamanca SBK Dance Academy</span>
+      </a>
+      <div class="members-head-actions" aria-label="Language selector">
+        <div class="members-lang-group">
+          <a class="nav-lang nav-lang-active" href="/members/dashboard.html" aria-current="page">EN</a>
+          <a class="nav-lang" href="/es/members/">ES</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container dashboard-shell">
+      <div id="error-banner" class="error-banner" role="alert" aria-live="polite"></div>
+
+      <section class="dashboard-hero" aria-labelledby="dashboard-title">
+        <div>
+          <h1 id="dashboard-title" class="dashboard-title">Panel de Entrenamiento de Miembros</h1>
+          <p class="dashboard-sub">Elige un estilo, elige un nivel y entrena con tus seis figuras semanales.</p>
+        </div>
+        <div class="dashboard-meta">
+          <span id="student-name" class="member-pill">Cargando...</span>
+          <div class="dashboard-actions">
+            <button id="signout-btn" class="button secondary" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="upcoming-highlight" aria-labelledby="upcoming-title">
+        <h3 id="upcoming-title" class="upcoming-title">Próxima reserva</h3>
+        <ul id="upcoming-list" class="upcoming-list" aria-live="polite"></ul>
+      </section>
+
+      <section class="tabs-wrap" aria-labelledby="style-tabs-title">
+        <p id="style-tabs-title" class="tabs-label">Estilo</p>
+        <div id="style-tabs" class="tab-row"></div>
+      </section>
+
+      <section class="tabs-wrap" aria-labelledby="level-tabs-title">
+        <p id="level-tabs-title" class="tabs-label">Nivel</p>
+        <div id="level-tabs" class="tab-row"></div>
+      </section>
+
+      <section class="tabs-wrap" aria-labelledby="combo-title">
+        <h2 id="combo-title" class="combo-title">Cargando recorrido...</h2>
+        <p id="combo-sub" class="combo-sub"></p>
+        <div id="cards-grid" class="cards-grid"></div>
+      </section>
+
+      <section class="attendance-overview" aria-labelledby="attendance-overview-title">
+        <div class="overview-head">
+          <h2 id="attendance-overview-title" class="overview-title">Tus cursos asistidos</h2>
+          <span id="overview-count" class="overview-count">Asistes a 0 clases (esta semana)</span>
+        </div>
+        <div class="overview-controls">
+          <div class="overview-filters" role="tablist" aria-label="Filtros del resumen de asistencia">
+            <button type="button" class="overview-filter-btn is-active" data-filter="this-week">Esta semana</button>
+            <button type="button" class="overview-filter-btn" data-filter="all">Todas</button>
+            <button type="button" class="overview-filter-btn" data-filter="overlaps">Solapamientos</button>
+          </div>
+          <div class="overview-actions">
+            <button type="button" id="hide-past-toggle" class="button secondary small hide-past-toggle-btn" aria-pressed="false">Ocultar pasadas</button>
+            <button type="button" id="export-csv-btn" class="button secondary small" title="Descargar CSV de tu asistencia">↓ Exportar</button>
+          </div>
+        </div>
+        <p id="overview-empty" class="overview-empty">Aún no has marcado asistencia. Pulsa Asistir en cualquier sesión para añadirla aquí.</p>
+        <ul id="overview-list" class="overview-list" aria-live="polite"></ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="members-footer" role="contentinfo">
+    <div class="container">
+      <span>© <span id="dashboard-year"></span> Salamanca SBK Dance Academy</span>
+      <span>Estructura semanal simple: estilo + nivel + seis tarjetas.</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://txansvfngkjtbbdmvgtw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4YW5zdmZuZ2tqdGJiZG12Z3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDM5MzIsImV4cCI6MjA5MzQ3OTkzMn0.X8eXfZDlORDKzAbr2fsulaRw4vi_4VG4vhV1sPujYCo';
+
+    const LEVELS = [
+      { slug: 'beginner', label: 'Beginner' },
+      { slug: 'intermediate_1', label: 'Intermediate 1' },
+      { slug: 'intermediate_2', label: 'Intermediate 2' },
+      { slug: 'intermediate_3', label: 'Intermediate 3' },
+      { slug: 'advanced_1', label: 'Advanced 1' },
+      { slug: 'advanced_2', label: 'Advanced 2' },
+      { slug: 'advanced_3', label: 'Advanced 3' },
+    ];
+
+    const STYLE_ORDER = ['Salsa', 'Bachata', 'Kizomba', 'Tango', 'Zouk', 'Forro'];
+    const VIDEO_IDS = ['J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4', 'J5qp261RRR4'];
+
+    const LEVEL_INDEX = Object.fromEntries(LEVELS.map((level, index) => [level.slug, index]));
+
+    const errorBanner = document.getElementById('error-banner');
+    const studentNameEl = document.getElementById('student-name');
+    const signoutBtn = document.getElementById('signout-btn');
+    const styleTabsEl = document.getElementById('style-tabs');
+    const levelTabsEl = document.getElementById('level-tabs');
+    const comboTitleEl = document.getElementById('combo-title');
+    const comboSubEl = document.getElementById('combo-sub');
+    const cardsGridEl = document.getElementById('cards-grid');
+    const overviewCountEl = document.getElementById('overview-count');
+    const overviewEmptyEl = document.getElementById('overview-empty');
+    const overviewListEl = document.getElementById('overview-list');
+    const overviewFilterButtons = Array.from(document.querySelectorAll('.overview-filter-btn'));
+
+    const upcomingListEl = document.getElementById('upcoming-list');
+    const hidePastToggle = document.getElementById('hide-past-toggle');
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+
+    let sbClient = null;
+    let authUser = null;
+    let profile = null;
+    let studentStyleLevels = {};
+    let attendanceRows = [];
+    let selectedStyle = STYLE_ORDER[0];
+    let selectedLevel = 'beginner';
+    let attendanceOverviewFilter = 'this-week';
+    let hidePastFilter = false;
+
+    function weekFigureIndexForDate(date) {
+      const dayOfMonth = date.getDate();
+      const weekOfMonth = Math.ceil(dayOfMonth / 7);
+      return Math.min(6, Math.max(1, weekOfMonth));
+    }
+
+    const CURRENT_WEEK_FIGURE = weekFigureIndexForDate(new Date());
+    const NEXT_WEEK_FIGURE = CURRENT_WEEK_FIGURE < 6 ? CURRENT_WEEK_FIGURE + 1 : null;
+
+    function showError(message) {
+      errorBanner.textContent = message;
+      errorBanner.classList.add('show');
+    }
+
+    function clearError() {
+      errorBanner.textContent = '';
+      errorBanner.classList.remove('show');
+    }
+
+    function validHttpUrl(value) {
+      try {
+        const url = new URL((value || '').trim());
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function normalizeText(value) {
+      return String(value || '').trim();
+    }
+
+    function levelLabel(levelSlug) {
+      return LEVELS.find((level) => level.slug === levelSlug)?.label || 'Unknown';
+    }
+
+    function levelDisplayLabel(levelSlug) {
+      const labels = {
+        beginner: 'Principiante',
+        intermediate_1: 'Intermedio 1',
+        intermediate_2: 'Intermedio 2',
+        intermediate_3: 'Intermedio 3',
+        advanced_1: 'Avanzado 1',
+        advanced_2: 'Avanzado 2',
+        advanced_3: 'Avanzado 3',
+      };
+
+      return labels[levelSlug] || 'Desconocido';
+    }
+
+    function levelBand(levelSlug) {
+      if (levelSlug === 'beginner') {
+        return 'inicio';
+      }
+      if (levelSlug === 'intermediate_1') {
+        return 'inicio_medio';
+      }
+      if (levelSlug === 'intermediate_2' || levelSlug === 'intermediate_3') {
+        return 'medio';
+      }
+      return 'avanzado';
+    }
+
+    function styleMaxLevelSlug(style) {
+      const profileLevel = profile?.level || 'beginner';
+      const styleKey = style.toLowerCase();
+
+      const tableLevel = studentStyleLevels[styleKey];
+      if (tableLevel && tableLevel in LEVEL_INDEX) {
+        return tableLevel;
+      }
+
+      if (profile && profile.style_levels && typeof profile.style_levels === 'object') {
+        const styleSpecificLevel = profile.style_levels[styleKey];
+        if (styleSpecificLevel && styleSpecificLevel in LEVEL_INDEX) {
+          return styleSpecificLevel;
+        }
+      }
+
+      if (styleKey !== 'salsa') {
+        return 'beginner';
+      }
+
+      return profileLevel in LEVEL_INDEX ? profileLevel : 'beginner';
+    }
+
+    function styleAssigned(style) {
+      const styleKey = style.toLowerCase();
+
+      if (studentStyleLevels[styleKey]) {
+        return true;
+      }
+
+      if (profile && profile.style_levels && typeof profile.style_levels === 'object') {
+        const styleSpecificLevel = profile.style_levels[styleKey];
+        if (styleSpecificLevel && styleSpecificLevel in LEVEL_INDEX) {
+          return true;
+        }
+      }
+
+      return styleKey === 'salsa';
+    }
+
+    function levelLocked(levelSlug) {
+      const maxLevelSlug = styleMaxLevelSlug(selectedStyle);
+      return LEVEL_INDEX[levelSlug] > LEVEL_INDEX[maxLevelSlug];
+    }
+
+    function figureId(style, levelSlug, figureIndex) {
+      return `${levelSlug}:${figureIndex}`;
+    }
+
+    function figureName(style, levelSlug, figureIndex) {
+      return `${style} ${levelLabel(levelSlug)} Figure ${figureIndex}`;
+    }
+
+    function todayIso() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatDateLabel(isoDate) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return isoDate;
+      }
+
+      return date.toLocaleDateString('en-GB', {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+      });
+    }
+
+    function formatTimeLabel(rawTime) {
+      const value = String(rawTime || '').trim();
+      if (!value) {
+        return '';
+      }
+
+      const parts = value.split(':');
+      if (parts.length < 2) {
+        return value;
+      }
+
+      return `${parts[0].padStart(2, '0')}:${parts[1].padStart(2, '0')}`;
+    }
+
+    function dayNameFromIso(isoDate) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) {
+        return '';
+      }
+
+      return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
+    }
+
+    function parseFigureMetaFromName(figureNameValue) {
+      const safeName = normalizeText(figureNameValue);
+      if (!safeName) {
+        return null;
+      }
+
+      const levelsByLabelLength = [...LEVELS].sort((a, b) => b.label.length - a.label.length);
+
+      for (const style of STYLE_ORDER) {
+        const prefix = `${style} `;
+        if (!safeName.startsWith(prefix)) {
+          continue;
+        }
+
+        const remainder = safeName.slice(prefix.length);
+
+        for (const level of levelsByLabelLength) {
+          const levelPrefix = `${level.label} Figure `;
+          if (!remainder.startsWith(levelPrefix)) {
+            continue;
+          }
+
+          const figureIndex = Number.parseInt(remainder.slice(levelPrefix.length), 10);
+          if (!Number.isFinite(figureIndex)) {
+            return null;
+          }
+
+          return {
+            style,
+            levelSlug: level.slug,
+            figureIndex,
+          };
+        }
+      }
+
+      return null;
+    }
+
+    function inferAttendanceTimeLabel(row) {
+      const dayName = dayNameFromIso(row.class_date || '');
+      if (!dayName) {
+        return '';
+      }
+
+      const meta = parseFigureMetaFromName(row.figure_name || '');
+      if (!meta) {
+        return '';
+      }
+
+      const sessions = sessionsForStyle(meta.style, meta.levelSlug);
+      const matchingSession = sessions.find((session) => session.day === dayName);
+
+      if (matchingSession) {
+        return formatTimeLabel(matchingSession.time);
+      }
+
+      return formatTimeLabel(sessions[0]?.time || '');
+    }
+
+    function attendanceTimeLabel(row) {
+      const explicitTime = formatTimeLabel(row.class_time || row.session_time || row.display_time || '');
+      if (explicitTime) {
+        return explicitTime;
+      }
+
+      return inferAttendanceTimeLabel(row);
+    }
+
+    function isInCurrentWeek(isoDate) {
+      const day = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(day.getTime())) {
+        return false;
+      }
+
+      const now = new Date();
+      const weekStart = new Date(now);
+      const isSunday = weekStart.getDay() === 0;
+      const offsetToMonday = isSunday ? -1 : (weekStart.getDay() + 6) % 7;
+      weekStart.setHours(0, 0, 0, 0);
+      weekStart.setDate(weekStart.getDate() - offsetToMonday);
+
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      weekEnd.setHours(23, 59, 59, 999);
+
+      return day >= weekStart && day <= weekEnd;
+    }
+
+    function thisWeekCountLabel() {
+      return new Date().getDay() === 0
+        ? 'Asistes a %COUNT% clases (semana siguiente del calendario)'
+        : 'Asistes a %COUNT% clases (esta semana)';
+    }
+
+    function classDateForDayWithWeekOffset(dayName, weekOffset) {
+      const dayIndex = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(dayName);
+      if (dayIndex < 0) {
+        return todayIso();
+      }
+
+      const base = new Date();
+      const todayIdx = base.getDay();
+      let delta = dayIndex - todayIdx;
+      if (delta < 0) {
+        delta += 7;
+      }
+
+      const safeOffset = Number(weekOffset) || 0;
+      delta += safeOffset * 7;
+      base.setDate(base.getDate() + delta);
+
+      const y = base.getFullYear();
+      const m = String(base.getMonth() + 1).padStart(2, '0');
+      const d = String(base.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function sessionsForStyle(style, levelSlug) {
+      const band = levelBand(levelSlug);
+      const defaults = [{ day: 'Monday', time: '20:00' }, { day: 'Thursday', time: '20:00' }];
+
+      const plan = {
+        Salsa: {
+          inicio: [{ day: 'Tuesday', time: '20:00' }, { day: 'Thursday', time: '16:00' }],
+          inicio_medio: [{ day: 'Monday', time: '22:00' }, { day: 'Wednesday', time: '20:00' }],
+          medio: [{ day: 'Monday', time: '21:00' }, { day: 'Wednesday', time: '22:00' }],
+          avanzado: [{ day: 'Monday', time: '16:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Bachata: {
+          inicio: [{ day: 'Tuesday', time: '16:00' }, { day: 'Tuesday', time: '17:00' }],
+          inicio_medio: [{ day: 'Monday', time: '20:00' }, { day: 'Friday', time: '21:00' }],
+          medio: [{ day: 'Tuesday', time: '21:00' }, { day: 'Thursday', time: '21:00' }],
+          avanzado: [{ day: 'Monday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Kizomba: {
+          inicio: [{ day: 'Tuesday', time: '21:00' }, { day: 'Thursday', time: '21:00' }],
+          inicio_medio: [{ day: 'Thursday', time: '20:00' }, { day: 'Thursday', time: '22:00' }],
+          medio: [{ day: 'Thursday', time: '20:00' }, { day: 'Thursday', time: '22:00' }],
+          avanzado: [{ day: 'Wednesday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Tango: {
+          inicio: [{ day: 'Thursday', time: '18:00' }, { day: 'Monday', time: '17:00' }],
+          inicio_medio: [{ day: 'Thursday', time: '18:00' }, { day: 'Monday', time: '17:00' }],
+          medio: [{ day: 'Thursday', time: '18:00' }, { day: 'Monday', time: '16:00' }],
+          avanzado: [{ day: 'Thursday', time: '18:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Zouk: {
+          inicio: [{ day: 'Wednesday', time: '21:00' }, { day: 'Friday', time: '16:00' }],
+          inicio_medio: [{ day: 'Wednesday', time: '21:00' }, { day: 'Friday', time: '16:00' }],
+          medio: [{ day: 'Wednesday', time: '21:00' }, { day: 'Friday', time: '16:00' }],
+          avanzado: [{ day: 'Wednesday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+        Forro: {
+          inicio: [{ day: 'Monday', time: '16:00' }, { day: 'Friday', time: '22:00' }],
+          inicio_medio: [{ day: 'Monday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+          medio: [{ day: 'Wednesday', time: '16:00' }, { day: 'Friday', time: '22:00' }],
+          avanzado: [{ day: 'Wednesday', time: '17:00' }, { day: 'Friday', time: '22:00' }],
+        },
+      };
+
+      return plan[style]?.[band] || defaults;
+    }
+
+    function todayDayName() {
+      return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()];
+    }
+
+    function nowTimeHHMMSS() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    function rowTimeValue(row) {
+      return attendanceTimeLabel(row);
+    }
+
+    function rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime) {
+      if (row.figure_id !== figureIdValue || row.figure_name !== figureNameValue || row.class_date !== classDateISO) {
+        return false;
+      }
+
+      const expectedTime = formatTimeLabel(sessionTime || '');
+      const rowTime = rowTimeValue(row);
+
+      if (!expectedTime || !rowTime) {
+        return true;
+      }
+
+      return expectedTime === rowTime;
+    }
+
+    function isAttending(figureIdValue, figureNameValue, classDateISO, sessionTime) {
+      return attendanceRows.some(
+        (row) => rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime)
+      );
+    }
+
+    async function loadAttendance() {
+      const selectVariants = [
+        'id, student_id, figure_id, figure_name, class_date, class_time, session_time, created_at',
+        'id, student_id, figure_id, figure_name, class_date, class_time, created_at',
+        'id, student_id, figure_id, figure_name, class_date, session_time, created_at',
+        'id, student_id, figure_id, figure_name, class_date, created_at',
+      ];
+
+      let data = null;
+      let error = null;
+
+      for (const selectFields of selectVariants) {
+        ({ data, error } = await sbClient
+          .from('attendance')
+          .select(selectFields)
+          .eq('student_id', authUser.id));
+
+        if (!error) {
+          break;
+        }
+
+        if (error.code !== '42703') {
+          break;
+        }
+      }
+
+      if (error) {
+        throw new Error('No se pudieron cargar los registros de asistencia.');
+      }
+
+      attendanceRows = data || [];
+    }
+
+    async function markAttendance(figureIdValue, name, classDateISO, sessionDay, sessionTime) {
+      const normalizedSessionTime = formatTimeLabel(sessionTime || nowTimeHHMMSS());
+
+      const payloadBase = {
+        student_id: authUser.id,
+        figure_id: figureIdValue,
+        figure_name: name,
+        class_date: classDateISO,
+      };
+
+      const payloadVariants = [
+        {
+          ...payloadBase,
+          class_day: sessionDay || todayDayName(),
+          class_time: normalizedSessionTime,
+        },
+        {
+          ...payloadBase,
+          session_day: sessionDay || todayDayName(),
+          session_time: normalizedSessionTime,
+        },
+        payloadBase,
+      ];
+
+      let insertData = null;
+      let lastError = null;
+
+      for (const payload of payloadVariants) {
+        const { data, error } = await sbClient
+          .from('attendance')
+          .insert(payload)
+          .select('id, student_id, figure_id, figure_name, class_date, created_at')
+          .single();
+
+        if (!error && data) {
+          insertData = {
+            ...data,
+            class_time: payload.class_time || null,
+            session_time: payload.session_time || null,
+            display_time: normalizedSessionTime,
+          };
+          break;
+        }
+
+        lastError = error;
+      }
+
+      if (!insertData) {
+        throw lastError || new Error('No se pudo guardar la asistencia.');
+      }
+
+      attendanceRows.push(insertData);
+    }
+
+    async function unmarkAttendance(figureIdValue, figureNameValue, classDateISO, sessionTime) {
+      const existingRows = attendanceRows.filter(
+        (row) => rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime)
+      );
+      if (existingRows.length === 0) {
+        return;
+      }
+
+      const ids = existingRows.map((row) => row.id).filter(Boolean);
+
+      if (ids.length === 0) {
+        return;
+      }
+
+      const { error } = await sbClient
+        .from('attendance')
+        .delete()
+        .in('id', ids);
+
+      if (error) {
+        throw error;
+      }
+
+      const idSet = new Set(ids);
+      attendanceRows = attendanceRows.filter((row) => !idSet.has(row.id));
+    }
+
+    function createTabButton(label, active, locked, onClick) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `tab-btn${active ? ' active' : ''}${locked ? ' locked' : ''}${!active && !locked ? ' available' : ''}`;
+      button.textContent = label;
+
+      if (locked) {
+        button.title = 'Bloqueado para este estilo';
+      } else {
+        button.addEventListener('click', onClick);
+      }
+
+      return button;
+    }
+
+    function buildFigureCard(figureIndex) {
+      const style = selectedStyle;
+      const levelSlug = selectedLevel;
+      const id = figureId(style, levelSlug, figureIndex);
+      const name = figureName(style, levelSlug, figureIndex);
+      const levelCategory = getLevelCategory(levelSlug);
+      const levelText = levelDisplayLabel(levelSlug);
+      const videoId = VIDEO_IDS[figureIndex - 1] || VIDEO_IDS[0];
+      const weekOffset = figureIndex - CURRENT_WEEK_FIGURE;
+      const sessions = sessionsForStyle(style, levelSlug);
+      const isThisWeek = figureIndex === CURRENT_WEEK_FIGURE;
+      const isNextWeek = NEXT_WEEK_FIGURE !== null && figureIndex === NEXT_WEEK_FIGURE;
+
+      const card = document.createElement('article');
+      card.className = `figure-card${isThisWeek ? ' is-this-week' : ''}${isNextWeek ? ' is-next-week' : ''}`;
+
+      const weekPillHtml = isThisWeek
+        ? '<span class="week-pill this-week">Esta semana</span>'
+        : (isNextWeek ? '<span class="week-pill next-week">Próxima semana</span>' : '');
+
+      card.innerHTML = `
+        <div class="figure-head">
+          ${weekPillHtml}
+          <p class="figure-index">Figura ${figureIndex}</p>
+          <h3 class="figure-name">${style} <span class="level-badge figure-level-badge ${levelCategory}">${levelText}</span></h3>
+        </div>
+        <div class="figure-body">
+          <div class="figure-video">
+            <iframe
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+              src="https://www.youtube.com/embed/${videoId}"
+              title="${name} video"
+            ></iframe>
+          </div>
+          <div class="figure-actions"></div>
+        </div>
+      `;
+
+      const actions = card.querySelector('.figure-actions');
+
+      sessions.forEach((session) => {
+        const classDateISO = classDateForDayWithWeekOffset(session.day, weekOffset);
+        const attendingThisSession = isAttending(id, name, classDateISO, session.time);
+
+        const sessionButton = document.createElement('button');
+        sessionButton.type = 'button';
+        sessionButton.className = `session-btn${attendingThisSession ? ' is-attending' : ''}`;
+        sessionButton.textContent = `${attendingThisSession ? 'Attending' : 'Attend'} · ${session.day} ${session.time}`;
+
+        sessionButton.addEventListener('click', async () => {
+          sessionButton.disabled = true;
+          clearError();
+
+          try {
+            if (isAttending(id, name, classDateISO, session.time)) {
+              await unmarkAttendance(id, name, classDateISO, session.time);
+            } else {
+              await markAttendance(id, name, classDateISO, session.day, session.time);
+            }
+            renderCards();
+            renderAttendanceOverview();
+          } catch (err) {
+            showError(err.message || 'No se pudo actualizar la asistencia.');
+          } finally {
+            sessionButton.disabled = false;
+          }
+        });
+
+        actions.appendChild(sessionButton);
+      });
+
+      return card;
+    }
+
+    function getLevelCategory(levelSlug) {
+      if (levelSlug?.includes('beginner')) return 'beginner';
+      if (levelSlug?.includes('advanced')) return 'advanced';
+      return 'intermediate';
+    }
+
+    function getNextUpcomingClasses(limit = 3) {
+      const today = todayIso();
+      const futureRows = attendanceRows
+        .filter(row => row.class_date >= today)
+        .sort((a, b) => {
+          if (a.class_date !== b.class_date) return a.class_date.localeCompare(b.class_date);
+          return (attendanceTimeLabel(a) || '').localeCompare(attendanceTimeLabel(b) || '');
+        })
+        .slice(0, limit);
+
+      return futureRows.map((row, index) => ({
+        ...row,
+        sequence: index + 1,
+        time: attendanceTimeLabel(row),
+        originalDate: new Date(`${row.class_date}T00:00:00`),
+      }));
+    }
+
+    function renderUpcomingHighlight() {
+      if (!upcomingListEl) return;
+      upcomingListEl.innerHTML = '';
+
+      const upcoming = getNextUpcomingClasses(1);
+      if (upcoming.length === 0) {
+        upcomingListEl.innerHTML = '<li style="text-align: center; color: var(--muted); padding: 0.9rem; font-size: 0.9rem;">Aún no hay próximas reservas.</li>';
+        return;
+      }
+
+      const row = upcoming[0];
+      const item = document.createElement('li');
+      item.className = 'upcoming-card';
+
+      const meta = parseFigureMetaFromName(row.figure_name) || {};
+      const title = meta.style && meta.levelSlug
+        ? `${meta.style} · ${levelDisplayLabel(meta.levelSlug)}`
+        : normalizeText(row.figure_name) || 'Próxima clase';
+      const dateLabel = formatDateLabel(row.class_date || todayIso());
+
+      item.innerHTML = `
+        <span class="upcoming-kicker">Próxima</span>
+        <p class="upcoming-class-name">${title}</p>
+        <p class="upcoming-time">${dateLabel}${row.time ? ` · ${row.time}` : ''}</p>
+      `;
+      upcomingListEl.appendChild(item);
+    }
+
+    function exportAttendanceCSV() {
+      const headers = ['Fecha', 'Clase', 'Hora', 'Nivel'];
+      const rows = attendanceRows
+        .map(row => {
+          const date = formatDateLabel(row.class_date || todayIso());
+          const className = normalizeText(row.figure_name) || 'Clase';
+          const time = attendanceTimeLabel(row) || '—';
+          const meta = parseFigureMetaFromName(row.figure_name) || {};
+          const level = meta.levelSlug ? levelDisplayLabel(meta.levelSlug) : '—';
+          return [date, className, time, level];
+        })
+        .sort((a, b) => a[0].localeCompare(b[0]));
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')),
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `attendance-${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+    }
+
+    function renderStyleTabs() {
+      styleTabsEl.innerHTML = '';
+
+      STYLE_ORDER.forEach((style) => {
+        const isAssigned = styleAssigned(style);
+        const button = createTabButton(style, selectedStyle === style, !isAssigned, () => {
+          selectedStyle = style;
+
+          if (levelLocked(selectedLevel)) {
+            selectedLevel = styleMaxLevelSlug(selectedStyle);
+          }
+
+          renderAll();
+        });
+        styleTabsEl.appendChild(button);
+      });
+    }
+
+    function renderLevelTabs() {
+      levelTabsEl.innerHTML = '';
+
+      LEVELS.forEach((level) => {
+        const locked = levelLocked(level.slug);
+        const button = createTabButton(levelDisplayLabel(level.slug), selectedLevel === level.slug, locked, () => {
+          selectedLevel = level.slug;
+          renderAll();
+        });
+        levelTabsEl.appendChild(button);
+      });
+    }
+
+    function renderCards() {
+      cardsGridEl.innerHTML = '';
+      comboTitleEl.textContent = `${selectedStyle} · ${levelDisplayLabel(selectedLevel)}`;
+
+      const firstFigureText = CURRENT_WEEK_FIGURE > 1
+        ? `Figuras ${CURRENT_WEEK_FIGURE - 1} y ${CURRENT_WEEK_FIGURE}`
+        : `Figura ${CURRENT_WEEK_FIGURE}`;
+
+      comboSubEl.textContent = `Empieza con ${firstFigureText} esta semana. La Figura ${CURRENT_WEEK_FIGURE} es tu enfoque, y la próxima semana se abre la Figura ${CURRENT_WEEK_FIGURE + 1}.`;
+
+      for (let index = 1; index <= 6; index += 1) {
+        cardsGridEl.appendChild(buildFigureCard(index));
+      }
+    }
+
+    function renderAttendanceOverview() {
+      const uniqueRows = [];
+      const uniqueMap = new Map();
+
+      attendanceRows.forEach((row) => {
+        const dedupeKey = `${row.figure_name || ''}|${row.class_date || ''}|${attendanceTimeLabel(row) || ''}`;
+        if (!uniqueMap.has(dedupeKey)) {
+          uniqueMap.set(dedupeKey, true);
+          uniqueRows.push(row);
+        }
+      });
+
+      const sortedRows = uniqueRows.sort((a, b) => {
+        if (a.class_date === b.class_date) {
+          const timeA = attendanceTimeLabel(a);
+          const timeB = attendanceTimeLabel(b);
+          if (timeA !== timeB) {
+            return timeA.localeCompare(timeB);
+          }
+          return String(a.figure_name || '').localeCompare(String(b.figure_name || ''));
+        }
+        return String(a.class_date || '').localeCompare(String(b.class_date || ''));
+      });
+
+      const slotCounter = {};
+      sortedRows.forEach((row) => {
+        const time = attendanceTimeLabel(row);
+        if (!time) {
+          return;
+        }
+        const slotKey = `${row.class_date}|${time}`;
+        slotCounter[slotKey] = (slotCounter[slotKey] || 0) + 1;
+      });
+
+      const today = todayIso();
+      let filteredRows = sortedRows.filter((row) => {
+        if (attendanceOverviewFilter === 'all') {
+          return true;
+        }
+
+        if (attendanceOverviewFilter === 'this-week') {
+          return isInCurrentWeek(row.class_date);
+        }
+
+        if (attendanceOverviewFilter === 'overlaps') {
+          const time = attendanceTimeLabel(row);
+          if (!time) {
+            return false;
+          }
+          const slotKey = `${row.class_date}|${time}`;
+          return slotCounter[slotKey] > 1;
+        }
+
+        return true;
+      });
+
+      // Apply hide past filter
+      if (hidePastFilter) {
+        filteredRows = filteredRows.filter(row => row.class_date >= today);
+      }
+
+      const thisWeekCount = sortedRows.filter((row) => isInCurrentWeek(row.class_date)).length;
+      if (attendanceOverviewFilter === 'all') {
+          overviewCountEl.textContent = `Asistes a ${sortedRows.length} clases (todas)`;
+      } else if (attendanceOverviewFilter === 'overlaps') {
+        overviewCountEl.textContent = `Alertas de solapamiento ${filteredRows.length}`;
+      } else {
+        overviewCountEl.textContent = thisWeekCountLabel().replace('%COUNT%', String(thisWeekCount));
+      }
+      overviewListEl.innerHTML = '';
+
+      if (filteredRows.length === 0) {
+        if (attendanceOverviewFilter === 'overlaps') {
+          overviewEmptyEl.textContent = 'No se detectaron reservas solapadas.';
+        } else if (attendanceOverviewFilter === 'all') {
+          overviewEmptyEl.textContent = 'Aún no has marcado asistencia. Pulsa Asistir en cualquier sesión para añadirla aquí.';
+        } else {
+          overviewEmptyEl.textContent = hidePastFilter ? 'No hay clases próximas para este filtro.' : 'Aún no hay clases marcadas para esta semana.';
+        }
+        overviewEmptyEl.style.display = 'block';
+        return;
+      }
+
+      overviewEmptyEl.style.display = 'none';
+
+      filteredRows.forEach((row) => {
+        const time = attendanceTimeLabel(row);
+        const slotKey = time ? `${row.class_date}|${time}` : '';
+        const hasConflict = slotKey && slotCounter[slotKey] > 1;
+
+        const meta = parseFigureMetaFromName(row.figure_name) || {};
+        const levelCategory = meta.levelSlug ? getLevelCategory(meta.levelSlug) : '';
+        const levelText = meta.levelSlug ? levelDisplayLabel(meta.levelSlug) : '';
+        const courseName = meta.style || normalizeText(row.figure_name) || 'Course';
+
+        const item = document.createElement('li');
+        item.className = `overview-item${hasConflict ? ' is-conflict' : ''}`;
+        item.innerHTML = `
+          <div class="overview-row">
+            <button type="button" class="overview-jump" data-style="${meta.style || ''}" data-level="${meta.levelSlug || ''}">
+              <strong>${courseName}${levelText ? ` <span class="level-badge ${levelCategory}">${levelText}</span>` : ''}${hasConflict ? ' <span class="conflict-pill">Solapamiento</span>' : ''}</strong>
+              <span>${formatDateLabel(row.class_date || todayIso())}${time ? ` · ${time}` : ''}</span>
+            </button>
+            <button type="button" class="overview-delete" data-figure-id="${row.figure_id || ''}" data-figure-name="${normalizeText(row.figure_name)}" data-class-date="${row.class_date || ''}" data-time="${time || ''}" aria-label="Eliminar asistencia">×</button>
+          </div>
+        `;
+
+        const jumpBtn = item.querySelector('.overview-jump');
+        jumpBtn?.addEventListener('click', () => {
+          const style = jumpBtn.dataset.style || '';
+          const level = jumpBtn.dataset.level || '';
+
+          if (style && STYLE_ORDER.includes(style)) {
+            selectedStyle = style;
+          }
+
+          if (level && LEVEL_INDEX[level] !== undefined && !levelLocked(level)) {
+            selectedLevel = level;
+          }
+
+          renderAll();
+          document.getElementById('combo-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        const deleteBtn = item.querySelector('.overview-delete');
+        deleteBtn?.addEventListener('click', async (event) => {
+          event.stopPropagation();
+          deleteBtn.disabled = true;
+
+          try {
+            await unmarkAttendance(
+              deleteBtn.dataset.figureId || '',
+              deleteBtn.dataset.figureName || '',
+              deleteBtn.dataset.classDate || '',
+              deleteBtn.dataset.time || ''
+            );
+            renderCards();
+            renderAttendanceOverview();
+          } catch (err) {
+            showError(err.message || 'No se pudo eliminar la asistencia.');
+          } finally {
+            deleteBtn.disabled = false;
+          }
+        });
+
+        overviewListEl.appendChild(item);
+      });
+    }
+
+    function setupOverviewFilters() {
+      overviewFilterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          attendanceOverviewFilter = button.dataset.filter || 'this-week';
+
+          overviewFilterButtons.forEach((btn) => {
+            btn.classList.toggle('is-active', btn === button);
+          });
+
+          renderAttendanceOverview();
+        });
+      });
+    }
+
+    function renderAll() {
+      renderStyleTabs();
+      renderLevelTabs();
+      renderCards();
+      renderUpcomingHighlight();
+      renderAttendanceOverview();
+    }
+
+    async function loadProfile() {
+      const profileSelectVariants = [
+        'id, full_name, level, role, style_levels',
+        'id, full_name, level, role',
+        'id, full_name, level, style_levels',
+        'id, full_name, level',
+      ];
+
+      let data = null;
+      let error = null;
+
+      for (const selectFields of profileSelectVariants) {
+        ({ data, error } = await sbClient
+          .from('profiles')
+          .select(selectFields)
+          .eq('id', authUser.id)
+          .single());
+
+        if (!error && data) {
+          break;
+        }
+
+        const missingColumn = error
+          && (error.code === '42703' || /style_levels|role/i.test(String(error.message || '')));
+        if (!missingColumn) {
+          break;
+        }
+      }
+
+      if (error || !data) {
+        const detail = String(error?.message || '').trim();
+        throw new Error(detail ? `No se pudo cargar tu perfil: ${detail}` : 'No se pudo cargar tu perfil.');
+      }
+
+      profile = data;
+      studentNameEl.textContent = normalizeText(profile.full_name) || 'Member';
+
+      if (!(profile.level in LEVEL_INDEX)) {
+        profile.level = 'beginner';
+      }
+
+      const { data: styleRows, error: styleRowsError } = await sbClient
+        .from('student_style_levels')
+        .select('style_key, level_slug')
+        .eq('student_id', authUser.id);
+
+      if (styleRowsError && styleRowsError.code !== '42P01') {
+        throw new Error('No se pudieron cargar los niveles de estilo.');
+      }
+
+      studentStyleLevels = {};
+      (styleRows || []).forEach((row) => {
+        const styleKey = String(row.style_key || '').toLowerCase();
+        const levelSlug = String(row.level_slug || '').trim();
+
+        if (!(levelSlug in LEVEL_INDEX)) {
+          return;
+        }
+
+        if (!STYLE_ORDER.some((style) => style.toLowerCase() === styleKey)) {
+          return;
+        }
+
+        studentStyleLevels[styleKey] = levelSlug;
+      });
+
+      const firstAssignedStyle = STYLE_ORDER.find((style) => styleAssigned(style)) || 'Salsa';
+      selectedStyle = firstAssignedStyle;
+
+      selectedLevel = styleMaxLevelSlug(selectedStyle);
+    }
+
+    async function boot() {
+      clearError();
+
+      if (!validHttpUrl(SUPABASE_URL) || !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === 'YOUR_ANON_KEY') {
+        showError('Supabase no está configurado. Define SUPABASE_URL y SUPABASE_ANON_KEY en dashboard.html.');
+        return;
+      }
+
+      sbClient = window.supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
+
+      const { data: sessionData, error: sessionError } = await sbClient.auth.getSession();
+
+      if (sessionError) {
+        showError('La comprobación de la sesión falló. Vuelve a iniciar sesión.');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const session = sessionData?.session;
+      if (!session) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      authUser = session.user;
+
+      signoutBtn.addEventListener('click', async () => {
+        await sbClient.auth.signOut();
+        window.location.href = 'index.html';
+      });
+
+      setupOverviewFilters();
+
+      // Setup new feature event listeners
+      if (hidePastToggle) {
+        hidePastToggle.addEventListener('click', () => {
+          hidePastFilter = !hidePastFilter;
+          hidePastToggle.classList.toggle('is-active', hidePastFilter);
+          hidePastToggle.setAttribute('aria-pressed', String(hidePastFilter));
+          hidePastToggle.textContent = hidePastFilter ? 'Mostrar pasadas' : 'Ocultar pasadas';
+          renderAttendanceOverview();
+        });
+      }
+
+      if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', () => {
+          if (attendanceRows.length === 0) {
+            alert('No hay datos de asistencia para exportar.');
+            return;
+          }
+          exportAttendanceCSV();
+        });
+      }
+
+      try {
+        await loadProfile();
+        await loadAttendance();
+        renderAll();
+      } catch (err) {
+        showError(err.message || 'No se pudo inicializar el panel.');
+      }
+    }
+
+    boot();
+
+    const dashboardYear = document.getElementById('dashboard-year');
+    if (dashboardYear) {
+      dashboardYear.textContent = String(new Date().getFullYear());
+    }
+  </script>
 </body>
 </html>

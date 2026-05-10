@@ -1606,8 +1606,11 @@
       cardsGridEl.innerHTML = '';
       comboTitleEl.textContent = `${selectedStyle} · ${levelLabel(selectedLevel)}`;
 
-      const maxLevel = styleMaxLevelSlug(selectedStyle);
-      comboSubEl.textContent = `6 cards for this combination. Figure ${CURRENT_WEEK_FIGURE} is highlighted for this week. Max unlocked for ${selectedStyle}: ${levelLabel(maxLevel)}.`;
+      const firstFigureText = CURRENT_WEEK_FIGURE > 1
+        ? `Figures ${CURRENT_WEEK_FIGURE - 1} and ${CURRENT_WEEK_FIGURE}`
+        : `Figure ${CURRENT_WEEK_FIGURE}`;
+
+      comboSubEl.textContent = `Start with ${firstFigureText} this week. Figure ${CURRENT_WEEK_FIGURE} is your focus, and next week opens Figure ${CURRENT_WEEK_FIGURE + 1}.`;
 
       for (let index = 1; index <= 6; index += 1) {
         cardsGridEl.appendChild(buildFigureCard(index));
