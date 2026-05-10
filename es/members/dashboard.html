@@ -821,8 +821,8 @@
       </a>
       <div class="members-head-actions" aria-label="Language selector">
         <div class="members-lang-group">
-          <a class="nav-lang nav-lang-active" href="/members/dashboard.html">EN</a>
-          <a class="nav-lang" href="/es/members/dashboard.html" aria-current="page">ES</a>
+          <a class="nav-lang" href="/members/dashboard.html">EN</a>
+          <a class="nav-lang nav-lang-active" href="/es/members/dashboard.html" aria-current="page">ES</a>
         </div>
       </div>
     </div>
@@ -1072,7 +1072,7 @@
         return isoDate;
       }
 
-      return date.toLocaleDateString('en-GB', {
+      return date.toLocaleDateString('es-ES', {
         weekday: 'short',
         day: '2-digit',
         month: 'short',
@@ -1481,7 +1481,7 @@
         const sessionButton = document.createElement('button');
         sessionButton.type = 'button';
         sessionButton.className = `session-btn${attendingThisSession ? ' is-attending' : ''}`;
-        sessionButton.textContent = `${attendingThisSession ? 'Attending' : 'Attend'} · ${session.day} ${session.time}`;
+        sessionButton.textContent = `${attendingThisSession ? 'Asistiendo' : 'Asistir'} · ${formatDateLabel(classDateISO)} · ${formatTimeLabel(session.time)}`;
 
         sessionButton.addEventListener('click', async () => {
           sessionButton.disabled = true;
@@ -1724,7 +1724,7 @@
         const meta = parseFigureMetaFromName(row.figure_name) || {};
         const levelCategory = meta.levelSlug ? getLevelCategory(meta.levelSlug) : '';
         const levelText = meta.levelSlug ? levelDisplayLabel(meta.levelSlug) : '';
-        const courseName = meta.style || normalizeText(row.figure_name) || 'Course';
+        const courseName = meta.style || normalizeText(row.figure_name) || 'Clase';
 
         const item = document.createElement('li');
         item.className = `overview-item${hasConflict ? ' is-conflict' : ''}`;

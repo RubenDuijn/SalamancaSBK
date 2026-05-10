@@ -1467,7 +1467,7 @@
         const sessionButton = document.createElement('button');
         sessionButton.type = 'button';
         sessionButton.className = `session-btn${attendingThisSession ? ' is-attending' : ''}`;
-        sessionButton.textContent = `${attendingThisSession ? 'Attending' : 'Attend'} · ${session.day} ${session.time}`;
+        sessionButton.textContent = `${attendingThisSession ? 'Attending' : 'Attend'} · ${formatDateLabel(classDateISO)} · ${formatTimeLabel(session.time)}`;
 
         sessionButton.addEventListener('click', async () => {
           sessionButton.disabled = true;
