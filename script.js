@@ -136,7 +136,7 @@ const dayPanelEl = document.getElementById('schedule-day-panel');
 const scheduleDataEn = [
   {
     day: 'Monday',
-    focus: 'Open Floor and Core Sessions · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Open Level Floor (Free Slot)', time: '16:00' },
       { title: 'Bachata Fusion Level 1-2', time: '17:00' },
@@ -148,7 +148,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Tuesday',
-    focus: 'Bachata Sessions · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Bachata Moderna Level 0-1', time: '16:00' },
       { title: 'Bachata Moderna Level 1', time: '17:00' },
@@ -160,7 +160,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Wednesday',
-    focus: 'Salsa Sessions · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Zouk Foundations (Free Slot)', time: '17:00' },
       { title: 'Salsa Cubana Level 1 · Sol Room', time: '20:00' },
@@ -173,7 +173,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Thursday',
-    focus: 'Mixed Technique Sessions · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Salsa Cubana Level 0-1', time: '16:00' },
       { title: 'Salsa Cubana Level 1 · Sol Room', time: '17:00' },
@@ -187,7 +187,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Friday',
-    focus: 'Bachata and Open Practice · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Bachata Moderna Level 0', time: '18:00' },
       { title: 'Bachata Dominicana Level 1 · Sol Room', time: '20:00' },
@@ -198,7 +198,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Saturday',
-    focus: 'Community Social Night · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Pre-Social Workshop', time: '19:00' },
       { title: 'SBK Social Lab', time: '20:00' },
@@ -208,7 +208,7 @@ const scheduleDataEn = [
   },
   {
     day: 'Sunday',
-    focus: 'Recovery + Technique · Sol Room / Sombra Room',
+    focus: 'Sol Room / Sombra Room',
     classes: [
       { title: 'Open Technique Lab', time: '19:00' },
       { title: 'Musicality + Styling Session', time: '20:00' },
@@ -220,7 +220,7 @@ const scheduleDataEn = [
 const scheduleDataEs = [
   {
     day: 'Lunes',
-    focus: 'Pista abierta y sesiones base · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Pista Open Level (Hueco libre)', time: '16:00' },
       { title: 'Bachata Fusion Nivel 1-2', time: '17:00' },
@@ -232,7 +232,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Martes',
-    focus: 'Sesiones de Bachata · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Bachata Moderna Nivel 0-1', time: '16:00' },
       { title: 'Bachata Moderna Nivel 1', time: '17:00' },
@@ -244,7 +244,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Miercoles',
-    focus: 'Sesiones de Salsa · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Zouk Foundations (Hueco libre)', time: '17:00' },
       { title: 'Salsa Cubana Nivel 1 · Sala Sol', time: '20:00' },
@@ -257,7 +257,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Jueves',
-    focus: 'Sesiones mixtas de tecnica · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Salsa Cubana Nivel 0-1', time: '16:00' },
       { title: 'Salsa Cubana Nivel 1 · Sala Sol', time: '17:00' },
@@ -271,7 +271,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Viernes',
-    focus: 'Bachata y practica abierta · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Bachata Moderna Nivel 0', time: '18:00' },
       { title: 'Bachata Dominicana Nivel 1 · Sala Sol', time: '20:00' },
@@ -282,7 +282,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Sabado',
-    focus: 'Noche social de comunidad · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Taller pre-social', time: '19:00' },
       { title: 'Laboratorio social SBK', time: '20:00' },
@@ -292,7 +292,7 @@ const scheduleDataEs = [
   },
   {
     day: 'Domingo',
-    focus: 'Recuperacion + tecnica · Sala Sol / Sala Sombra',
+    focus: 'Sala Sol / Sala Sombra',
     classes: [
       { title: 'Laboratorio tecnico abierto', time: '19:00' },
       { title: 'Sesion de musicalidad + estilo', time: '20:00' },

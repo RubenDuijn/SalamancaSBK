@@ -892,11 +892,28 @@
       return `${hh}:${mm}:${ss}`;
     }
 
-    function isAttending(figureIdValue, figureNameValue, classDateISO) {
+    function rowTimeValue(row) {
+      return attendanceTimeLabel(row);
+    }
+
+    function rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime) {
+      if (row.figure_id !== figureIdValue || row.figure_name !== figureNameValue || row.class_date !== classDateISO) {
+        return false;
+      }
+
+      const expectedTime = formatTimeLabel(sessionTime || '');
+      const rowTime = rowTimeValue(row);
+
+      if (!expectedTime || !rowTime) {
+        return true;
+      }
+
+      return expectedTime === rowTime;
+    }
+
+    function isAttending(figureIdValue, figureNameValue, classDateISO, sessionTime) {
       return attendanceRows.some(
-        (row) => row.figure_id === figureIdValue
-          && row.figure_name === figureNameValue
-          && row.class_date === classDateISO
+        (row) => rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime)
       );
     }
 
@@ -934,6 +951,8 @@
     }
 
     async function markAttendance(figureIdValue, name, classDateISO, sessionDay, sessionTime) {
+      const normalizedSessionTime = formatTimeLabel(sessionTime || nowTimeHHMMSS());
+
       const payloadBase = {
         student_id: authUser.id,
         figure_id: figureIdValue,
@@ -945,12 +964,12 @@
         {
           ...payloadBase,
           class_day: sessionDay || todayDayName(),
-          class_time: sessionTime || nowTimeHHMMSS(),
+          class_time: normalizedSessionTime,
         },
         {
           ...payloadBase,
           session_day: sessionDay || todayDayName(),
-          session_time: sessionTime || nowTimeHHMMSS(),
+          session_time: normalizedSessionTime,
         },
         payloadBase,
       ];
@@ -962,11 +981,16 @@
         const { data, error } = await sbClient
           .from('attendance')
           .insert(payload)
-          .select('id, student_id, figure_id, figure_name, class_date, class_time, session_time, created_at')
+          .select('id, student_id, figure_id, figure_name, class_date, created_at')
           .single();
 
         if (!error && data) {
-          insertData = data;
+          insertData = {
+            ...data,
+            class_time: payload.class_time || null,
+            session_time: payload.session_time || null,
+            display_time: normalizedSessionTime,
+          };
           break;
         }
 
@@ -977,33 +1001,34 @@
         throw lastError || new Error('Could not write attendance.');
       }
 
-      if (!insertData.class_time && !insertData.session_time && sessionTime) {
-        insertData.display_time = sessionTime;
-      }
-
       attendanceRows.push(insertData);
     }
 
-    async function unmarkAttendance(figureIdValue, figureNameValue, classDateISO) {
-      const existing = attendanceRows.find(
-        (row) => row.figure_id === figureIdValue
-          && row.figure_name === figureNameValue
-          && row.class_date === classDateISO
+    async function unmarkAttendance(figureIdValue, figureNameValue, classDateISO, sessionTime) {
+      const existingRows = attendanceRows.filter(
+        (row) => rowsMatchAttendance(row, figureIdValue, figureNameValue, classDateISO, sessionTime)
       );
-      if (!existing) {
+      if (existingRows.length === 0) {
+        return;
+      }
+
+      const ids = existingRows.map((row) => row.id).filter(Boolean);
+
+      if (ids.length === 0) {
         return;
       }
 
       const { error } = await sbClient
         .from('attendance')
         .delete()
-        .eq('id', existing.id);
+        .in('id', ids);
 
       if (error) {
         throw error;
       }
 
-      attendanceRows = attendanceRows.filter((row) => row.id !== existing.id);
+      const idSet = new Set(ids);
+      attendanceRows = attendanceRows.filter((row) => !idSet.has(row.id));
     }
 
     function createTabButton(label, active, locked, onClick) {
@@ -1064,7 +1089,7 @@
 
       sessions.forEach((session) => {
         const classDateISO = classDateForDayWithWeekOffset(session.day, weekOffset);
-        const attendingThisSession = isAttending(id, name, classDateISO);
+        const attendingThisSession = isAttending(id, name, classDateISO, session.time);
 
         const sessionButton = document.createElement('button');
         sessionButton.type = 'button';
@@ -1076,8 +1101,8 @@
           clearError();
 
           try {
-            if (isAttending(id, name, classDateISO)) {
-              await unmarkAttendance(id, name, classDateISO);
+            if (isAttending(id, name, classDateISO, session.time)) {
+              await unmarkAttendance(id, name, classDateISO, session.time);
             } else {
               await markAttendance(id, name, classDateISO, session.day, session.time);
             }
@@ -1140,7 +1165,18 @@
     }
 
     function renderAttendanceOverview() {
-      const sortedRows = [...attendanceRows].sort((a, b) => {
+      const uniqueRows = [];
+      const uniqueMap = new Map();
+
+      attendanceRows.forEach((row) => {
+        const dedupeKey = `${row.figure_name || ''}|${row.class_date || ''}|${attendanceTimeLabel(row) || ''}`;
+        if (!uniqueMap.has(dedupeKey)) {
+          uniqueMap.set(dedupeKey, true);
+          uniqueRows.push(row);
+        }
+      });
+
+      const sortedRows = uniqueRows.sort((a, b) => {
         if (a.class_date === b.class_date) {
           const timeA = attendanceTimeLabel(a);
           const timeB = attendanceTimeLabel(b);
