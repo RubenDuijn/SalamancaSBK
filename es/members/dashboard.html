@@ -141,7 +141,7 @@
       width: 220%;
       background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.88) 20%, rgba(255, 255, 255, 0.06) 38%, transparent 58%);
       transform: translateX(-125%);
-      animation: pill-sheen 6s ease-in-out infinite;
+      animation: pill-sheen 11s cubic-bezier(0.65, 0, 0.35, 1) infinite;
       pointer-events: none;
     }
 
@@ -163,10 +163,10 @@
     }
 
     @keyframes pill-sheen {
-      0%, 42% {
+      0%, 58% {
         transform: translateX(-125%);
       }
-      65% {
+      78% {
         transform: translateX(125%);
       }
       100% {
