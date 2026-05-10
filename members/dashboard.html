@@ -873,8 +873,8 @@
         </div>
         <div class="overview-controls">
           <div class="overview-filters" role="tablist" aria-label="Attendance overview filters">
-            <button type="button" class="overview-filter-btn is-active" data-filter="this-week">This week</button>
-            <button type="button" class="overview-filter-btn" data-filter="all">All</button>
+            <button type="button" class="overview-filter-btn" data-filter="this-week">This week</button>
+            <button type="button" class="overview-filter-btn is-active" data-filter="all">All</button>
             <button type="button" class="overview-filter-btn" data-filter="overlaps">Overlaps</button>
           </div>
           <div class="overview-actions">
@@ -939,7 +939,7 @@
     let attendanceRows = [];
     let selectedStyle = STYLE_ORDER[0];
     let selectedLevel = 'beginner';
-    let attendanceOverviewFilter = 'this-week';
+    let attendanceOverviewFilter = 'all';
     let hidePastFilter = false;
 
     function weekFigureIndexForDate(date) {
