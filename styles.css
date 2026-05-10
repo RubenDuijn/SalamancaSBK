@@ -844,6 +844,33 @@ html.reveal-ready .proof-item.reveal-item {
   font-weight: 700;
 }
 
+.schedule-course-stack {
+  display: grid;
+  gap: 0.22rem;
+  margin-top: 0.1rem;
+}
+
+.schedule-course-line {
+  display: grid;
+  gap: 0.05rem;
+}
+
+.schedule-room {
+  color: #ffe6bf;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.schedule-room-separator {
+  margin-top: 0.1rem;
+  color: var(--accent-2);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .schedule-focus {
   color: var(--muted);
   font-size: 0.77rem;

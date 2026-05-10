@@ -309,23 +309,75 @@ const scheduleNewbieHref = isSpanishPage
   ? 'https://wa.me/34659376099?text=Hola%20Salamanca%20SBK%2C%20quiero%20reservar%20mi%20primera%20clase.'
   : 'https://wa.me/34659376099?text=Hi%20Salamanca%20SBK%2C%20I%20want%20to%20book%20my%20first%20class.';
 
+function cleanScheduleTitle(title) {
+  return String(title || '')
+    .replace(/\s*·\s*Sol Room$/i, '')
+    .replace(/\s*·\s*Sombra Room$/i, '')
+    .replace(/\s*·\s*Sala Sol$/i, '')
+    .replace(/\s*·\s*Sala Sombra$/i, '')
+    .trim();
+}
+
+function roomLabelForParallelIndex(index) {
+  if (isSpanishPage) {
+    return index === 0 ? 'SALA SOL' : 'SALA SOMBRA';
+  }
+  return index === 0 ? 'ROOM SOL' : 'ROOM SOMBRA';
+}
+
+function groupScheduleEntriesByTime(classes) {
+  const grouped = [];
+
+  classes.forEach((entry) => {
+    const time = String(entry.time || '').trim();
+    const normalizedTitle = cleanScheduleTitle(entry.title);
+
+    let group = grouped.find((item) => item.time === time);
+    if (!group) {
+      group = { time, entries: [] };
+      grouped.push(group);
+    }
+
+    group.entries.push({ ...entry, title: normalizedTitle });
+  });
+
+  return grouped;
+}
+
 function renderScheduleCards(dayData) {
   if (!dayPanelEl) return;
   dayPanelEl.innerHTML = '';
 
-  dayData.classes.forEach((entry, index) => {
+  const groupedEntries = groupScheduleEntriesByTime(dayData.classes || []);
+
+  groupedEntries.forEach((group, index) => {
     const card = document.createElement('details');
     card.className = 'schedule-card';
     if (index === 0) {
       card.open = true;
     }
 
+    const courseLinesHtml = group.entries.map((entry, courseIndex) => {
+      const roomLabel = roomLabelForParallelIndex(courseIndex);
+      const plusHtml = courseIndex < group.entries.length - 1
+        ? '<div class="schedule-room-separator" aria-hidden="true">+</div>'
+        : '';
+
+      return `
+        <div class="schedule-course-line">
+          <p class="schedule-name">${entry.title}</p>
+          <small class="schedule-room">${roomLabel}</small>
+          ${plusHtml}
+        </div>
+      `;
+    }).join('');
+
     const isFirstOpen = index === 0;
     card.innerHTML = `
       <summary>
         <div>
-          <span class="schedule-time">${entry.time}</span>
-          <p class="schedule-name">${entry.title}</p>
+          <span class="schedule-time">${group.time}</span>
+          <div class="schedule-course-stack">${courseLinesHtml}</div>
           <small class="schedule-focus">${dayData.focus}</small>
         </div>
         <span class="schedule-expand">${isFirstOpen ? '−' : '+'}</span>
